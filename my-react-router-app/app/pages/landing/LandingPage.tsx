@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "motion/react";
 import { fadeInPropsFn, zoomInPropsFn } from "../../utils/animation";
 import { Link, NavLink } from "react-router";
@@ -86,7 +85,7 @@ export default function LandingPage() {
             animate="rest"
           >
             <p className="text-md font-medium  text-gray-500 tracking-tighter cursor-pointer">
-              <Link to={"/signin"}>Đã có tài khoản?</Link>
+              <Link to={"/login"}>Đã có tài khoản?</Link>
             </p>
             <motion.div //Underline animation
               className="absolute bottom-0 left-0 h-[2px] bg-gray-500"
