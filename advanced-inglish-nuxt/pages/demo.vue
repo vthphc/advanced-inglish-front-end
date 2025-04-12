@@ -1,28 +1,7 @@
-<template>
-	<div class=" ">
-		<UForm
-			:schema="schema"
-			:state="state"
-			class="space-y-4"
-			@submit="onSubmit">
-			<UFormField label="Email" name="email">
-				<UInput v-model="state.email" />
-			</UFormField>
-
-			<UFormField label="Password" name="password">
-				<UInput
-					v-model="state.password"
-					type="password" />
-			</UFormField>
-
-			<UButton type="submit"> Submit </UButton>
-		</UForm>
-	</div>
-</template>
-
 <script setup lang="ts">
 import * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
+import { motion } from "motion-v";
 
 const schema = z.object({
 	email: z.string().email("Invalid email"),
@@ -46,3 +25,29 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 	console.log(event.data);
 }
 </script>
+
+<template>
+	<div class=" ">
+		<UForm
+			:schema="schema"
+			:state="state"
+			class="space-y-4"
+			@submit="onSubmit">
+			<UFormField label="Email" name="email">
+				<UInput v-model="state.email" />
+			</UFormField>
+
+			<UFormField label="Password" name="password">
+				<UInput
+					v-model="state.password"
+					type="password" />
+			</UFormField>
+
+			<UButton type="submit"> Submit </UButton>
+		</UForm>
+		<motion.div
+			:while-hover="{ scale: 1.2 }"
+			:while-press="{ scale: 0.8 }"
+			class="w-[100px] h-[100px] bg-blue-400 rounded-md" />
+	</div>
+</template>
