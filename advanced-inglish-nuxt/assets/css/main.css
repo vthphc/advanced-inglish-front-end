@@ -9,6 +9,10 @@
 }
 
 :root {
+	--selection-bg: #bd9fff;
+	--selection-text: #ffffff;
+	--ui-primary: #8854fc;
+	--ui-highlight: #bd9fff;
 	/* Least prominent text */
 	--ui-text-dimmed: var(--ui-color-neutral-400);
 	/* Slightly muted text */
@@ -39,4 +43,9 @@
 	--ui-border-accented: var(--ui-color-neutral-300);
 	/* Inverted border color */
 	--ui-border-inverted: var(--ui-color-neutral-900);
+}
+
+::selection {
+	background: var(--selection-bg);
+	color: var(--selection-text);
 }

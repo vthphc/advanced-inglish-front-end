@@ -20,4 +20,19 @@ export default defineNuxtConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
+	ui: {
+		theme: {
+			colors: [
+				"primary",
+				"secondary",
+				"tertiary",
+				"info",
+				"success",
+				"warning",
+				"error",
+				"highlight",
+				"neutral",
+			],
+		},
+	},
 });
