@@ -3,7 +3,7 @@
 	import type { FormSubmitEvent } from "@nuxt/ui";
 
 	definePageMeta({
-		title: "Login",
+		title: "Inglish - Login",
 		layout: "auth",
 	});
 

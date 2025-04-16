@@ -3,6 +3,11 @@
 	import { motion } from "motion-v";
 	import { CircleCheckBig } from "lucide-vue-next";
 
+	definePageMeta({
+		title: "Inglish",
+		layout: false,
+	});
+
 	const introArray = [
 		{
 			class: "text-3xl sm:text-4xl lg:text-5xl font-semibold text-center ",
