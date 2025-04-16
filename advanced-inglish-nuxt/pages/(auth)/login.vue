@@ -1,6 +1,17 @@
 <script setup lang="ts">
 	import * as z from "zod";
 	import type { FormSubmitEvent } from "@nuxt/ui";
+	import axios from "axios";
+
+	interface User {
+		id: number;
+		firstName: string;
+		lastName: string;
+	}
+
+	const users = ref<User[]>([]);
+	const loading = ref(false);
+	const error = ref<string | null>(null);
 
 	definePageMeta({
 		title: "Inglish - Login",
@@ -30,7 +41,22 @@
 			description: "The form has been submitted.",
 			color: "success",
 		});
-		console.log(event.data);
+		console.log("Event data: ", event.data);
+
+		loading.value = true;
+		error.value = null;
+
+		try {
+			const { data } = await axios.get(
+				"https://dummyjson.com/users/1"
+			);
+			console.log(data);
+		} catch (err) {
+			error.value = "Failed to fetch users.";
+			console.error(err);
+		} finally {
+			loading.value = false;
+		}
 	}
 </script>
 
@@ -85,5 +111,12 @@
 				Google
 			</button>
 		</div>
+		<div v-if="loading">Loading...</div>
+		<div v-if="error">{{ error }}</div>
+		<ul v-else>
+			<li v-for="user in users" :key="user.id">
+				{{ user.firstName }} {{ user.lastName }}
+			</li>
+		</ul>
 	</UForm>
 </template>
