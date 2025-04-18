@@ -13,17 +13,19 @@ export function useAuth() {
   const api = useApi();
 
   // Reactive state for authentication
-  const isAuthenticated = ref<boolean>(false);
-  const user = ref<User | null>(null);
-  const token = ref<string | null>(null);
-  const tokenCookie = useCookie("token");
+  const isAuthenticated = useState<boolean>(
+    "auth.isAuthenticated",
+    () => false
+  );
+  const user = useState<User | null>("auth.user", () => null);
+  const token = useState<string | null>("auth.token", () => null);
 
   // Helper to access localStorage safely (client-side only)
   const getTokenFromStorage = (): string | null => {
     if (import.meta.client) {
-      return localStorage.getItem("accessToken") || tokenCookie.value || null;
+      return localStorage.getItem("accessToken") || null;
     }
-    return tokenCookie.value || null;
+    return null;
   };
 
   const setTokenToStorage = (value: string | null): void => {
@@ -34,9 +36,6 @@ export function useAuth() {
         localStorage.removeItem("accessToken");
       }
     }
-
-    // Also update the cookie for API interceptor
-    tokenCookie.value = value;
   };
 
   // Sync token with localStorage

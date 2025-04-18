@@ -9,6 +9,7 @@ export default defineNuxtConfig({
       apiBase: process.env.API_BASE_URL || "https://dummyjson.com",
     },
   },
+  css: ["@/assets/css/main.css"],
   modules: [
     "@nuxt/ui",
     "@nuxt/test-utils",
@@ -24,7 +25,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  plugins: ["~/plugins/auth"],
+  // plugins: ["~/plugins/auth"],
 
   ui: {
     theme: {

@@ -11,6 +11,9 @@ definePageMeta({
 
 const { isAuthenticated, user } = useAuth();
 
+console.log("isAuthenticated", isAuthenticated.value);
+console.log("user", user.value);
+
 const introArray = [
   {
     class: "text-3xl sm:text-4xl lg:text-5xl font-semibold text-center ",
