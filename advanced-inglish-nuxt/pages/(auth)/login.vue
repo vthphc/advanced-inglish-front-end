@@ -1,35 +1,14 @@
 <script setup lang="ts">
 import * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
-import axios from "axios";
-import { useApi } from "~/composables/api/useApi";
+import { useAuth } from "~/composables/auth/useAuth";
 
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-  accessToken?: string; // Optional, as it may not always be part of the User object
-  refreshToken?: string; // Optional, as it may not always be part of the User object
-}
-
-const { post } = useApi();
-
-async function login(username: string, password: string): Promise<User> {
-  try {
-    const response = await post<User>("/auth/login", { username, password });
-    return response;
-  } catch (error) {
-    console.error("Login error:", error);
-    throw error;
-  }
-}
+// Get authentication methods from useAuth composable
+const { login: authLogin, isAuthenticated } = useAuth();
 
 const loading = ref(false);
 const error = ref<string | null>(null);
+const router = useRouter();
 
 definePageMeta({
   title: "Inglish - Login",
@@ -54,13 +33,6 @@ const formState = reactive<Partial<Schema>>({
 
 const toast = useToast();
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  toast.add({
-    title: "Success",
-    description: "The form has been submitted.",
-    color: "success",
-  });
-  console.log("Event data: ", event.data);
-
   loading.value = true;
   error.value = null;
 
@@ -69,15 +41,34 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       error.value = "Email and password are required.";
       return;
     }
-    const data = await login(formState.email, formState.password);
-    if (!data) {
-      error.value = "Invalid email or password.";
-      return;
+
+    // Call the login method from useAuth
+    await authLogin({
+      username: formState.email, // The API expects username
+      password: formState.password,
+    });
+
+    if (isAuthenticated.value) {
+      toast.add({
+        title: "Success",
+        description: "You have successfully logged in.",
+        color: "success",
+      });
+
+      // Redirect to dashboard or home page after successful login
+      router.push("/");
+    } else {
+      error.value = "Login failed. Please check your credentials.";
     }
-    console.log(data);
   } catch (err) {
-    error.value = "Failed to fetch users.";
+    error.value = "Failed to login. Please try again.";
     console.error(err);
+
+    toast.add({
+      title: "Error",
+      description: error.value,
+      color: "error",
+    });
   } finally {
     loading.value = false;
   }
@@ -107,15 +98,21 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UButton
       class="cursor-pointer w-full justify-center text-center py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
       type="submit"
+      :loading="loading"
     >
       Đăng nhập
     </UButton>
+
+    <div v-if="error" class="text-red-500 text-sm">{{ error }}</div>
+
     <USeparator size="md" label="Hoặc đăng nhập qua" />
     <div class="mt-6">
       <button
         class="cursor-pointer flex w-full items-center justify-center gap-3 rounded-2xl bg-white hover:bg-gray-100 border-gray-300 hover:border-gray-300 border-2 py-2 px-4 text-sm font-semibold leading-6 text-gray-900 transition-all duration-300"
+        type="button"
       >
         <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
+          <!-- SVG content remains the same -->
           <path
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
             fill="#4285F4"
@@ -137,12 +134,5 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         Google
       </button>
     </div>
-    <!--<div v-if="loading">Loading...</div>
-    <div v-if="error">{{ error }}</div>
-    <ul v-else>
-      <li v-for="user in users" :key="user.id">
-        {{ user.firstName }} {{ user.lastName }}
-      </li>
-    </ul>-->
   </UForm>
 </template>

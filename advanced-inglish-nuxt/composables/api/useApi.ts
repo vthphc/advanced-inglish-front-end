@@ -15,7 +15,7 @@ export const useApi = () => {
 
   // Optional: Add token for authenticated requests
   api.interceptors.request.use((config) => {
-    const token = useCookie("token")?.value; // Assuming token is stored in a cookie
+    const token = useCookie("accessToken")?.value; // Assuming token is stored in a cookie
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

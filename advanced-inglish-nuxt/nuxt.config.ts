@@ -4,13 +4,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE_URL || "https://dummyjson.com",
     },
   },
-
   modules: [
     "@nuxt/ui",
     "@nuxt/test-utils",
@@ -23,10 +21,11 @@ export default defineNuxtConfig({
     "motion-v/nuxt",
     "@vueuse/nuxt",
   ],
-  css: ["~/assets/css/main.css"],
   vite: {
     plugins: [tailwindcss()],
   },
+  plugins: ["~/plugins/auth"],
+
   ui: {
     theme: {
       colors: [
