@@ -2,18 +2,27 @@
 import { zoomInPropsFn, fadeInPropsFn } from "@/utils/animation";
 import { motion } from "motion-v";
 import { CircleCheckBig } from "lucide-vue-next";
-import { useAuth } from "~/composables/auth/useAuth";
+// Import the Pinia store instead of the composable
+import { useAuthStore } from "~/stores/auth";
+import { storeToRefs } from "pinia"; // Import storeToRefs for reactive access
 
 definePageMeta({
     title: "Inglish",
     layout: false,
 });
 
-const { isAuthenticated, user } = useAuth();
+// Get the auth store instance
+const authStore = useAuthStore();
 
+// Use storeToRefs to get reactive refs for state properties
+// This keeps reactivity when destructuring from the store
+const { isAuthenticated, user } = storeToRefs(authStore);
+
+// You can still log values, but access them via the refs from storeToRefs
 console.log("isAuthenticated", isAuthenticated.value);
 console.log("user", user.value);
 
+// --- Rest of your script setup remains the same ---
 const introArray = [
     {
         class: "text-3xl sm:text-4xl lg:text-5xl font-semibold text-center ",
@@ -59,6 +68,7 @@ const underlineVariants = {
 
 <template>
     <!-- Conditional rendering based on authentication status -->
+    <!-- Access state directly via the refs from storeToRefs -->
     <div v-if="isAuthenticated" class="flex flex-col">
         <!-- Placeholder for authenticated users -->
         <div class="flex flex-col items-center justify-center min-h-screen p-6">
@@ -68,6 +78,7 @@ const underlineVariants = {
                 </h1>
 
                 <div class="mb-6">
+                    <!-- Access user properties via the user ref -->
                     <img
                         :src="user?.image"
                         :alt="user?.firstName"
@@ -120,6 +131,7 @@ const underlineVariants = {
 
     <!-- Original landing page for unauthenticated users -->
     <div v-else class="flex justify-center items-center h-screen">
+        <!-- Rest of the template remains the same -->
         <div class="m-auto flex flex-col items-center">
             <motion.p
                 v-bind="fadeInPropsFn()"

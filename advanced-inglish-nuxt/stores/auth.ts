@@ -120,7 +120,7 @@ export const useAuthStore = defineStore("auth", {
                 } catch (err) {
                     console.error("Auth initialization error:", err);
                     // Assume token is invalid if /auth/me fails
-                    this.logout();
+                    // this.logout();
                 }
             } else {
                 // Ensure state is clean if no token found
