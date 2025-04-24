@@ -18,6 +18,9 @@ const authStore = useAuthStore();
 // This keeps reactivity when destructuring from the store
 const { isAuthenticated, user } = storeToRefs(authStore);
 
+const pageLayout = computed(() => {
+    return isAuthenticated.value ? "default" : false;
+});
 // You can still log values, but access them via the refs from storeToRefs
 console.log("isAuthenticated", isAuthenticated.value);
 console.log("user", user.value);

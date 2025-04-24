@@ -22,6 +22,7 @@ export default defineNuxtConfig({
         "motion-v/nuxt",
         "@vueuse/nuxt",
         ["@pinia/nuxt", { autoImports: ["defineStore", "acceptHMRUpdate"] }],
+        "pinia-plugin-persistedstate/nuxt",
     ],
     imports: {
         dirs: ["stores"],

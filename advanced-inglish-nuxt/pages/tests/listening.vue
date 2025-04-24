@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class=""></div>
+    <div class="text-5xl">LISTENING</div>
 </template>
