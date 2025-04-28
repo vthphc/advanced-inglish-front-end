@@ -1,0 +1,856 @@
+export const fakeFlashcards = [
+    {
+        user: "7e74b38970d52796beb9f3ed",
+        topic: "conscendo suadeo",
+        word: "verus",
+        definition: "Calcar conor carpo cursus inventore cunctatio.",
+        example: "Verto sol accommodo vitium adimpleo verus.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/aeger/",
+                audioURL: "https://bustling-swanling.name",
+            },
+            {
+                text: "/delectus/",
+                audioURL: "https://useless-fog.info",
+            },
+        ],
+        createdAt: "2024-06-12T16:48:17.255Z",
+    },
+    {
+        user: "a72bcd6dfec78c6e3a629cd1",
+        topic: "sint alioqui",
+        word: "vulticulus",
+        definition:
+            "Occaecati utor accedo statua sto angelus tristis eos quibusdam.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/argentum/",
+                audioURL: "https://first-independence.biz",
+            },
+        ],
+        createdAt: "2025-02-15T15:36:29.890Z",
+    },
+    {
+        user: "aaa3db3ebf5b2e59679dbe92",
+        topic: "nihil",
+        word: "apparatus",
+        definition: "Creptio speculum atqui cubicularis beneficium timidus.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/perspiciatis/",
+                audioURL: "https://official-carnival.com",
+            },
+            {
+                text: "/vis/",
+                audioURL: "https://late-brief.com",
+            },
+        ],
+        createdAt: "2024-08-14T14:35:56.263Z",
+    },
+    {
+        user: "3ab401c00cbffe9b0d0acd63",
+        topic: "trans magnam deserunt",
+        word: "atrocitas",
+        definition: "Vulpes civis temporibus.",
+        category: "noun",
+        phonetics: [
+            {
+                text: "/decerno/",
+                audioURL: "https://webbed-countess.name/",
+            },
+        ],
+        createdAt: "2024-10-01T10:38:49.308Z",
+    },
+    {
+        user: "fc40d218b4ebdae306feaea0",
+        topic: "spes strues color",
+        word: "benevolentia",
+        definition: "Et cibo subiungo adimpleo creo eveniet rem tantillus.",
+        example: "Demo delectatio soleo ultio culpo benevolentia.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/eaque/",
+                audioURL: "https://pessimistic-adaptation.biz/",
+            },
+            {
+                text: "/delego/",
+                audioURL: "https://rosy-ravioli.name",
+            },
+        ],
+        createdAt: "2024-05-13T11:38:48.302Z",
+    },
+    {
+        user: "3cd073fedab5f917f3ef3a96",
+        topic: "complectus",
+        word: "appositus",
+        definition:
+            "Approbo suffoco sortitus cariosus trans adicio aperte barba veniam.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/abstergo/",
+                audioURL: "https://elementary-negotiation.biz/",
+            },
+        ],
+        createdAt: "2024-06-12T00:58:14.784Z",
+    },
+    {
+        user: "19a3f4c292bc64c75cd8cf7c",
+        topic: "coniuratio crudelis cras",
+        word: "cunctatio",
+        definition:
+            "Creptio quisquam demoror terra carbo amplitudo depopulo concedo.",
+        example: "Artificiose blandior voveo tyrannus agnitio cunctatio.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/asperiores/",
+                audioURL: "https://bright-folklore.net/",
+            },
+            {
+                text: "/vulticulus/",
+                audioURL: "https://steel-dash.org",
+            },
+        ],
+        createdAt: "2024-07-20T12:19:28.293Z",
+    },
+    {
+        user: "b7e38bfa07cad14a27d9be5e",
+        topic: "temeritas",
+        word: "vaco",
+        definition:
+            "Cras velut adaugeo bos arguo vaco turpis coadunatio vindico sumo.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/cum/",
+                audioURL: "https://admired-underneath.com/",
+            },
+            {
+                text: "/cura/",
+                audioURL: "https://slushy-gymnast.info/",
+            },
+        ],
+        createdAt: "2024-08-10T18:14:12.996Z",
+    },
+    {
+        user: "02dfbfccbe9ddf66db77f088",
+        topic: "arbor verto creta",
+        word: "tripudio",
+        definition: "Annus amaritudo crebro vomito deinde admoveo dicta.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/desino/",
+                audioURL: "https://glittering-impact.net",
+            },
+            {
+                text: "/deserunt/",
+                audioURL: "https://male-gray.info/",
+            },
+        ],
+        createdAt: "2025-03-31T23:05:41.619Z",
+    },
+    {
+        user: "51a23ad6fb20dd3f37c1bda9",
+        topic: "terror",
+        word: "magni",
+        definition:
+            "Vinum eius in conspergo demitto reprehenderit cenaculum thermae ad.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/crinis/",
+                audioURL: "https://orderly-fireplace.info/",
+            },
+        ],
+        createdAt: "2024-12-12T02:28:12.914Z",
+    },
+    {
+        user: "2fe7becd6af0aff614f20fe5",
+        topic: "sursum subseco",
+        word: "auxilium",
+        definition: "Tamen tepidus comburo saepe sufficio.",
+        example: "Ceno adopto deinde temperantia audio auxilium.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/tamdiu/",
+                audioURL: "https://unconscious-solvency.org",
+            },
+        ],
+        createdAt: "2024-07-14T16:19:19.050Z",
+    },
+    {
+        user: "ec5a4e3e92fbadd824f82f86",
+        topic: "doloribus",
+        word: "teneo",
+        definition: "Vos trado constans.",
+        example: "Demonstro patior talus confero demoror teneo.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/abeo/",
+                audioURL: "https://humble-waist.org",
+            },
+            {
+                text: "/tabesco/",
+                audioURL: "https://fearless-trash.org",
+            },
+        ],
+        createdAt: "2025-03-30T16:14:49.479Z",
+    },
+    {
+        user: "251dfc38936f2822fe71aa6f",
+        topic: "apto culpo",
+        word: "altus",
+        definition:
+            "Repellendus tui damno nesciunt damnatio angulus bardus adiuvo bene auxilium.",
+        example: "Aggero adeo color aqua degusto altus.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/solus/",
+                audioURL: "https://bright-developing.org/",
+            },
+            {
+                text: "/damno/",
+                audioURL: "https://abandoned-dash.net",
+            },
+        ],
+        createdAt: "2024-11-18T02:38:27.687Z",
+    },
+    {
+        user: "6f66fd9bac496faf79fd34c9",
+        topic: "vulgivagus",
+        word: "conqueror",
+        definition: "Teneo suggero deludo apparatus fugiat vivo.",
+        example: "Tendo benigne decens carmen causa conqueror.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/vallum/",
+                audioURL: "https://frivolous-bench.name",
+            },
+            {
+                text: "/socius/",
+                audioURL: "https://guilty-subsidy.name",
+            },
+        ],
+        createdAt: "2025-03-16T20:42:55.513Z",
+    },
+    {
+        user: "3f8d0dfc09cae55ee3b0a80d",
+        topic: "clementia tempus ceno",
+        word: "vilicus",
+        definition: "Basium coerceo valeo defessus dolorem.",
+        example: "Desolo coniuratio maiores termes arx vilicus.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/utroque/",
+                audioURL: "https://indolent-league.org/",
+            },
+            {
+                text: "/nostrum/",
+                audioURL: "https://grown-kielbasa.net",
+            },
+        ],
+        createdAt: "2025-04-06T20:52:26.801Z",
+    },
+    {
+        user: "527e745b0902ecdecaafc0dd",
+        topic: "modi brevis amicitia",
+        word: "arbitro",
+        definition: "Aetas tristis atqui sordeo cinis paulatim abstergo rem.",
+        example: "Consuasor ipsa nostrum utroque crur arbitro.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/uxor/",
+                audioURL: "https://punctual-forager.org/",
+            },
+            {
+                text: "/cubicularis/",
+                audioURL: "https://dreary-pacemaker.org",
+            },
+        ],
+        createdAt: "2024-07-01T05:40:58.387Z",
+    },
+    {
+        user: "fcbfd5e6d9cbdd9cacfe5dbe",
+        topic: "advenio tenetur veritatis",
+        word: "conspergo",
+        definition: "Solum accedo viscus suggero absorbeo aveho amita.",
+        category: "adverb",
+        phonetics: [
+            {
+                text: "/deficio/",
+                audioURL: "https://acclaimed-reach.com/",
+            },
+            {
+                text: "/delicate/",
+                audioURL: "https://hollow-collectivization.biz/",
+            },
+        ],
+        createdAt: "2024-05-03T06:49:34.797Z",
+    },
+    {
+        user: "2ddbadb710d5b0ad8c58398a",
+        topic: "umbra advoco volutabrum",
+        word: "vinculum",
+        definition: "Patria clamo termes creta subnecto.",
+        category: "noun",
+        phonetics: [
+            {
+                text: "/aeternus/",
+                audioURL: "https://corrupt-chiffonier.biz/",
+            },
+        ],
+        createdAt: "2025-01-24T13:52:11.047Z",
+    },
+    {
+        user: "b93f4cfb11fabe863adfd1dc",
+        topic: "cavus ater tergeo",
+        word: "degusto",
+        definition:
+            "Canto fugiat sustineo arca doloremque adulescens sursum denego stultus.",
+        example: "Creo adinventitias tamen demergo vester degusto.",
+        category: "noun",
+        phonetics: [
+            {
+                text: "/venustas/",
+                audioURL: "https://eminent-fellow.org/",
+            },
+        ],
+        createdAt: "2025-03-07T00:53:25.145Z",
+    },
+    {
+        user: "46b7da5b94cbeaea830254cc",
+        topic: "cuius",
+        word: "appono",
+        definition:
+            "Vespillo animi vetus sordeo aeneus thymbra tam umerus aeternus.",
+        example: "Torqueo tergiversatio creator sint vero appono.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/conspergo/",
+                audioURL: "https://growing-cemetery.biz",
+            },
+            {
+                text: "/quod/",
+                audioURL: "https://stormy-fat.name",
+            },
+        ],
+        createdAt: "2024-07-02T15:48:04.785Z",
+    },
+    {
+        user: "c8f2e2343def48e3170b66bd",
+        topic: "voco via",
+        word: "tergeo",
+        definition: "Acervus cinis ventus.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/laudantium/",
+                audioURL: "https://elastic-poppy.com/",
+            },
+            {
+                text: "/certus/",
+                audioURL: "https://alive-peninsula.name",
+            },
+        ],
+        createdAt: "2025-02-09T23:51:18.150Z",
+    },
+    {
+        user: "f95fd2ed1dde358676facc63",
+        topic: "vos carmen",
+        word: "soluta",
+        definition: "Natus crepusculum ad.",
+        category: "noun",
+        phonetics: [
+            {
+                text: "/adnuo/",
+                audioURL: "https://coarse-jogging.com",
+            },
+            {
+                text: "/non/",
+                audioURL: "https://mature-injunction.net",
+            },
+        ],
+        createdAt: "2024-07-06T11:31:37.168Z",
+    },
+    {
+        user: "2dd4afb69c745a74a45aab9f",
+        topic: "damnatio",
+        word: "tergeo",
+        definition: "Tempora dens demum.",
+        example: "Accusator magni adinventitias comis fuga tergeo.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/tripudio/",
+                audioURL: "https://windy-icebreaker.net",
+            },
+            {
+                text: "/sunt/",
+                audioURL: "https://mammoth-grandson.com/",
+            },
+        ],
+        createdAt: "2024-11-03T21:32:07.885Z",
+    },
+    {
+        user: "dbd7ba08fbcbbb11d1db477c",
+        topic: "tumultus utroque",
+        word: "asper",
+        definition: "Copiose vae suadeo colo assumenda tamdiu convoco error.",
+        example: "Curtus bestia varietas canonicus sublime asper.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/crux/",
+                audioURL: "https://brisk-trick.org",
+            },
+            {
+                text: "/conscendo/",
+                audioURL: "https://urban-venom.org",
+            },
+        ],
+        createdAt: "2024-11-10T05:07:22.369Z",
+    },
+    {
+        user: "a0ed34038ac52c90a4e04bf5",
+        topic: "verecundia",
+        word: "cenaculum",
+        definition: "Confugo textilis combibo cunabula odio corrigo officia.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/tempore/",
+                audioURL: "https://rectangular-deer.biz",
+            },
+            {
+                text: "/spes/",
+                audioURL: "https://sour-bog.name",
+            },
+        ],
+        createdAt: "2025-01-04T09:36:59.207Z",
+    },
+    {
+        user: "a18fc6452388cfffdd0ae25d",
+        topic: "suscipio",
+        word: "stultus",
+        definition:
+            "Cupio curtus commodi magni dolorum iure repudiandae aliquid curiositas summisse.",
+        example: "Cunctatio dolor agnosco colo creator stultus.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/vicissitudo/",
+                audioURL: "https://shiny-aircraft.biz/",
+            },
+            {
+                text: "/temporibus/",
+                audioURL: "https://awful-bakeware.com/",
+            },
+        ],
+        createdAt: "2025-02-03T19:15:39.652Z",
+    },
+    {
+        user: "c284bafafd83eff156e1cddc",
+        topic: "surgo subnecto",
+        word: "patria",
+        definition:
+            "Terga vulgivagus tamquam solitudo tenax strenuus spiritus aspernatur.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/speculum/",
+                audioURL: "https://necessary-conservation.info",
+            },
+        ],
+        createdAt: "2024-07-20T04:46:07.432Z",
+    },
+    {
+        user: "6e36bcdc1cbcd261b29adef0",
+        topic: "appono universe",
+        word: "cursus",
+        definition: "Victoria amicitia attollo patrocinor defleo.",
+        example: "Adversus benigne distinctio deinde coniecto cursus.",
+        category: "noun",
+        phonetics: [
+            {
+                text: "/cimentarius/",
+                audioURL: "https://wasteful-zen.net/",
+            },
+        ],
+        createdAt: "2025-04-16T14:47:45.564Z",
+    },
+    {
+        user: "5732980cfd0fafba81bf1f5e",
+        topic: "aro",
+        word: "vigilo",
+        definition: "Abutor abduco spero cibus charisma.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/creta/",
+                audioURL: "https://electric-gripper.biz",
+            },
+        ],
+        createdAt: "2024-07-06T16:36:46.177Z",
+    },
+    {
+        user: "bb56afe157f4ff4be4b9451d",
+        topic: "sponte",
+        word: "vulnus",
+        definition: "Solitudo aeternus pauci damnatio cunctatio magnam arceo.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/odio/",
+                audioURL: "https://second-hand-forgery.net/",
+            },
+            {
+                text: "/numquam/",
+                audioURL: "https://tepid-papa.name",
+            },
+        ],
+        createdAt: "2024-12-10T15:40:10.672Z",
+    },
+    {
+        user: "3ebb6ad17ecbfdeb2c9b46f7",
+        topic: "bene",
+        word: "valens",
+        definition: "Bos utpote vis labore temeritas.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/corrupti/",
+                audioURL: "https://electric-wriggler.info",
+            },
+        ],
+        createdAt: "2024-11-15T05:53:55.428Z",
+    },
+    {
+        user: "66b4e0eaedb28c1c522ca2f9",
+        topic: "eveniet",
+        word: "approbo",
+        definition: "Cupiditate addo ter denego degenero coniuratio.",
+        category: "adverb",
+        phonetics: [
+            {
+                text: "/super/",
+                audioURL: "https://insignificant-monasticism.com/",
+            },
+            {
+                text: "/attero/",
+                audioURL: "https://enchanting-corral.net",
+            },
+        ],
+        createdAt: "2024-09-01T23:00:56.107Z",
+    },
+    {
+        user: "df5b84cd1efcbb29f6a0c111",
+        topic: "spargo",
+        word: "vir",
+        definition:
+            "Creber ciminatio subnecto acervus quod basium subnecto consectetur.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/urbs/",
+                audioURL: "https://majestic-rule.name",
+            },
+        ],
+        createdAt: "2024-06-20T20:34:12.354Z",
+    },
+    {
+        user: "953fea30b49e8f00ec6bebd6",
+        topic: "nulla combibo",
+        word: "cruciamentum",
+        definition: "Alienus amet aestas aiunt veritas.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/solutio/",
+                audioURL: "https://moist-councilman.org/",
+            },
+        ],
+        createdAt: "2024-06-23T01:33:00.063Z",
+    },
+    {
+        user: "0f4782fddaed0ceababab9d3",
+        topic: "curvo contego",
+        word: "comedo",
+        definition:
+            "Sophismata umerus tabernus agnosco cubo occaecati delicate curvo abutor.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/stultus/",
+                audioURL: "https://crushing-disadvantage.net",
+            },
+        ],
+        createdAt: "2024-07-21T22:04:23.103Z",
+    },
+    {
+        user: "0f04805db0c10c6cecf5a8d6",
+        topic: "decumbo perferendis consequuntur",
+        word: "suasoria",
+        definition: "Reprehenderit contego careo cena subito crustulum.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/defluo/",
+                audioURL: "https://powerful-loyalty.name/",
+            },
+            {
+                text: "/ex/",
+                audioURL: "https://well-off-passport.org",
+            },
+        ],
+        createdAt: "2024-09-25T18:47:16.097Z",
+    },
+    {
+        user: "af4e46e5bbdbafd3fc4cc1bd",
+        topic: "qui curis",
+        word: "substantia",
+        definition:
+            "Trepide depromo acidus triduana terminatio demum adinventitias.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/coma/",
+                audioURL: "https://right-porter.net",
+            },
+        ],
+        createdAt: "2024-08-29T22:51:10.235Z",
+    },
+    {
+        user: "e4c83ebe1abc4ffbbb1cef40",
+        topic: "assumenda suppellex vomito",
+        word: "somnus",
+        definition:
+            "Tantillus sortitus id valetudo spiculum vis deripio cogo vilitas conduco.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/damno/",
+                audioURL: "https://brilliant-characterization.net/",
+            },
+            {
+                text: "/suppellex/",
+                audioURL: "https://prestigious-hammock.info/",
+            },
+        ],
+        createdAt: "2024-08-13T00:46:37.932Z",
+    },
+    {
+        user: "ebbb79d00b2e0bcede4ee8ef",
+        topic: "adamo usque",
+        word: "abstergo",
+        definition: "Totam tunc tergeo vesper succurro amplexus.",
+        example: "Aspernatur verecundia adiuvo vesper nisi abstergo.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/careo/",
+                audioURL: "https://insignificant-version.info/",
+            },
+        ],
+        createdAt: "2024-06-02T08:52:31.506Z",
+    },
+    {
+        user: "cdfa3cf75c02f54896beea78",
+        topic: "tabella titulus",
+        word: "cometes",
+        definition: "Balbus cura veritas acerbitas aqua aestas virtus.",
+        example: "Nobis sapiente natus claro tumultus cometes.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/tremo/",
+                audioURL: "https://questionable-wheel.info",
+            },
+        ],
+        createdAt: "2024-08-03T20:55:54.579Z",
+    },
+    {
+        user: "fa527d96bfcd78f1c892cda3",
+        topic: "denuo",
+        word: "tabella",
+        definition:
+            "Denique patruus arbustum temeritas truculenter conforto careo.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/necessitatibus/",
+                audioURL: "https://orderly-typeface.org",
+            },
+        ],
+        createdAt: "2025-04-06T03:33:26.616Z",
+    },
+    {
+        user: "ca71eed6ce4c0db02a33bd4b",
+        topic: "absens cattus",
+        word: "enim",
+        definition:
+            "Strues temperantia sophismata alienus subiungo audax terror.",
+        example: "Curatio decipio pecto conor suggero enim.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/cognomen/",
+                audioURL: "https://strange-overcoat.info",
+            },
+            {
+                text: "/barba/",
+                audioURL: "https://clueless-worth.info",
+            },
+        ],
+        createdAt: "2025-04-17T12:58:44.327Z",
+    },
+    {
+        user: "1ea3ed459a9bcbbc4e4cadb0",
+        topic: "toties cuppedia vulgivagus",
+        word: "caritas",
+        definition: "Textus venio depraedor verbum.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/sodalitas/",
+                audioURL: "https://granular-populist.com/",
+            },
+            {
+                text: "/damno/",
+                audioURL: "https://parched-interviewer.info/",
+            },
+        ],
+        createdAt: "2024-10-22T19:28:15.189Z",
+    },
+    {
+        user: "e4a6eff98ac0d2a5cbeb254f",
+        topic: "ustilo",
+        word: "clementia",
+        definition: "Aveho vetus crudelis cicuta copia super.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/degenero/",
+                audioURL: "https://international-discourse.org",
+            },
+        ],
+        createdAt: "2024-12-30T15:32:54.512Z",
+    },
+    {
+        user: "1dc777b4b0009b9ccdefeb3c",
+        topic: "pectus",
+        word: "quidem",
+        definition:
+            "Non verecundia benevolentia triduana beatus cupiditate aegrus.",
+        category: "preposition",
+        phonetics: [
+            {
+                text: "/casso/",
+                audioURL: "https://shoddy-draft.name",
+            },
+        ],
+        createdAt: "2025-03-27T02:12:14.589Z",
+    },
+    {
+        user: "f65aa9b1d5bfbcd691debb37",
+        topic: "aeternus curia odio",
+        word: "calco",
+        definition:
+            "Supellex tondeo bellum bellicus absens vomica possimus alioqui ascisco.",
+        example: "Conduco adamo deficio carbo causa calco.",
+        category: "verb",
+        phonetics: [
+            {
+                text: "/caritas/",
+                audioURL: "https://sudden-descent.org/",
+            },
+            {
+                text: "/defungo/",
+                audioURL: "https://gaseous-fledgling.com/",
+            },
+        ],
+        createdAt: "2025-01-28T16:09:06.610Z",
+    },
+    {
+        user: "fc7f3ca777af8b024fc3ff92",
+        topic: "odio",
+        word: "tondeo",
+        definition: "Agnosco cohors conduco vado.",
+        example: "Clam fugit vere ex una tondeo.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/attollo/",
+                audioURL: "https://firm-quart.info/",
+            },
+            {
+                text: "/correptius/",
+                audioURL: "https://profitable-amendment.com/",
+            },
+        ],
+        createdAt: "2024-11-02T19:40:33.164Z",
+    },
+    {
+        user: "f1fc51b3bdd5b1a78f3aabeb",
+        topic: "desparatus virgo",
+        word: "rerum",
+        definition:
+            "Stella corona careo voluptas pecco decipio decretum termes.",
+        category: "adjective",
+        phonetics: [
+            {
+                text: "/non/",
+                audioURL: "https://flawed-nun.com",
+            },
+        ],
+        createdAt: "2024-10-14T05:07:37.160Z",
+    },
+    {
+        user: "2eab40f5c79bc39abfbb59dc",
+        topic: "thesaurus summisse asper",
+        word: "iste",
+        definition:
+            "Vulgo spiculum somniculosus trado cumque beatus substantia cerno.",
+        category: "conjunction",
+        phonetics: [
+            {
+                text: "/utrum/",
+                audioURL: "https://grim-gloom.com",
+            },
+            {
+                text: "/caecus/",
+                audioURL: "https://new-object.org/",
+            },
+        ],
+        createdAt: "2024-12-20T14:47:40.263Z",
+    },
+    {
+        user: "ded429a426ba549ccc53cdb0",
+        topic: "consectetur carbo",
+        word: "quos",
+        definition:
+            "Venia perferendis vilis crinis cum tego consectetur pecco suadeo.",
+        example: "Uxor depromo arbor capto turba quos.",
+        category: "interjection",
+        phonetics: [
+            {
+                text: "/adulatio/",
+                audioURL: "https://miserable-bench.com/",
+            },
+        ],
+        createdAt: "2024-11-10T13:11:24.957Z",
+    },
+];

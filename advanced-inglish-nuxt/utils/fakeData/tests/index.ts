@@ -24,7 +24,7 @@ const formattedTime = `${now.getHours().toString().padStart(2, "0")}-${now
 const timestamp = `${formattedDate}_${formattedTime}`;
 
 // Define the testBank directory path (relative to the current script's directory)
-const testBankDir = join(__dirname, "..", "testBank"); // Go up one level from 'tests' to find 'testBank'
+const testBankDir = join(__dirname, "testBank"); // Go up one level from 'tests' to find 'testBank'
 
 // Ensure the testBank directory exists
 if (!existsSync(testBankDir)) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Import the fake data array
-import { mainFakeData } from "~/utils/fakeData/testBank/main_fake_data";
+import { mainFakeData } from "~/utils/fakeData/tests/testBank/main_fake_data";
 import ListItem from "~/components/tests/listing/ListItem.vue";
 
 // Optional: Define page meta if needed
@@ -8,7 +8,6 @@ definePageMeta({
     // middleware: ['auth'] // Add if this page requires authentication
 });
 
-console.log("Main Fake Data:", mainFakeData); // Debugging line to check data
 // Helper function to format the date for description
 const formatDate = (date: Date | string): string => {
     if (!date) return "No date";
