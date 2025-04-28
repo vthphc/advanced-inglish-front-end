@@ -26,7 +26,7 @@ defineEmits(["action-click"]);
 
 <template>
     <li
-        class="flex flex-col justify-between gap-y-2 p-4 border-b border-gray-200 transition-colors duration-200 hover:bg-gray-50"
+        class="flex flex-col p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
         :class="{ 'bg-gray-100': isActive }"
     >
         <div class="flex items-center gap-4">

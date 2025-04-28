@@ -45,7 +45,7 @@ const handleTestAction = (title: string, uid: string) => {
             <!-- Added shadow, rounded corners -->
             <ul
                 role="list"
-                class="divide-y divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
+                class="divide-y space-y-4 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
             >
                 <!-- Standard list styling -->
                 <!-- Loop through the fake data -->
