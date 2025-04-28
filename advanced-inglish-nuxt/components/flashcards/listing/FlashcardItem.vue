@@ -68,10 +68,12 @@ const playAudio = (audioURL: string) => {
 const formattedDate = computed(() => {
     if (!props.createdAt) return "";
     const date = new Date(props.createdAt);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+    // Use options for DD/MM/YY format
+    return date.toLocaleDateString("en-GB", {
+        // en-GB locale often defaults to DD/MM/YYYY
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
     });
 });
 </script>
