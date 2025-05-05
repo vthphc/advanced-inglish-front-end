@@ -40,7 +40,7 @@ const handleTestAction = (title: string, uid: string) => {
 
         <div
             v-if="mainFakeData && mainFakeData.length > 0"
-            class="bg-white shadow-md overflow-hidden sm:rounded-lg"
+            class="bg-white shadow-md overflow-hidden sm:rounded-lg p-4"
         >
             <!-- Added shadow, rounded corners -->
             <ul

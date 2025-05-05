@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ListeningTest from "~/components/tests/listening/ListeningTest.vue";
+</script>
 
 <template>
-    <div class="text-5xl">LISTENING</div>
+    <ListeningTest />
 </template>

@@ -26,7 +26,7 @@ defineEmits(["action-click"]);
 
 <template>
     <li
-        class="flex flex-col p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
+        class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
         :class="{ 'bg-gray-100': isActive }"
     >
         <div class="flex items-center gap-4">
@@ -40,7 +40,7 @@ defineEmits(["action-click"]);
             </div>
         </div>
         <div
-            class="flex flex-1 items-center gap-2 mt-3 sm:mt-0 self-end sm:self-end"
+            class="flex flex-1 items-center gap-2 sm:mt-2 self-end sm:self-end"
         >
             <slot name="actions">
                 <button

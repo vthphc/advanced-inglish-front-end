@@ -80,7 +80,7 @@ const formattedDate = computed(() => {
 
 <template>
     <li
-        class="flex flex-col p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
+        class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
     >
         <div class="flex justify-between items-start mb-2">
             <h3 class="text-lg font-semibold text-primary">{{ props.word }}</h3>

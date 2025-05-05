@@ -13,7 +13,7 @@ import FlashcardItem from "~/components/flashcards/listing/FlashcardItem.vue";
 
         <div
             v-if="fakeFlashcards && fakeFlashcards.length > 0"
-            class="bg-white shadow-md overflow-hidden sm:rounded-lg"
+            class="bg-white shadow-md overflow-hidden sm:rounded-lg p-4"
         >
             <ul
                 role="list"

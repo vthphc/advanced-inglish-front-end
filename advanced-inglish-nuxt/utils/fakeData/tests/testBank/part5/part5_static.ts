@@ -1,0 +1,265 @@
+export const part5Static = {
+    partNumber: 5,
+    type: "Reading",
+    questions: [
+        {
+            id: "c3743261-407e-4f59-917e-85dc274c01ea",
+            part: 5,
+            type: "Reading",
+            question:
+                "Universe aestas voluptas terga aegrotatio cuppedia eveniet cattus tempore canto doloribus maiores.",
+            options: ["bran", "adult", "pupil", "chiffonier"],
+            answer: "bran",
+        },
+        {
+            id: "cb77d45d-f3e2-43b6-944d-ff7e49ef2fb1",
+            part: 5,
+            type: "Reading",
+            question:
+                "Abundans appono volubilis contabesco vesper cura auctor paulatim thymum paens condico curvo cedo.",
+            options: ["volleyball", "lift", "mechanic", "making"],
+            answer: "mechanic",
+        },
+        {
+            id: "c9f19cec-d3d1-4afd-898a-e8b9942c0ae9",
+            part: 5,
+            type: "Reading",
+            question: "Ciminatio turpis carmen nam caecus.",
+            options: ["vestment", "freezing", "casement", "recommendation"],
+            answer: "recommendation",
+        },
+        {
+            id: "f076d23c-201d-4940-abd0-78b529eb3b88",
+            part: 5,
+            type: "Reading",
+            question: "Taceo deorsum vulnus censura peccatus.",
+            options: ["flood", "knickers", "mallard", "dream"],
+            answer: "flood",
+        },
+        {
+            id: "830d31e0-a381-46a6-97a5-d8f2a261fe21",
+            part: 5,
+            type: "Reading",
+            question:
+                "Harum caritas carus stillicidium utilis quo charisma tamdiu vulgaris sapiente.",
+            options: ["cap", "swing", "yogurt", "pliers"],
+            answer: "swing",
+        },
+        {
+            id: "9851cac5-6069-4920-915a-c4130530b34e",
+            part: 5,
+            type: "Reading",
+            question:
+                "Solium thesis strues vulgaris denuncio vita turbo cohaero desolo toties cribro compello.",
+            options: ["pendant", "bonfire", "blossom", "freezing"],
+            answer: "pendant",
+        },
+        {
+            id: "49a35d12-11ba-4078-b893-b9f07f22a076",
+            part: 5,
+            type: "Reading",
+            question: "Ubi atque civis pauper tertius.",
+            options: ["larva", "starboard", "tuba", "conservative"],
+            answer: "starboard",
+        },
+        {
+            id: "7575079f-a2e2-4913-811e-4ef07044fb63",
+            part: 5,
+            type: "Reading",
+            question:
+                "Spes vestrum ars cattus voluntarius vulgo caritas suffragium.",
+            options: ["tuba", "chainstay", "hydrocarbon", "chap"],
+            answer: "hydrocarbon",
+        },
+        {
+            id: "19718570-b0b2-4d3f-807f-db2c90946f49",
+            part: 5,
+            type: "Reading",
+            question:
+                "Adipiscor tabgo considero acer cupressus barba comminor dicta speculum ab officiis artificiose vitiosus.",
+            options: ["monocle", "nectarine", "acquaintance", "reward"],
+            answer: "reward",
+        },
+        {
+            id: "83c46cbd-0e59-496f-a69c-8ac3ecb03bf9",
+            part: 5,
+            type: "Reading",
+            question: "Bellum curvo tubineus tricesimus tantillus.",
+            options: ["sesame", "interchange", "term", "igloo"],
+            answer: "interchange",
+        },
+        {
+            id: "eb3a009d-b313-4f93-80b6-1e82d0bdae7e",
+            part: 5,
+            type: "Reading",
+            question: "Cuius peior video carmen decipio tamquam tui cui sint.",
+            options: ["doing", "exasperation", "anticodon", "rubric"],
+            answer: "anticodon",
+        },
+        {
+            id: "d2fb51e3-06b9-47e1-af1a-81a7546948e2",
+            part: 5,
+            type: "Reading",
+            question:
+                "Tabgo colligo exercitationem decor cur artificiose ulterius.",
+            options: ["tenement", "spring", "case", "hammock"],
+            answer: "hammock",
+        },
+        {
+            id: "bd1ef96b-8003-4c21-9b8b-93100175f21f",
+            part: 5,
+            type: "Reading",
+            question:
+                "Aestas assentator verto iste nam usus eum cavus vehemens benevolentia velociter anser abundans defaeco.",
+            options: ["ocelot", "countess", "chops", "jet"],
+            answer: "countess",
+        },
+        {
+            id: "014db6b5-3193-4e11-b2c2-36908557a8e9",
+            part: 5,
+            type: "Reading",
+            question: "Vitae verecundia maxime suus adulescens demens.",
+            options: ["utilization", "vein", "conservative", "rationale"],
+            answer: "conservative",
+        },
+        {
+            id: "7d759857-8cd2-4b38-865f-543174ab3059",
+            part: 5,
+            type: "Reading",
+            question:
+                "Optio eius occaecati excepturi centum eligendi baiulus astrum debitis via nisi carbo.",
+            options: ["cook", "perfection", "tapioca", "decongestant"],
+            answer: "tapioca",
+        },
+        {
+            id: "d1993d57-cf5e-4272-aec6-ca306976d38f",
+            part: 5,
+            type: "Reading",
+            question:
+                "Amaritudo solium aliqua sponte suscipio vomito tutis curatio rem pecco defluo dens pel cervus.",
+            options: ["embarrassment", "breastplate", "ownership", "climb"],
+            answer: "embarrassment",
+        },
+        {
+            id: "f20b2b34-2eaa-45c6-a036-c8824798b01c",
+            part: 5,
+            type: "Reading",
+            question: "Ulterius aperte spiritus cetera tabernus ara suasoria.",
+            options: ["doubter", "joy", "creator", "switch"],
+            answer: "switch",
+        },
+        {
+            id: "f247cefa-149c-41e9-96de-36fe22da4aba",
+            part: 5,
+            type: "Reading",
+            question: "Neque ustulo vicissitudo abbas super delinquo.",
+            options: ["mom", "dwell", "pocket-watch", "roundabout"],
+            answer: "dwell",
+        },
+        {
+            id: "d6f14ee9-2605-48c4-8b6d-b72b730d7c39",
+            part: 5,
+            type: "Reading",
+            question: "Cena ager rerum creator vere.",
+            options: ["derby", "object", "grandson", "warming"],
+            answer: "warming",
+        },
+        {
+            id: "c162a23e-5cbd-43db-8eef-c687d605f8d4",
+            part: 5,
+            type: "Reading",
+            question:
+                "Aliqua arma ambitus strues tunc numquam desparatus subseco ipsa curatio.",
+            options: ["longboat", "scratch", "sand", "paintwork"],
+            answer: "sand",
+        },
+        {
+            id: "e0d571a8-ea0d-4e92-bf6b-a0f2ecd4ec82",
+            part: 5,
+            type: "Reading",
+            question:
+                "Tempore summisse verumtamen vitiosus laudantium comburo.",
+            options: ["knuckle", "numeric", "encouragement", "hippodrome"],
+            answer: "encouragement",
+        },
+        {
+            id: "1afd4f2a-cbee-40db-a0ad-f49c7abec1be",
+            part: 5,
+            type: "Reading",
+            question: "Adhuc contego quo quas constans dapifer auctus.",
+            options: ["muscat", "haircut", "grouper", "newsstand"],
+            answer: "haircut",
+        },
+        {
+            id: "13b2c59a-48a1-4168-bf45-e9090ac9ffbb",
+            part: 5,
+            type: "Reading",
+            question:
+                "Curia iure cariosus stipes uxor depulso magnam cilicium thymum spoliatio defero.",
+            options: ["netsuke", "celsius", "basket", "platypus"],
+            answer: "basket",
+        },
+        {
+            id: "ece20b6e-b343-420e-b0c5-ada38c080fff",
+            part: 5,
+            type: "Reading",
+            question:
+                "Ipsum tersus alii dedecor pecco vito adamo dolor vomer adipiscor.",
+            options: ["packaging", "pop", "dandelion", "pocket-watch"],
+            answer: "packaging",
+        },
+        {
+            id: "93208717-24e1-474a-80af-025ce0d63f26",
+            part: 5,
+            type: "Reading",
+            question:
+                "Tutamen cohaero adfectus verbum congregatio vetus sortitus adfero.",
+            options: ["summer", "premier", "climb", "release"],
+            answer: "release",
+        },
+        {
+            id: "7b06a279-785b-4723-b050-a325c5f505af",
+            part: 5,
+            type: "Reading",
+            question:
+                "Aliqua commemoro civis quidem crux adhaero civis sol cultellus deprecator.",
+            options: ["electronics", "bob", "status", "underneath"],
+            answer: "bob",
+        },
+        {
+            id: "324a4b60-13df-4da7-bdd5-f097f956e1a8",
+            part: 5,
+            type: "Reading",
+            question:
+                "Eius amoveo addo possimus ullam deorsum sum suspendo rem architecto aliquid.",
+            options: ["junior", "runway", "championship", "step"],
+            answer: "junior",
+        },
+        {
+            id: "f87df6c2-5a7e-4710-8aa2-c5d40335f083",
+            part: 5,
+            type: "Reading",
+            question:
+                "Strenuus conculco expedita curvo arbitro tunc cimentarius talus acsi.",
+            options: ["equal", "guide", "manner", "deduction"],
+            answer: "manner",
+        },
+        {
+            id: "05b7b6a8-7cec-4982-9c0c-e6b2a46f5891",
+            part: 5,
+            type: "Reading",
+            question:
+                "Derideo absens thymum suadeo absum ullus culpo accommodo tonsor quia accendo tolero.",
+            options: ["typeface", "pneumonia", "prohibition", "monocle"],
+            answer: "prohibition",
+        },
+        {
+            id: "9a0de619-df9c-4a01-bbc8-d95f147f76f6",
+            part: 5,
+            type: "Reading",
+            question: "Acceptus pax suppono adulescens odio defungo ambulo.",
+            options: ["department", "farm", "giggle", "reasoning"],
+            answer: "farm",
+        },
+    ],
+};
