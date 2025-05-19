@@ -103,6 +103,23 @@ export function useAuth() {
         }
     }
 
+    // Get current authenticated user
+    async function getCurrentUser(): Promise<User | null> {
+        try {
+            const userData = await api.get<User>("/auth/me");
+            if (userData) {
+                user.value = userData;
+                isAuthenticated.value = true;
+                console.log("Current user data: ", userData);
+                return userData;
+            }
+            return null;
+        } catch (err) {
+            console.error("Error fetching current user:", err);
+            return null;
+        }
+    }
+
     return {
         isAuthenticated,
         user,
@@ -110,5 +127,6 @@ export function useAuth() {
         login,
         logout,
         initializeAuth,
+        getCurrentUser,
     };
 }
