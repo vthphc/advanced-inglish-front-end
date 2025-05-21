@@ -7,7 +7,7 @@ import {
     useForwardProps,
 } from "reka-ui";
 import { cn } from "~/utils/merger";
-import { buttonVariants } from "../buttons/Button.vue";
+import { buttonVariants } from "../buttons/index";
 const props = defineProps<
     CalendarCellTriggerProps & { class?: HTMLAttributes["class"] }
 >();
