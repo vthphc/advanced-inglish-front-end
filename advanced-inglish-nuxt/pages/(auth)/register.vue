@@ -2,14 +2,9 @@
 	import * as z from "zod";
 	import type { FormSubmitEvent } from "@nuxt/ui";
 	import Button from "@/components/ui/buttons/Button.vue";
-	import {
-		CalendarDate,
-		DateFormatter,
-		getLocalTimeZone,
-		type DateValue,
-	} from "@internationalized/date";
 	import { useAuthStore } from "~/stores/auth";
 	import GoogleIcon from "~/assets/icons/GoogleIcon.vue";
+	import Input from "~/components/ui/inputs/Input.vue";
 
 	definePageMeta({
 		title: "Inglish - Register",
@@ -20,14 +15,10 @@
 		title: "Register", // Updates reactively
 	});
 
-	const df = new DateFormatter("vi-VN", {
-		dateStyle: "medium",
-	});
-
 	const schema = z.object({
 		name: z.string().min(2, "Must be at least 2 characters"),
 		email: z.string().email("Invalid email"),
-		dob: z.custom<DateValue>(),
+		dob: z.string().min(1, "Date of birth is required"),
 		gender: z.string().min(1, "Please select a gender"),
 		password: z.string().min(8, "Must be at least 8 characters"),
 		passwordConfirm: z
@@ -40,7 +31,7 @@
 	const state = reactive<{
 		name?: string;
 		email?: string;
-		dob?: CalendarDate;
+		dob?: string;
 		gender: string;
 		password?: string;
 		passwordConfirm?: string;
@@ -52,18 +43,6 @@
 		password: undefined,
 		passwordConfirm: undefined,
 	});
-
-	// Watch for date changes
-	watch(
-		() => state.dob,
-		(newDate) => {
-			console.log(
-				"Date changed:",
-				df.format(newDate.toDate(getLocalTimeZone()))
-			);
-		},
-		{ deep: true }
-	);
 
 	const genderOptions = ref([
 		{ label: "Nam", value: "male" },
@@ -77,6 +56,26 @@
 	const isSubmitting = ref(false);
 
 	async function onSubmit(event: FormSubmitEvent<Schema>) {
+		// Format date from YYYY-MM-DD to DD/MM/YYYY
+		const formatDate = (dateStr: string) => {
+			if (!dateStr) return "";
+			const [year, month, day] = dateStr.split("-");
+			return `${day}/${month}/${year}`;
+		};
+
+		// Extract only the plain values from the form
+		const formValues = {
+			name: event.data.name,
+			email: event.data.email,
+			dob: formatDate(event.data.dob),
+			gender: event.data.gender,
+			password: event.data.password,
+			passwordConfirm: event.data.passwordConfirm,
+		};
+
+		console.log("Form values:", formValues);
+
+		/* Original implementation:
 		if (
 			!event.data.password ||
 			event.data.password !== event.data.passwordConfirm
@@ -91,20 +90,11 @@
 
 		isSubmitting.value = true;
 		try {
-			// Format the date as a string (YYYY-MM-DD)
-			const formattedDate = event.data.dob
-				? `${event.data.dob.year}-${String(
-						event.data.dob.month
-				  ).padStart(2, "0")}-${String(
-						event.data.dob.day
-				  ).padStart(2, "0")}`
-				: "";
-
 			await authStore.register({
 				name: event.data.name,
 				email: event.data.email,
 				password: event.data.password,
-				dob: formattedDate,
+				dob: event.data.dob,
 				gender: event.data.gender,
 			});
 
@@ -119,15 +109,7 @@
 		} catch (error: unknown) {
 			// Check if it's the "User already exists" error
 			const errorMessage =
-				(
-					error as {
-						response?: {
-							data?: {
-								message?: string;
-							};
-						};
-					}
-				)?.response?.data?.message ===
+				(error as { response?: { data?: { message?: string } } })?.response?.data?.message ===
 				"User already exists"
 					? "This email is already registered. Please use a different email or try logging in."
 					: error instanceof Error
@@ -142,6 +124,7 @@
 		} finally {
 			isSubmitting.value = false;
 		}
+		*/
 	}
 </script>
 
@@ -166,29 +149,12 @@
 				class="min-w-[300px]" />
 		</UFormField>
 		<UFormField label="Ngày sinh" name="dob">
-			<UPopover>
-				<UButton
-					color="neutral"
-					variant="subtle"
-					icon="i-lucide-calendar"
-					class="min-w-[300px]">
-					{{
-						state.dob
-							? df.format(
-									state.dob.toDate(
-										getLocalTimeZone()
-									)
-							  )
-							: "Hãy chọn ngày sinh"
-					}}
-				</UButton>
-
-				<template #content>
-					<UCalendar
-						v-model="state.dob"
-						class="p-2" />
-				</template>
-			</UPopover>
+			<UInput
+				v-model="state.dob"
+				size="xl"
+				color="highlight"
+				type="date"
+				class="min-w-[300px]" />
 		</UFormField>
 		<UFormField label="Giới tính" name="gender">
 			<USelect
