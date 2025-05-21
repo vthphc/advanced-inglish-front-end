@@ -4,7 +4,7 @@ import { useRuntimeConfig } from "#app";
 
 export const useApi = () => {
     const config = useRuntimeConfig();
-    const baseURL = config.public.apiBase;
+    const baseURL = config.public.apiBase + "/api";
 
     const api = axios.create({
         baseURL,

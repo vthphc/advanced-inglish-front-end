@@ -2,6 +2,13 @@
 import * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
 import Button from "@/components/ui/buttons/Button.vue";
+import {
+    CalendarDate,
+    DateFormatter,
+    getLocalTimeZone,
+} from "@internationalized/date";
+import { useAuthStore } from "~/stores/auth";
+import GoogleIcon from "~/assets/icons/GoogleIcon.vue";
 
 definePageMeta({
     title: "Inglish - Register",
@@ -12,30 +19,121 @@ useHead({
     title: "Register", // Updates reactively
 });
 
+const df = new DateFormatter("vi-VN", {
+    dateStyle: "medium",
+});
+
 const schema = z.object({
-    username: z.string().min(5, "Must be at least 5 characters"),
+    name: z.string().min(2, "Must be at least 2 characters"),
     email: z.string().email("Invalid email"),
+    dob: z.instanceof(CalendarDate),
+    gender: z.string().min(1, "Please select a gender"),
     password: z.string().min(8, "Must be at least 8 characters"),
     passwordConfirm: z.string().min(8, "Must be at least 8 characters"),
 });
 
 type Schema = z.output<typeof schema>;
 
+// Format current date as YYYY-MM-DD for the date picker
+const currentDate = new Date().toISOString().split("T")[0];
+
+const today = computed(() => {
+    const now = new Date();
+    return new CalendarDate(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        now.getDate()
+    );
+});
+
 const state = reactive<Partial<Schema>>({
-    username: undefined,
+    name: undefined,
     email: undefined,
+    dob: new CalendarDate(today.value.year, today.value.month, today.value.day),
+    gender: "male",
     password: undefined,
     passwordConfirm: undefined,
 });
 
+// Watch for date changes
+watch(
+    () => state.dob,
+    (newDate) => {
+        console.log(
+            "Date changed:",
+            df.format(newDate.toDate(getLocalTimeZone()))
+        );
+    },
+    { deep: true }
+);
+
+const genderOptions = ref([
+    { label: "Nam", value: "male" },
+    { label: "Nữ", value: "female" },
+    { label: "Khác", value: "other" },
+]);
+
 const toast = useToast();
+const router = useRouter();
+const authStore = useAuthStore();
+const isSubmitting = ref(false);
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-    toast.add({
-        title: "Success",
-        description: "The form has been submitted.",
-        color: "success",
-    });
-    console.log(event.data);
+    if (
+        !event.data.password ||
+        event.data.password !== event.data.passwordConfirm
+    ) {
+        toast.add({
+            title: "Error",
+            description: "Passwords do not match",
+            color: "error",
+        });
+        return;
+    }
+
+    isSubmitting.value = true;
+    try {
+        // Format the date as a string (YYYY-MM-DD)
+        const formattedDate = event.data.dob
+            ? `${event.data.dob.year}-${String(event.data.dob.month).padStart(
+                  2,
+                  "0"
+              )}-${String(event.data.dob.day).padStart(2, "0")}`
+            : "";
+
+        await authStore.register({
+            name: event.data.name,
+            email: event.data.email,
+            password: event.data.password,
+            dob: formattedDate,
+            gender: event.data.gender,
+        });
+
+        toast.add({
+            title: "Success",
+            description: "Registration successful!",
+            color: "success",
+        });
+
+        // Redirect to home page or login
+        router.push("/");
+    } catch (error: any) {
+        // Check if it's the "User already exists" error
+        const errorMessage =
+            error.response?.data?.message === "User already exists"
+                ? "This email is already registered. Please use a different email or try logging in."
+                : error instanceof Error
+                ? error.message
+                : "Registration failed. Please try again.";
+
+        toast.add({
+            title: "Error",
+            description: errorMessage,
+            color: "error",
+        });
+    } finally {
+        isSubmitting.value = false;
+    }
 }
 </script>
 
@@ -47,18 +145,55 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @submit="onSubmit"
     >
         <UFormField label="Email" name="email">
-            <UInput v-model="state.email" size="xl" color="highlight" />
+            <UInput
+                v-model="state.email"
+                size="xl"
+                color="highlight"
+                class="min-w-[300px]"
+            />
         </UFormField>
-        <UFormField label="Tên người dùng" name="username">
-            <UInput v-model="state.username" size="xl" color="highlight" />
+        <UFormField label="Tên" name="name">
+            <UInput
+                v-model="state.name"
+                size="xl"
+                color="highlight"
+                class="min-w-[300px]"
+            />
         </UFormField>
+        <UFormField label="Ngày sinh" name="dob">
+            <UPopover>
+                <UButton
+                    color="neutral"
+                    variant="subtle"
+                    icon="i-lucide-calendar"
+                    class="min-w-[300px]"
+                >
+                    {{
+                        state.dob
+                            ? df.format(state.dob.toDate(getLocalTimeZone()))
+                            : "Hãy chọn ngày sinh"
+                    }}
+                </UButton>
 
+                <template #content>
+                    <UCalendar v-model="state.dob" class="p-2" />
+                </template>
+            </UPopover>
+        </UFormField>
+        <UFormField label="Giới tính" name="gender">
+            <USelect
+                class="min-w-[300px]"
+                v-model="state.gender"
+                :items="genderOptions"
+            />
+        </UFormField>
         <UFormField label="Mật khẩu" name="password">
             <UInput
                 v-model="state.password"
                 size="xl"
                 color="highlight"
                 type="password"
+                class="min-w-[300px]"
             />
         </UFormField>
         <UFormField label="Nhập lại mật khẩu" name="passwordConfirm">
@@ -67,31 +202,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 size="xl"
                 color="highlight"
                 type="password"
+                class="min-w-[300px]"
             />
         </UFormField>
-        <Button type="submit"> Đăng ký </Button>
+        <Button type="submit" :disabled="isSubmitting">
+            {{ isSubmitting ? "Đang đăng ký..." : "Đăng ký" }}
+        </Button>
         <USeparator size="md" label="Hoặc đăng ký qua" />
         <div class="mt-6">
             <Button>
-                <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
-                    <path
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                        fill="#4285F4"
-                    />
-                    <path
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                        fill="#34A853"
-                    />
-                    <path
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                        fill="#FBBC05"
-                    />
-                    <path
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                        fill="#EA4335"
-                    />
-                    <path d="M1 1h22v22H1z" fill="none" />
-                </svg>
+                <GoogleIcon />
                 Google
             </Button>
         </div>

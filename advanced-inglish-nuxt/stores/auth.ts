@@ -8,6 +8,14 @@ interface LoginCredentials {
     [key: string]: any;
 }
 
+interface RegisterData {
+    name: string;
+    email: string;
+    password: string;
+    dob: string;
+    gender: string;
+}
+
 export const useAuthStore = defineStore("auth", {
     // Equivalent to the useState variables in the composable
     state: () => ({
@@ -59,10 +67,10 @@ export const useAuthStore = defineStore("auth", {
                     this.user = {
                         id: response.id,
                         username: response.username,
+                        name: response.name,
                         email: response.email,
-                        firstName: response.firstName,
-                        lastName: response.lastName,
                         gender: response.gender,
+                        dob: response.dob,
                         image: response.image,
                     };
 
@@ -83,6 +91,47 @@ export const useAuthStore = defineStore("auth", {
                 // Reset state on error? Or let the caller handle it?
                 // this.logout(); // Uncomment if you want to auto-logout on login failure
                 throw err; // Re-throw error for the component to handle
+            }
+        },
+
+        async register(userData: RegisterData): Promise<void> {
+            try {
+                const api = useApi();
+                const response = await api.post<AuthResponse>(
+                    "/auth/register",
+                    userData
+                );
+
+                if (response) {
+                    this.token = response.accessToken;
+                    this._setTokenToStorage(this.token);
+
+                    // Extract user data from response
+                    this.user = {
+                        id: response.id,
+                        username: response.username,
+                        name: response.name,
+                        email: response.email,
+                        gender: response.gender,
+                        dob: response.dob,
+                        image: response.image,
+                    };
+
+                    this.isAuthenticated = true;
+
+                    // Store refresh token if provided
+                    if (response.refreshToken) {
+                        if (import.meta.client) {
+                            localStorage.setItem(
+                                "refreshToken",
+                                response.refreshToken
+                            );
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Registration error:", err);
+                throw err; // Re-throw for component handling
             }
         },
 
