@@ -4,7 +4,7 @@
 	import Button from "@/components/ui/buttons/Button.vue";
 	import { useAuthStore } from "~/stores/auth";
 	import GoogleIcon from "~/assets/icons/GoogleIcon.vue";
-	import Input from "~/components/ui/inputs/Input.vue";
+	import DialogDemo from "~/components/DialogDemo.vue";
 
 	definePageMeta({
 		title: "Inglish - Register",
@@ -54,6 +54,30 @@
 	const router = useRouter();
 	const authStore = useAuthStore();
 	const isSubmitting = ref(false);
+	const showDialog = ref(false);
+	const countdown = ref(10);
+	let countdownTimer: NodeJS.Timeout | null = null;
+
+	function startCountdown() {
+		countdown.value = 10;
+		countdownTimer = setInterval(() => {
+			countdown.value--;
+			if (countdown.value <= 0) {
+				if (countdownTimer) {
+					clearInterval(countdownTimer);
+					countdownTimer = null;
+				}
+				showDialog.value = false;
+				router.push("/login");
+			}
+		}, 1000);
+	}
+
+	onUnmounted(() => {
+		if (countdownTimer) {
+			clearInterval(countdownTimer);
+		}
+	});
 
 	async function onSubmit(event: FormSubmitEvent<Schema>) {
 		// Format date from YYYY-MM-DD to DD/MM/YYYY
@@ -75,7 +99,6 @@
 
 		console.log("Form values:", formValues);
 
-		/* Original implementation:
 		if (
 			!event.data.password ||
 			event.data.password !== event.data.passwordConfirm
@@ -104,12 +127,21 @@
 				color: "success",
 			});
 
-			// Redirect to home page or login
-			router.push("/");
+			// Show verification dialog with countdown
+			showDialog.value = true;
+			startCountdown();
 		} catch (error: unknown) {
-			// Check if it's the "User already exists" error
+			//Check if it's the "User already exists" error
 			const errorMessage =
-				(error as { response?: { data?: { message?: string } } })?.response?.data?.message ===
+				(
+					error as {
+						response?: {
+							data?: {
+								message?: string;
+							};
+						};
+					}
+				)?.response?.data?.message ===
 				"User already exists"
 					? "This email is already registered. Please use a different email or try logging in."
 					: error instanceof Error
@@ -124,69 +156,87 @@
 		} finally {
 			isSubmitting.value = false;
 		}
-		*/
 	}
 </script>
 
 <template>
-	<UForm
-		:schema="schema"
-		:state="state"
-		class="space-y-4 *:my-2 flex flex-col"
-		@submit="onSubmit">
-		<UFormField label="Email" name="email">
-			<UInput
-				v-model="state.email"
-				size="xl"
-				color="highlight"
-				class="min-w-[300px]" />
-		</UFormField>
-		<UFormField label="Tên" name="name">
-			<UInput
-				v-model="state.name"
-				size="xl"
-				color="highlight"
-				class="min-w-[300px]" />
-		</UFormField>
-		<UFormField label="Ngày sinh" name="dob">
-			<UInput
-				v-model="state.dob"
-				size="xl"
-				color="highlight"
-				type="date"
-				class="min-w-[300px]" />
-		</UFormField>
-		<UFormField label="Giới tính" name="gender">
-			<USelect
-				v-model="state.gender"
-				class="min-w-[300px]"
-				:items="genderOptions" />
-		</UFormField>
-		<UFormField label="Mật khẩu" name="password">
-			<UInput
-				v-model="state.password"
-				size="xl"
-				color="highlight"
-				type="password"
-				class="min-w-[300px]" />
-		</UFormField>
-		<UFormField label="Nhập lại mật khẩu" name="passwordConfirm">
-			<UInput
-				v-model="state.passwordConfirm"
-				size="xl"
-				color="highlight"
-				type="password"
-				class="min-w-[300px]" />
-		</UFormField>
-		<Button type="submit" :disabled="isSubmitting">
-			{{ isSubmitting ? "Đang đăng ký..." : "Đăng ký" }}
-		</Button>
-		<USeparator size="md" label="Hoặc đăng ký qua" />
-		<div class="mt-6">
-			<Button>
-				<GoogleIcon />
-				Google
+	<div>
+		<UForm
+			:schema="schema"
+			:state="state"
+			class="space-y-4 *:my-2 flex flex-col"
+			@submit="onSubmit">
+			<UFormField label="Email" name="email">
+				<UInput
+					v-model="state.email"
+					size="xl"
+					color="highlight"
+					class="min-w-[300px]" />
+			</UFormField>
+			<UFormField label="Tên" name="name">
+				<UInput
+					v-model="state.name"
+					size="xl"
+					color="highlight"
+					class="min-w-[300px]" />
+			</UFormField>
+			<UFormField label="Ngày sinh" name="dob">
+				<UInput
+					v-model="state.dob"
+					size="xl"
+					color="highlight"
+					type="date"
+					class="min-w-[300px]" />
+			</UFormField>
+			<UFormField label="Giới tính" name="gender">
+				<USelect
+					v-model="state.gender"
+					class="min-w-[300px]"
+					:items="genderOptions" />
+			</UFormField>
+			<UFormField label="Mật khẩu" name="password">
+				<UInput
+					v-model="state.password"
+					size="xl"
+					color="highlight"
+					type="password"
+					class="min-w-[300px]" />
+			</UFormField>
+			<UFormField
+				label="Nhập lại mật khẩu"
+				name="passwordConfirm">
+				<UInput
+					v-model="state.passwordConfirm"
+					size="xl"
+					color="highlight"
+					type="password"
+					class="min-w-[300px]" />
+			</UFormField>
+			<Button type="submit" :disabled="isSubmitting">
+				{{
+					isSubmitting
+						? "Đang đăng ký..."
+						: "Đăng ký"
+				}}
 			</Button>
-		</div>
-	</UForm>
+			<USeparator size="md" label="Hoặc đăng ký qua" />
+			<div class="mt-6">
+				<Button>
+					<GoogleIcon />
+					Google
+				</Button>
+			</div>
+		</UForm>
+
+		<!-- Registration Success Dialog -->
+		<DialogDemo
+			:open="showDialog"
+			:countdown="countdown"
+			:message="
+				authStore.message ||
+				'Registration successful! Please verify your email.'
+			"
+			redirect-path="/login"
+			@update:open="showDialog = $event" />
+	</div>
 </template>
