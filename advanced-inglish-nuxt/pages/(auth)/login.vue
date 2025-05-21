@@ -44,6 +44,7 @@ const toast = useToast();
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     loading.value = true;
     error.value = null;
+    // console.log("Form values:", formState.email);
 
     try {
         // Basic validation (Zod handles more complex cases via UForm)
@@ -55,7 +56,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         // Call the login action from the Pinia store
         await authStore.login({
-            username: formState.email, // The API expects username
+            email: formState.email, // The API expects username
             password: formState.password,
         });
 

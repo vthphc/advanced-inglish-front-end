@@ -3,7 +3,7 @@ import type { User, AuthResponse } from "~/utils/types/user";
 import { useApi } from "~/composables/api/useApi";
 
 interface LoginCredentials {
-	username: string;
+	email: string;
 	password: string;
 	[key: string]: string;
 }
