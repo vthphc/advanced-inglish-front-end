@@ -68,6 +68,29 @@ export const useAuthStore = defineStore("auth", {
 				);
 
 				if (response) {
+					// Check if account is unverified
+					if (response.isVerified === false) {
+						this.message = response.message;
+						// Store userId for potential redirect to verification
+						if (response.userId) {
+							if (
+								import.meta
+									.client
+							) {
+								localStorage.setItem(
+									"pendingUserId",
+									response.userId
+								);
+							}
+						}
+						// Don't set authenticated for unverified users
+						this.isAuthenticated = false;
+						throw new Error(
+							response.message ||
+								"Account not verified. Please check your email."
+						);
+					}
+
 					if (response.accessToken) {
 						this.token =
 							response.accessToken;
@@ -76,7 +99,9 @@ export const useAuthStore = defineStore("auth", {
 						);
 					}
 
-					this.user = response.user;
+					if (response.user) {
+						this.user = response.user;
+					}
 					this.message = response.message;
 					this.isAuthenticated = true;
 
@@ -108,7 +133,9 @@ export const useAuthStore = defineStore("auth", {
 
 				if (response) {
 					// Registration response doesn't include tokens, just store the user data and message
-					this.user = response.user;
+					if (response.user) {
+						this.user = response.user;
+					}
 					this.message = response.message;
 
 					// User is not authenticated yet, they need to login separately

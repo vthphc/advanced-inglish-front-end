@@ -38,8 +38,10 @@ export interface User {
 }
 
 export interface AuthResponse {
-	user: User;
+	user?: User;
 	message: string;
 	accessToken?: string;
 	refreshToken?: string;
+	isVerified?: boolean;
+	userId?: string;
 }
