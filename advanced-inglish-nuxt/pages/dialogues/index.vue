@@ -1,19 +1,19 @@
 <script setup lang="ts">
 	import { useAuthStore } from "~/stores/auth";
 	import { useApi } from "~/composables/api/useApi";
-	import type { Flashcard } from "~/utils/types/flashcard";
-	import FlashcardItem from "~/components/flashcards/listing/FlashcardItem.vue";
+	import type { Dialogue } from "~/utils/types/dialogue";
+	import DialogueItem from "~/components/dialogues/DialogueItem.vue";
 
 	const authStore = useAuthStore();
 	const api = useApi();
 
-	// State for flashcards
-	const flashcards = ref<Flashcard[]>([]);
+	// State for dialogues
+	const dialogues = ref<Dialogue[]>([]);
 	const isLoading = ref(true);
 	const error = ref<string | null>(null);
 
-	// Fetch flashcards for the current user
-	const fetchFlashcards = async () => {
+	// Fetch dialogues for the current user
+	const fetchDialogues = async () => {
 		try {
 			isLoading.value = true;
 			error.value = null;
@@ -21,31 +21,31 @@
 			if (!authStore.user?._id) {
 				throw new Error("User not authenticated");
 			}
-			const response = await api.get<Flashcard[]>(
-				`/flashcards/user/${authStore.user._id}`
+			const response = await api.get<Dialogue[]>(
+				`/dialogues/user/${authStore.user._id}`
 			);
 			console.log("API Response:", response);
-			flashcards.value = response;
+			dialogues.value = response;
 		} catch (err) {
-			console.error("Error fetching flashcards:", err);
+			console.error("Error fetching dialogues:", err);
 			error.value =
-				"Failed to load flashcards. Please try again later.";
+				"Failed to load dialogues. Please try again later.";
 		} finally {
 			isLoading.value = false;
 		}
 	};
 
-	// Fetch flashcards when component mounts
+	// Fetch dialogues when component mounts
 	onMounted(() => {
-		fetchFlashcards();
+		fetchDialogues();
 	});
 </script>
 
 <template>
-	<div class="">
+	<div class="container mx-auto p-4 md:p-6 lg:p-8">
 		<h1
 			class="text-2xl md:text-3xl font-bold mb-6 border-b border-gray-300 pb-3 text-primary">
-			My Flashcards
+			My Dialogues
 		</h1>
 
 		<!-- Loading state -->
@@ -65,23 +65,23 @@
 		</div>
 
 		<!-- Empty state -->
-		<div v-else-if="!flashcards.length" class="text-center py-8">
+		<div v-else-if="!dialogues.length" class="text-center py-8">
 			<p class="text-gray-500">
-				No flashcards found. Start creating some!
+				No dialogues found. Start creating some!
 			</p>
 		</div>
 
-		<!-- Flashcards list -->
+		<!-- Dialogues list -->
 		<div
 			v-else
 			class="bg-white shadow-md overflow-hidden sm:rounded-lg p-4">
 			<ul
 				role="list"
-				class="divide-y gap-y-4 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4">
-				<FlashcardItem
-					v-for="flashcard in flashcards"
-					:key="flashcard._id"
-					:flashcard="flashcard" />
+				class="divide-y gap-y-4 divide-gray-200 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-4">
+				<DialogueItem
+					v-for="dialogue in dialogues"
+					:key="dialogue._id"
+					:dialogue="dialogue" />
 			</ul>
 		</div>
 	</div>
