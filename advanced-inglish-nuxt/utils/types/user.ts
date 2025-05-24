@@ -37,11 +37,14 @@ export interface User {
 	updatedAt: string;
 }
 
-export interface AuthResponse {
-	user?: User;
+export interface LoginResponse {
 	message: string;
 	accessToken?: string;
 	refreshToken?: string;
 	isVerified?: boolean;
 	userId?: string;
+}
+
+export interface AuthResponse {
+	user?: User;
 }

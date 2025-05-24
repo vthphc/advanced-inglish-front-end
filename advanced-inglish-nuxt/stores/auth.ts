@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { User, AuthResponse } from "~/utils/types/user";
+import type { User, LoginResponse, AuthResponse } from "~/utils/types/user";
 import { useApi } from "~/composables/api/useApi";
 
 interface LoginCredentials {
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore("auth", {
 		async login(credentials: LoginCredentials): Promise<void> {
 			try {
 				const api = useApi(); // Get API instance inside the action
-				const response = await api.post<AuthResponse>(
+				const response = await api.post<LoginResponse>(
 					"/auth/login",
 					credentials
 				);
@@ -90,18 +90,20 @@ export const useAuthStore = defineStore("auth", {
 								"Account not verified. Please check your email."
 						);
 					}
-
 					if (response.accessToken) {
 						this.token =
 							response.accessToken;
 						this._setTokenToStorage(
 							this.token
 						);
-					}
 
-					if (response.user) {
+						// Fetch complete user data after getting the token
+						await this.getCurrentUser();
+					} else if (response.user) {
+						// If no token but user data is provided, use that
 						this.user = response.user;
 					}
+
 					this.message = response.message;
 					this.isAuthenticated = true;
 
@@ -126,18 +128,17 @@ export const useAuthStore = defineStore("auth", {
 		async register(userData: RegisterData): Promise<void> {
 			try {
 				const api = useApi();
-				const response = await api.post<AuthResponse>(
+				const response = await api.post<LoginResponse>(
 					"/auth/register",
 					userData
 				);
 
 				if (response) {
-					// Registration response doesn't include tokens, just store the user data and message
-					if (response.user) {
-						this.user = response.user;
-					}
-					this.message = response.message;
-
+					// // Registration response doesn't include tokens, just store the user data and message
+					// if (response.user) {
+					// 	this.user = response.user;
+					// }
+					// this.message = response.message;
 					// User is not authenticated yet, they need to login separately
 					this.isAuthenticated = false;
 					this.token = null;
@@ -163,6 +164,43 @@ export const useAuthStore = defineStore("auth", {
 			navigateTo("/login");
 		},
 
+		async getCurrentUser(): Promise<User | null> {
+			try {
+				// Get token from storage
+				const token = this._getTokenFromStorage();
+
+				if (!token) {
+					return null; // No token available, return null
+				}
+
+				const api = useApi();
+				// Fetch current user data
+				const userData = await api.get<AuthResponse>(
+					"/auth/me"
+				);
+
+				if (userData) {
+					console.log(
+						"Current user data fetched successfully:",
+						userData
+					);
+					// Update store state
+					this.user = userData.user || null;
+					this.isAuthenticated = true;
+					return userData.user || null;
+				}
+
+				return null;
+			} catch (err) {
+				console.error(
+					"Error fetching current user:",
+					err
+				);
+				this.isAuthenticated = false;
+				return null;
+			}
+		},
+
 		async initializeAuth(): Promise<void> {
 			// Sync token from storage first
 			this.token = this._getTokenFromStorage();
@@ -171,12 +209,16 @@ export const useAuthStore = defineStore("auth", {
 				try {
 					const api = useApi();
 					// Verify token by fetching user data
-					const userData = await api.get<User>(
+					const userData = await api.get<AuthResponse>(
 						"/auth/me"
 					);
 
 					if (userData) {
-						this.user = userData;
+						console.log(
+							"Auth initialized with user data:",
+							userData.user
+						);
+						this.user = userData.user || null;
 						this.isAuthenticated = true;
 					} else {
 						// Token might be valid but user fetch failed? Or token invalid?

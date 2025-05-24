@@ -128,6 +128,7 @@
 
 		<UAlert
 			v-if="error"
+			class="mt-4"
 			icon="i-heroicons-exclamation-triangle"
 			color="error"
 			variant="soft"
@@ -139,7 +140,7 @@
 				padded: false,
 			}"
 			@close="error = null"
-			class="mt-4" />
+			 />
 
 		<USeparator size="md" label="Hoặc đăng nhập qua" />
 
