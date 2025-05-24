@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import type { PropType } from "vue";
 	import type { Flashcard } from "~/utils/types/flashcard";
+	import FlashcardInfo from "./FlashcardInfo.vue";
 
 	const props = defineProps({
 		flashcard: {
@@ -8,6 +9,8 @@
 			required: true,
 		},
 	});
+
+	const isDialogOpen = ref(false);
 
 	const playAudio = (audioURL: string | null) => {
 		if (!audioURL) return;
@@ -33,7 +36,8 @@
 
 <template>
 	<li
-		class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200">
+		class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200 cursor-pointer"
+		@click="isDialogOpen = true">
 		<div class="flex justify-between items-start mb-2">
 			<h3 class="text-lg font-semibold text-primary">
 				{{ flashcard.word }}
@@ -63,15 +67,15 @@
 			"
 			class="flex items-center gap-2 mb-2">
 			<span
-				v-for="(phonetic, index) in flashcard.phonetics"W
+				v-for="(phonetic, index) in flashcard.phonetics"
 				:key="index"
 				class="text-sm text-gray-600">
 				{{ phonetic.text }}
 				<!-- Optional: Add button to play audio -->
 				<button
 					v-if="phonetic.audio"
-					@click="playAudio(phonetic.audio)"
-					class="ml-1 text-blue-500 hover:text-blue-700">
+					class="ml-1 text-blue-500 hover:text-blue-700"
+					@click.stop="playAudio(phonetic.audio)">
 					🔊
 				</button>
 			</span>
@@ -81,6 +85,11 @@
 			<span>Topic: {{ flashcard.topic }}</span>
 			<span>{{ formattedDate }}</span>
 		</div>
+
+		<!-- Flashcard Info Dialog -->
+		<FlashcardInfo
+			v-model:is-open="isDialogOpen"
+			:flashcard="flashcard" />
 	</li>
 </template>
 
