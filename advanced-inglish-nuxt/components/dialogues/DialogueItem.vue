@@ -2,6 +2,7 @@
 	import type { PropType } from "vue";
 	import type { Dialogue } from "~/utils/types/dialogue";
 	import DialogueInfo from "./DialogueInfo.vue";
+	import { Dialog, DialogContent } from "~/components/ui/dialog";
 
 	const props = defineProps({
 		dialogue: {
@@ -55,9 +56,11 @@
 		</div>
 
 		<!-- Dialogue Info Dialog -->
-		<DialogueInfo
-			v-model:is-open="isDialogOpen"
-			:dialogue="dialogue" />
+		<Dialog v-model:open="isDialogOpen">
+			<DialogContent class="sm:max-w-[625px]">
+				<DialogueInfo :dialogue="dialogue" />
+			</DialogContent>
+		</Dialog>
 	</li>
 </template>
 
