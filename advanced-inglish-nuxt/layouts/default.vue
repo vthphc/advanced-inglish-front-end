@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { useAuthStore } from "~/stores/auth";
 	import { storeToRefs } from "pinia";
+	import Navbar from "~/components/navbar/Navbar.vue";
 
 	const authStore = useAuthStore();
 	const { isAuthenticated } = storeToRefs(authStore); // Use storeToRefs for reactivity
@@ -8,7 +9,7 @@
 
 <template>
 	<div v-if="isAuthenticated">
-		<h1>Default Layout</h1>
+		<Navbar />
 		<div class="container p-4 md:p-6 lg:p-8 mx-auto">
 			<slot />
 		</div>
