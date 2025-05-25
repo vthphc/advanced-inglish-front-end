@@ -2,7 +2,11 @@
 	import type { PropType } from "vue";
 	import type { Dialogue } from "~/utils/types/dialogue";
 	import DialogueInfo from "./DialogueInfo.vue";
-	import { Dialog, DialogContent } from "~/components/ui/dialog";
+	import {
+		Dialog,
+		DialogScrollContent,
+		DialogTrigger,
+	} from "~/components/ui/dialog";
 
 	const props = defineProps({
 		dialogue: {
@@ -10,8 +14,6 @@
 			required: true,
 		},
 	});
-
-	const isDialogOpen = ref(false);
 
 	// Helper to format date
 	const formattedDate = computed(() => {
@@ -32,36 +34,46 @@
 </script>
 
 <template>
-	<li
-		class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200 cursor-pointer"
-		@click="isDialogOpen = true">
-		<div class="flex justify-between items-start mb-2">
-			<h3 class="text-lg font-semibold text-primary">
-				{{ dialogue.topic }}
-			</h3>
-			<span
-				class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-				Dialogue
-			</span>
-		</div>
-		<div class="mb-2">
-			<p class="text-sm text-gray-700 line-clamp-2">
-				{{ dialoguePreview }}
-			</p>
-		</div>
-		<div
-			class="flex flex-1 justify-between items-end text-xs text-gray-400">
-			<span>{{ dialogue.dialogue.length }} lines</span>
-			<span>{{ formattedDate }}</span>
-		</div>
+	<Dialog>
+		<DialogTrigger>
+			<li
+				class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200 cursor-pointer">
+				<div
+					class="flex justify-between items-start mb-2">
+					<h3
+						class="text-lg font-semibold text-primary">
+						{{ dialogue.topic }}
+					</h3>
+					<span
+						class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+						Dialogue
+					</span>
+				</div>
+				<div class="mb-2">
+					<p
+						class="text-sm text-gray-700 line-clamp-2">
+						{{ dialoguePreview }}
+					</p>
+				</div>
+				<div
+					class="flex flex-1 justify-between items-end text-xs text-gray-400">
+					<span
+						>{{
+							dialogue.dialogue.length
+						}}
+						lines</span
+					>
+					<span>{{ formattedDate }}</span>
+				</div>
 
-		<!-- Dialogue Info Dialog -->
-		<Dialog v-model:open="isDialogOpen">
-			<DialogContent class="sm:max-w-[625px]">
-				<DialogueInfo :dialogue="dialogue" />
-			</DialogContent>
-		</Dialog>
-	</li>
+				<!-- Dialogue Info Dialog -->
+
+				<DialogScrollContent class="sm:max-w-[625px]">
+					<DialogueInfo :dialogue="dialogue" />
+				</DialogScrollContent>
+			</li>
+		</DialogTrigger>
+	</Dialog>
 </template>
 
 <style scoped>

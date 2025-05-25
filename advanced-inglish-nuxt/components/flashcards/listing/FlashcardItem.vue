@@ -2,6 +2,11 @@
 	import type { PropType } from "vue";
 	import type { Flashcard } from "~/utils/types/flashcard";
 	import FlashcardInfo from "./FlashcardInfo.vue";
+	import {
+		Dialog,
+		DialogScrollContent,
+		DialogTrigger,
+	} from "~/components/ui/dialog";
 
 	const props = defineProps({
 		flashcard: {
@@ -9,8 +14,6 @@
 			required: true,
 		},
 	});
-
-	const isDialogOpen = ref(false);
 
 	const playAudio = (audioURL: string | null) => {
 		if (!audioURL) return;
@@ -35,62 +38,77 @@
 </script>
 
 <template>
-	<li
-		class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200 cursor-pointer"
-		@click="isDialogOpen = true">
-		<div class="flex justify-between items-start mb-2">
-			<h3 class="text-lg font-semibold text-primary">
-				{{ flashcard.word }}
-			</h3>
-			<span
-				class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full capitalize"
-				>{{ flashcard.category }}</span
-			>
-		</div>
-		<div class="mb-2">
-			<p class="text-sm text-gray-700 line-clamp-2">
-				{{ flashcard.definition }}
-			</p>
-			<p
-				v-if="flashcard.example"
-				class="text-sm text-gray-500 italic mt-1 line-clamp-2">
-				<span class="font-bold not-italic"
-					>Example:</span
-				>
-				"{{ flashcard.example }}"
-			</p>
-		</div>
-		<div
-			v-if="
-				flashcard.phonetics &&
-				flashcard.phonetics.length > 0
-			"
-			class="flex items-center gap-2 mb-2">
-			<span
-				v-for="(phonetic, index) in flashcard.phonetics"
-				:key="index"
-				class="text-sm text-gray-600">
-				{{ phonetic.text }}
-				<!-- Optional: Add button to play audio -->
-				<button
-					v-if="phonetic.audio"
-					class="ml-1 text-blue-500 hover:text-blue-700"
-					@click.stop="playAudio(phonetic.audio)">
-					🔊
-				</button>
-			</span>
-		</div>
-		<div
-			class="flex flex-1 justify-between items-end text-xs text-gray-400">
-			<span>Topic: {{ flashcard.topic }}</span>
-			<span>{{ formattedDate }}</span>
-		</div>
+	<Dialog>
+		<DialogTrigger>
+			<li
+				class="flex flex-col p-4 rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200 cursor-pointer">
+				<div
+					class="flex justify-between items-start mb-2">
+					<h3
+						class="text-lg font-semibold text-primary">
+						{{ flashcard.word }}
+					</h3>
+					<span
+						class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full capitalize"
+						>{{ flashcard.category }}</span
+					>
+				</div>
+				<div class="mb-2">
+					<p
+						class="text-sm text-gray-700 line-clamp-2">
+						{{ flashcard.definition }}
+					</p>
+					<p
+						v-if="flashcard.example"
+						class="text-sm text-gray-500 italic mt-1 line-clamp-2">
+						<span
+							class="font-bold not-italic"
+							>Example:</span
+						>
+						"{{ flashcard.example }}"
+					</p>
+				</div>
+				<div
+					v-if="
+						flashcard.phonetics &&
+						flashcard.phonetics.length > 0
+					"
+					class="flex items-center gap-2 mb-2">
+					<span
+						v-for="(
+							phonetic, index
+						) in flashcard.phonetics"
+						:key="index"
+						class="text-sm text-gray-600">
+						{{ phonetic.text }}
+						<!-- Optional: Add button to play audio -->
+						<button
+							v-if="phonetic.audio"
+							class="ml-1 text-blue-500 hover:text-blue-700"
+							@click.stop="
+								playAudio(
+									phonetic.audio
+								)
+							">
+							🔊
+						</button>
+					</span>
+				</div>
+				<div
+					class="flex flex-1 justify-between items-end text-xs text-gray-400">
+					<span
+						>Topic:
+						{{ flashcard.topic }}</span
+					>
+					<span>{{ formattedDate }}</span>
+				</div>
 
-		<!-- Flashcard Info Dialog -->
-		<FlashcardInfo
-			v-model:is-open="isDialogOpen"
-			:flashcard="flashcard" />
-	</li>
+				<DialogScrollContent class="sm:max-w-[500px]">
+					<FlashcardInfo :flashcard="flashcard" />
+				</DialogScrollContent>
+			</li>
+		</DialogTrigger>
+	</Dialog>
 </template>
 
 <style scoped>
