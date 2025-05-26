@@ -1,8 +1,9 @@
 <script setup lang="ts">
 	import { ref } from "vue";
-	import { Menu } from "lucide-vue-next";
+	import { Menu, User } from "lucide-vue-next";
 	import { Button } from "../ui/buttons";
 	import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+	import ExpandingText from "./ExpandingText.vue";
 
 	const isOpen = ref(false);
 
@@ -10,24 +11,25 @@
 		{ name: "Home", href: "/" },
 		{ name: "Dialogues", href: "/dialogues" },
 		{ name: "Flashcards", href: "/flashcards" },
-		// { name: "Contact", href: "/contact" },
+		{ name: "Contact", href: "/contact" },
 	];
 </script>
 
 <template>
 	<nav
-		class="sticky top-0 z-70 w-full border-b-2 border-highlight bg-white backdrop-blur supports-[backdrop-filter]:bg-white/60">
-		<div class="flex h-16 items-center justify-between px-4">
+		class="sticky top-0 z-70 w-full border-b-2 border-highlight backdrop-blur supports-[backdrop-filter]:bg-white/60">
+		<div class="flex h-20 items-center justify-between px-4">
 			<!-- Logo -->
 			<NuxtLink to="/" class="flex items-center space-x-2">
 				<div
 					class="h-8 w-8 rounded-lg bg-highlight flex items-center justify-center">
 					<span
 						class="text-primary-foreground font-bold text-lg"
-						>L</span
+						>I</span
 					>
 				</div>
-				<span class="font-bold text-xl">Logo</span>
+				<span class="font-bold text-xl">nglish</span>
+				<!-- <ExpandingText /> -->
 			</NuxtLink>
 
 			<!-- Desktop Navigation -->
@@ -36,14 +38,16 @@
 					v-for="item in navigation"
 					:key="item.name"
 					:to="item.href"
-					class="text-sm font-medium transition-colors hover:text-primary">
+					class="cursor-pointer text-base font-medium transition-colors hover:text-primary">
 					{{ item.name }}
 				</NuxtLink>
 			</div>
 
 			<!-- Desktop CTA Button -->
 			<div class="hidden md:flex">
-				<Button>Get Started</Button>
+				<Button class="cursor-pointer p-1.5 rounded-full"
+					><User
+				/></Button>
 			</div>
 
 			<!-- Mobile Navigation -->
@@ -65,23 +69,18 @@
 							v-for="item in navigation"
 							:key="item.name"
 							:to="item.href"
-							class="text-lg font-medium transition-colors hover:text-primary"
+							class="text-lg text-primary font-medium transition-colors hover:text-primary"
 							@click="isOpen = false">
 							{{ item.name }}
 						</NuxtLink>
-						<div class="pt-4">
-							<Button
-								class="w-full"
-								@click="
-									isOpen = false
-								">
-								Get Started
-							</Button>
-						</div>
+						<NuxtLink
+							class="cursor-pointer text-primary text-lg font-medium transition-colors hover:text-primary"
+							@click="isOpen = false">
+							Profile
+						</NuxtLink>
 					</div>
 				</SheetContent>
 			</Sheet>
-            
 		</div>
 	</nav>
 </template>

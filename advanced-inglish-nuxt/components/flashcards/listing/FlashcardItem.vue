@@ -55,12 +55,12 @@
 				</div>
 				<div class="mb-2">
 					<p
-						class="text-sm text-gray-700 line-clamp-2">
+						class="text-left text-sm text-gray-700 line-clamp-2">
 						{{ flashcard.definition }}
 					</p>
 					<p
 						v-if="flashcard.example"
-						class="text-sm text-gray-500 italic mt-1 line-clamp-2">
+						class="text-left text-sm text-gray-500 italic mt-1 line-clamp-2">
 						<span
 							class="font-bold not-italic"
 							>Example:</span

@@ -8,7 +8,7 @@
 
 	definePageMeta({
 		title: "Inglish",
-		layout: false,
+		layout: "default",
 	});
 
 	// Get the auth store instance
