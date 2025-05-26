@@ -16,11 +16,23 @@
 
 	// Use storeToRefs to get reactive refs for state properties
 	// This keeps reactivity when destructuring from the store
-	const { isAuthenticated, user } = storeToRefs(authStore);
-
-	// You can still log values, but access them via the refs from storeToRefs
+	const { isAuthenticated, user } = storeToRefs(authStore); // You can still log values, but access them via the refs from storeToRefs
 	console.log("isAuthenticated", isAuthenticated.value);
-	console.log("user", user.value);
+	console.log("user from pages/index.vue: ", user);
+
+	// Access the actual user data value and print as JSON
+	console.log("User ID:", user.value?._id);
+	console.log(
+		"User object as JSON:",
+		JSON.stringify(user.value, null, 2)
+	);
+
+	// Access the actual user data value and print as JSON
+	console.log("User ID:", user.value?._id);
+	console.log(
+		"User object as JSON:",
+		JSON.stringify(user.value, null, 2)
+	);
 
 	// --- Rest of your script setup remains the same ---
 	const introArray = [
@@ -83,15 +95,22 @@
 				<div class="mb-6">
 					<!-- Access user properties via the user ref -->
 					<img
-						:src="user?.image"
-						:alt="user?.name"
+						:src="
+							user?.profile?.avatar ||
+							'/default-avatar.png'
+						"
+						:alt="user?.profile?.name"
 						class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-primary" />
 					<h2
 						class="text-2xl font-semibold text-center">
-						{{ user?.name }}
+						{{ user?.profile?.name }}
 					</h2>
 					<p class="text-gray-600 text-center">
-						@{{ user?.username }}
+						{{ user?.email }}
+					</p>
+					<p
+						class="text-sm text-gray-500 text-center mt-1">
+						ID: {{ user?._id }}
 					</p>
 				</div>
 
@@ -104,9 +123,7 @@
 						class="w-full bg-gray-200 rounded-full h-2.5">
 						<div
 							class="bg-primary h-2.5 rounded-full"
-							style="
-								width: 45%;
-							"></div>
+							style="width: 45%" />
 					</div>
 					<p class="text-sm text-gray-600 mt-2">
 						45% complete
