@@ -5,6 +5,16 @@
 	import FlashcardItem from "~/components/flashcards/listing/FlashcardItem.vue";
 	import { Plus } from "lucide-vue-next";
 	import { Button } from "~/components/ui/buttons";
+	import {
+		Dialog,
+		DialogTrigger,
+		DialogContent,
+		DialogHeader,
+		DialogTitle,
+		DialogDescription,
+		DialogFooter,
+		DialogClose,
+	} from "~/components/ui/dialog";
 
 	const authStore = useAuthStore();
 	const api = useApi();
@@ -93,10 +103,29 @@
 		</div>
 
 		<!-- Floating Action Button -->
-		<Button
-			class="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
-			aria-label="Add new flashcard">
-			<Plus class="w-6 h-6" />
-		</Button>
+		<Dialog>
+			<DialogTrigger>
+				<Button
+					class="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
+					aria-label="Add new flashcard">
+					<Plus class="w-6 h-6" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle
+						>Create New Flashcard
+					</DialogTitle>
+
+					<DialogDescription>
+						Create a new flashcard to start
+						practicing your English.
+					</DialogDescription>
+				</DialogHeader>
+				<DialogFooter>
+					<DialogClose />
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	</div>
 </template>
