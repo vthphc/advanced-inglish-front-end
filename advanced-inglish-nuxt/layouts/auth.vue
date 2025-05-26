@@ -8,19 +8,17 @@ const isRegisterPage = computed(() => route.path === "/register");
 
 <template>
     <div class="flex flex-col justify-center items-center min-h-screen">
-        <Button to="/" class="absolute top-0 left-0 m-8">
-            <House />
-        </Button>
-        <Button
-            v-if="isRegisterPage"
-            to="/login"
-            class="absolute top-0 right-0 m-8"
-        >
-            Login
-        </Button>
-        <Button v-else to="/register" class="absolute top-0 right-0 m-8">
-            Register
-        </Button>
+        <NuxtLink to="/">
+            <Button class="absolute top-0 left-0 m-8">
+                <House />
+            </Button>
+        </NuxtLink>
+        <NuxtLink v-if="isRegisterPage" to="/login">
+            <Button class="absolute top-0 right-0 m-8"> Login </Button>
+        </NuxtLink>
+        <NuxtLink v-else to="/register">
+            <Button class="absolute top-0 right-0 m-8"> Register </Button>
+        </NuxtLink>
         <slot />
     </div>
 </template>

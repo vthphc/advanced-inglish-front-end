@@ -172,7 +172,7 @@
 				<div class="flex flex-col">
 					<NuxtLink to="/register">
 						<motion.button
-							class="cursor-pointer w-fit m-auto py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
+							class=" w-fit m-auto py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
 							v-bind="fadeInPropsFn()"
 							>BẮT ĐẦU
 						</motion.button>
@@ -185,7 +185,7 @@
 						initial="rest"
 						animate="rest">
 						<p
-							className="text-md font-medium mt-4 font-roboto text-gray-500 tracking-tighter cursor-pointer">
+							className="text-md font-medium mt-4 font-roboto text-gray-500 tracking-tighter ">
 							<NuxtLink to="/login"
 								><span>
 									Đã có
