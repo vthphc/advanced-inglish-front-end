@@ -26,7 +26,7 @@ const schema = z.object({
 
 type Schema = z.output<typeof schema>;
 
-const formState = reactive<{
+const state = reactive<{
     name?: string;
     email?: string;
     dob?: string;
@@ -87,19 +87,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     // Extract only the plain values from the form
     const formValues = {
-        name: formState.name,
-        email: formState.email,
-        dob: formatDate(formState.dob!),
-        gender: formState.gender,
-        password: formState.password,
-        passwordConfirm: formState.passwordConfirm,
+        name: event.data.name,
+        email: event.data.email,
+        dob: formatDate(event.data.dob),
+        gender: event.data.gender,
+        password: event.data.password,
+        passwordConfirm: event.data.passwordConfirm,
     };
 
     console.log("Form values:", formValues);
 
     if (
-        !formState.password ||
-        formState.password !== formState.passwordConfirm
+        !event.data.password ||
+        event.data.password !== event.data.passwordConfirm
     ) {
         toast.add({
             title: "Error",
@@ -112,11 +112,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     isSubmitting.value = true;
     try {
         await authStore.register({
-            name: formState.name!,
-            email: formState.email!,
-            password: formState.password!,
-            dob: formState.dob!,
-            gender: formState.gender,
+            name: event.data.name,
+            email: event.data.email,
+            password: event.data.password,
+            dob: event.data.dob,
+            gender: event.data.gender,
         });
 
         toast.add({
@@ -160,13 +160,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <div>
         <UForm
             :schema="schema"
-            :state="formState"
+            :state="state"
             class="space-y-4 *:my-2 flex flex-col"
             @submit="onSubmit"
         >
             <UFormField label="Email" name="email">
                 <UInput
-                    v-model="formState.email"
+                    v-model="state.email"
                     size="xl"
                     color="highlight"
                     class="min-w-[300px]"
@@ -174,7 +174,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UFormField>
             <UFormField label="Tên" name="name">
                 <UInput
-                    v-model="formState.name"
+                    v-model="state.name"
                     size="xl"
                     color="highlight"
                     class="min-w-[300px]"
@@ -182,7 +182,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UFormField>
             <UFormField label="Ngày sinh" name="dob">
                 <UInput
-                    v-model="formState.dob"
+                    v-model="state.dob"
                     size="xl"
                     color="highlight"
                     type="date"
@@ -191,14 +191,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UFormField>
             <UFormField label="Giới tính" name="gender">
                 <USelect
-                    v-model="formState.gender"
+                    v-model="state.gender"
                     class="min-w-[300px]"
                     :items="genderOptions"
                 />
             </UFormField>
             <UFormField label="Mật khẩu" name="password">
                 <UInput
-                    v-model="formState.password"
+                    v-model="state.password"
                     size="xl"
                     color="highlight"
                     type="password"
@@ -207,7 +207,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UFormField>
             <UFormField label="Nhập lại mật khẩu" name="passwordConfirm">
                 <UInput
-                    v-model="formState.passwordConfirm"
+                    v-model="state.passwordConfirm"
                     size="xl"
                     color="highlight"
                     type="password"
