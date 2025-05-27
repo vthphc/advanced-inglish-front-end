@@ -15,14 +15,36 @@ import {
     DialogFooter,
     DialogClose,
 } from "~/components/ui/dialog";
+import { z } from "zod";
+import { reactive } from "vue";
+import type { FormSubmitEvent } from "@nuxt/ui";
+import { UForm, UFormField, UInput, UTextarea, UButton } from "#components";
+import LoadingSpinner from "~/components/LoadingSpinner.vue";
 
 const authStore = useAuthStore();
 const api = useApi();
+const toast = useToast();
 
 // State for dialogues
 const dialogues = ref<Dialogue[]>([]);
 const isLoading = ref(true);
+const isSubmitting = ref(false);
 const error = ref<string | null>(null);
+
+const formSchema = z.object({
+    topic: z
+        .string()
+        .min(1, "Topic is required")
+        .min(3, "Topic must be at least 3 characters"),
+    context: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+const formState = reactive<FormData>({
+    topic: "",
+    context: "",
+});
 
 // Fetch dialogues for the current user
 const fetchDialogues = async () => {
@@ -51,10 +73,48 @@ const fetchDialogues = async () => {
 onMounted(() => {
     fetchDialogues();
 });
+
+async function onSubmit(event: FormSubmitEvent<FormData>) {
+    try {
+        isSubmitting.value = true;
+        if (!authStore.user?._id) {
+            throw new Error("User not authenticated");
+        }
+
+        const response = await api.post("/dialogues/generate/", {
+            ...formState,
+            userId: authStore.user._id,
+        });
+
+        // Show success toast
+        toast.add({
+            title: "Success",
+            description: "Dialogue created successfully!",
+            color: "success",
+        });
+
+        // Close the dialog and refresh the dialogues list
+        const dialog = document.querySelector('[role="dialog"]');
+        if (dialog) {
+            dialog.remove();
+        }
+        await fetchDialogues();
+    } catch (err) {
+        console.error("Error creating dialogue:", err);
+        // TODO: Add error handling UI feedback
+    } finally {
+        isSubmitting.value = false;
+    }
+}
+
+// Add this function in the script section, after fetchDialogues
+const handleDialogueDeleted = (id: string) => {
+    dialogues.value = dialogues.value.filter((dialogue) => dialogue._id !== id);
+};
 </script>
 
 <template>
-    <div class="container mx-auto p-4 md:p-6 lg:p-8">
+    <div class="">
         <h1
             class="text-2xl md:text-3xl font-bold mb-6 border-b border-gray-300 pb-3 text-primary"
         >
@@ -63,9 +123,7 @@ onMounted(() => {
 
         <!-- Loading state -->
         <div v-if="isLoading" class="flex justify-center items-center py-8">
-            <div
-                class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
-            />
+            <LoadingSpinner />
         </div>
 
         <!-- Error state -->
@@ -97,13 +155,14 @@ onMounted(() => {
                     v-for="dialogue in dialogues"
                     :key="dialogue._id"
                     :dialogue="dialogue"
+                    @deleted="handleDialogueDeleted"
                 />
             </ul>
         </div>
         <Dialog>
             <DialogTrigger>
                 <Button
-                    class="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
+                    class="cursor-pointer fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
                     aria-label="Add new flashcard"
                 >
                     <Plus class="w-6 h-6" />
@@ -112,7 +171,38 @@ onMounted(() => {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create New Dialogue </DialogTitle>
+                    <UForm
+                        :schema="formSchema"
+                        :state="formState"
+                        class="space-y-4 w-full"
+                        @submit="onSubmit"
+                    >
+                        <UFormField label="Topic" name="topic" required>
+                            <UInput
+                                class="w-full"
+                                v-model="formState.topic"
+                                size="lg"
+                            />
+                        </UFormField>
 
+                        <UFormField label="Context (Optional)" name="context">
+                            <UTextarea
+                                class="w-full"
+                                v-model="formState.context"
+                                size="lg"
+                            />
+                        </UFormField>
+
+                        <UButton
+                            class="cursor-pointer w-full justify-center text-center py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
+                            type="submit"
+                            :loading="isSubmitting"
+                            block
+                            size="xl"
+                        >
+                            Create
+                        </UButton>
+                    </UForm>
                     <DialogDescription>
                         Create a new dialogue to start practicing your English.
                     </DialogDescription>
