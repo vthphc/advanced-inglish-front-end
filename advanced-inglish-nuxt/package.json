@@ -43,6 +43,7 @@
     "@vueuse/core": "^13.1.0",
     "@vueuse/nuxt": "^13.1.0",
     "eslint": "^9.24.0",
-    "eslint-plugin-vue": "^10.0.0"
+    "eslint-plugin-vue": "^10.0.0",
+    "tw-animate-css": "^1.3.0"
   }
 }

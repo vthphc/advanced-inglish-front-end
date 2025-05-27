@@ -145,7 +145,7 @@ export const useAuthStore = defineStore("auth", {
                 localStorage.removeItem("refreshToken");
             }
             // Potentially redirect here or let the component handle redirection
-            navigateTo("/login");
+            navigateTo("/");
         },
 
         async getCurrentUser(): Promise<User | null> {

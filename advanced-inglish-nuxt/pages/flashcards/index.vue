@@ -34,8 +34,8 @@ const error = ref<string | null>(null);
 const formSchema = z.object({
     topic: z
         .string()
-        .min(1, "Topic is required")
-        .min(2, "Topic must be at least 2 characters"),
+        .min(1, "Chủ đề là bắt buộc")
+        .min(2, "Chủ đề phải có ít nhất 2 ký tự"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -60,7 +60,7 @@ const fetchFlashcards = async () => {
         flashcards.value = response;
     } catch (err) {
         console.error("Error fetching flashcards:", err);
-        error.value = "Failed to load flashcards. Please try again later.";
+        error.value = "Không thể tải danh sách thẻ học. Vui lòng thử lại sau.";
     } finally {
         isLoading.value = false;
     }
@@ -94,8 +94,8 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
 
         // Show success toast
         toast.add({
-            title: "Success",
-            description: "Flashcard created successfully!",
+            title: "Thành công",
+            description: "Đã tạo thẻ học thành công!",
             color: "success",
         });
 
@@ -108,8 +108,8 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
     } catch (err) {
         console.error("Error creating flashcard:", err);
         toast.add({
-            title: "Error",
-            description: "Failed to create flashcard. Please try again.",
+            title: "Lỗi",
+            description: "Không thể tạo thẻ học. Vui lòng thử lại.",
             color: "error",
         });
     } finally {
@@ -124,7 +124,7 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
             <h1
                 class="text-2xl md:text-3xl font-bold mb-6 border-b border-gray-300 pb-3 text-primary"
             >
-                My Flashcards
+                Thẻ Học Của Tôi
             </h1>
 
             <!-- Loading state -->
@@ -144,7 +144,7 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
             <!-- Empty state -->
             <div v-else-if="!flashcards.length" class="text-center py-8">
                 <p class="text-gray-500">
-                    No flashcards found. Start creating some!
+                    Chưa có thẻ học nào. Hãy bắt đầu tạo một số thẻ học!
                 </p>
             </div>
 
@@ -155,7 +155,7 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
             >
                 <ul
                     role="list"
-                    class="divide-y gap-y-4 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
+                    class="divide-y gap-y-4 space-y-4 md:space-y-0 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
                 >
                     <FlashcardItem
                         v-for="flashcard in flashcards"
@@ -172,21 +172,21 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
             <DialogTrigger>
                 <Button
                     class="cursor-pointer fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
-                    aria-label="Add new flashcard"
+                    aria-label="Thêm thẻ học mới"
                 >
                     <Plus class="w-6 h-6" />
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create New Flashcard</DialogTitle>
+                    <DialogTitle>Tạo Thẻ Học Mới</DialogTitle>
                     <UForm
                         :schema="formSchema"
                         :state="formState"
                         class="space-y-4 w-full"
                         @submit="onSubmit"
                     >
-                        <UFormField label="Topic" name="topic" required>
+                        <UFormField label="Chủ đề" name="topic" required>
                             <UInput
                                 class="w-full"
                                 v-model="formState.topic"
@@ -201,11 +201,12 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
                             block
                             size="xl"
                         >
-                            Create
+                            Tạo
                         </UButton>
                     </UForm>
                     <DialogDescription>
-                        Create a new flashcard to start practicing your English.
+                        Tạo một thẻ học mới để bắt đầu luyện tập tiếng Anh của
+                        bạn.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

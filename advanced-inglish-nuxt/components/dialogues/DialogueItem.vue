@@ -37,7 +37,7 @@ const showDeleteDialog = ref(false);
 const formattedDate = computed(() => {
     if (!props.dialogue.createdAt) return "";
     const date = new Date(props.dialogue.createdAt);
-    return date.toLocaleDateString("en-GB", {
+    return date.toLocaleDateString("vi-VN", {
         day: "2-digit",
         month: "2-digit",
         year: "2-digit",
@@ -55,8 +55,8 @@ const handleDelete = async () => {
         isDeleting.value = true;
         await api.delete(`/dialogues/${props.dialogue._id}`);
         toast.add({
-            title: "Success",
-            description: "Dialogue deleted successfully!",
+            title: "Thành công",
+            description: "Đã xóa đối thoại thành công!",
             color: "success",
         });
         emit("deleted", props.dialogue._id);
@@ -64,8 +64,8 @@ const handleDelete = async () => {
     } catch (error) {
         console.error("Error deleting dialogue:", error);
         toast.add({
-            title: "Error",
-            description: "Failed to delete dialogue. Please try again.",
+            title: "Lỗi",
+            description: "Không thể xóa đối thoại. Vui lòng thử lại.",
             color: "error",
         });
     } finally {
@@ -87,7 +87,7 @@ const handleDelete = async () => {
                     <span
                         class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full"
                     >
-                        Dialogue
+                        Đối thoại
                     </span>
                 </div>
                 <div class="mb-2">
@@ -98,13 +98,13 @@ const handleDelete = async () => {
                 <div
                     class="flex flex-1 justify-between items-end text-xs text-gray-400"
                 >
-                    <span>{{ dialogue.dialogue.length }} lines</span>
+                    <span>{{ dialogue.dialogue.length }} dòng</span>
                     <div class="flex items-center gap-2">
                         <span>{{ formattedDate }}</span>
                         <button
                             @click.stop="showDeleteDialog = true"
                             class="cursor-pointer p-1 rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
-                            title="Delete dialogue"
+                            title="Xóa đối thoại"
                         >
                             <Trash2 class="w-4 h-4" />
                         </button>
@@ -123,10 +123,10 @@ const handleDelete = async () => {
     <Dialog v-model:open="showDeleteDialog">
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Delete Dialogue</DialogTitle>
+                <DialogTitle>Xóa Đối Thoại</DialogTitle>
                 <DialogDescription>
-                    Are you sure you want to delete this dialogue? This action
-                    cannot be undone.
+                    Bạn có chắc chắn muốn xóa đối thoại này? Hành động này không
+                    thể hoàn tác.
                 </DialogDescription>
             </DialogHeader>
             <DialogFooter class="flex gap-2 justify-end">
@@ -135,14 +135,14 @@ const handleDelete = async () => {
                     @click="showDeleteDialog = false"
                     :disabled="isDeleting"
                 >
-                    Cancel
+                    Hủy
                 </Button>
                 <Button
                     variant="destructive"
                     @click="handleDelete"
                     :loading="isDeleting"
                 >
-                    Delete
+                    Xóa
                 </Button>
             </DialogFooter>
         </DialogContent>

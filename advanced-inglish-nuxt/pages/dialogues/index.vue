@@ -34,8 +34,8 @@ const error = ref<string | null>(null);
 const formSchema = z.object({
     topic: z
         .string()
-        .min(1, "Topic is required")
-        .min(3, "Topic must be at least 3 characters"),
+        .min(1, "Chủ đề là bắt buộc")
+        .min(3, "Chủ đề phải có ít nhất 3 ký tự"),
     context: z.string().optional(),
 });
 
@@ -63,7 +63,8 @@ const fetchDialogues = async () => {
         dialogues.value = response;
     } catch (err) {
         console.error("Error fetching dialogues:", err);
-        error.value = "Failed to load dialogues. Please try again later.";
+        error.value =
+            "Không thể tải danh sách đối thoại. Vui lòng thử lại sau.";
     } finally {
         isLoading.value = false;
     }
@@ -88,8 +89,8 @@ async function onSubmit(event: FormSubmitEvent<FormData>) {
 
         // Show success toast
         toast.add({
-            title: "Success",
-            description: "Dialogue created successfully!",
+            title: "Thành công",
+            description: "Đã tạo đối thoại thành công!",
             color: "success",
         });
 
@@ -118,7 +119,7 @@ const handleDialogueDeleted = (id: string) => {
         <h1
             class="text-2xl md:text-3xl font-bold mb-6 border-b border-gray-300 pb-3 text-primary"
         >
-            My Dialogues
+            Đối Thoại Của Tôi
         </h1>
 
         <!-- Loading state -->
@@ -138,7 +139,7 @@ const handleDialogueDeleted = (id: string) => {
         <!-- Empty state -->
         <div v-else-if="!dialogues.length" class="text-center py-8">
             <p class="text-gray-500">
-                No dialogues found. Start creating some!
+                Chưa có đối thoại nào. Hãy bắt đầu tạo một số đối thoại!
             </p>
         </div>
 
@@ -149,7 +150,7 @@ const handleDialogueDeleted = (id: string) => {
         >
             <ul
                 role="list"
-                class="divide-y gap-y-4 divide-gray-200 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-4"
+                class="divide-y gap-y-4 space-y-4 md:space-y-0 divide-gray-200 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-4"
             >
                 <DialogueItem
                     v-for="dialogue in dialogues"
@@ -163,21 +164,21 @@ const handleDialogueDeleted = (id: string) => {
             <DialogTrigger>
                 <Button
                     class="cursor-pointer fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center"
-                    aria-label="Add new flashcard"
+                    aria-label="Thêm đối thoại mới"
                 >
                     <Plus class="w-6 h-6" />
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create New Dialogue </DialogTitle>
+                    <DialogTitle>Tạo Đối Thoại Mới</DialogTitle>
                     <UForm
                         :schema="formSchema"
                         :state="formState"
                         class="space-y-4 w-full"
                         @submit="onSubmit"
                     >
-                        <UFormField label="Topic" name="topic" required>
+                        <UFormField label="Chủ đề" name="topic" required>
                             <UInput
                                 class="w-full"
                                 v-model="formState.topic"
@@ -185,7 +186,7 @@ const handleDialogueDeleted = (id: string) => {
                             />
                         </UFormField>
 
-                        <UFormField label="Context (Optional)" name="context">
+                        <UFormField label="Ngữ cảnh (Tùy chọn)" name="context">
                             <UTextarea
                                 class="w-full"
                                 v-model="formState.context"
@@ -200,11 +201,12 @@ const handleDialogueDeleted = (id: string) => {
                             block
                             size="xl"
                         >
-                            Create
+                            Tạo
                         </UButton>
                     </UForm>
                     <DialogDescription>
-                        Create a new dialogue to start practicing your English.
+                        Tạo một đối thoại mới để bắt đầu luyện tập tiếng Anh của
+                        bạn.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

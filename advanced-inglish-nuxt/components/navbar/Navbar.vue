@@ -13,7 +13,9 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import ExpandingText from "./ExpandingText.vue";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { useAuthStore } from "~/stores/auth";
 
+const authStore = useAuthStore();
 const isMainMenuOpen = ref(false);
 const isUserMenuOpen = ref(false);
 
@@ -25,17 +27,17 @@ const user = ref({
 });
 
 const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Dialogues", href: "/dialogues" },
-    { name: "Flashcards", href: "/flashcards" },
-    { name: "Contacts", href: "/contacts" },
+    { name: "Trang chủ", href: "/" },
+    { name: "Đối thoại", href: "/dialogues" },
+    { name: "Thẻ học", href: "/flashcards" },
+    { name: "Liên hệ", href: "/contacts" },
 ];
 
 const userMenuItems = [
-    { name: "Profile", href: "/profile", icon: User },
-    { name: "Settings", href: "/settings", icon: Settings },
-    { name: "Notifications", href: "/notifications", icon: Bell },
-    { name: "Billing", href: "/billing", icon: CreditCard },
+    { name: "Hồ sơ", href: "/profile", icon: User },
+    { name: "Cài đặt", href: "/settings", icon: Settings },
+    { name: "Thông báo", href: "/notifications", icon: Bell },
+    { name: "Thanh toán", href: "/billing", icon: CreditCard },
 ];
 </script>
 
@@ -43,14 +45,14 @@ const userMenuItems = [
     <nav
         class="sticky top-0 z-70 w-full border-b-2 border-highlight backdrop-blur supports-[backdrop-filter]:bg-white/60"
     >
-        <div class="container flex h-16 items-center justify-between px-4">
+        <div class="flex h-16 items-center justify-between px-4">
             <!-- Mobile Main Navigation + logo-->
             <div class="flex items-center space-x-4">
                 <Sheet v-model:open="isMainMenuOpen">
                     <SheetTrigger as-child class="md:hidden">
                         <Button size="icon">
                             <Menu class="h-6 w-6" />
-                            <span class="sr-only">Toggle menu</span>
+                            <span class="sr-only">Chuyển đổi menu</span>
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="right" class="w-[300px] sm:w-[400px]">
@@ -59,16 +61,10 @@ const userMenuItems = [
                                 v-for="item in navigation"
                                 :key="item.name"
                                 :to="item.href"
-                                class="text-lg text-primary font-medium transition-colors hover:text-primary"
+                                class="text-lg font-medium transition-colors hover:text-primary"
                                 @click="isMainMenuOpen = false"
                             >
                                 {{ item.name }}
-                            </NuxtLink>
-                            <NuxtLink
-                                class="cursor-pointer text-primary text-lg font-medium transition-colors hover:text-primary"
-                                @click="isMainMenuOpen = false"
-                            >
-                                Profile
                             </NuxtLink>
                         </div>
                     </SheetContent>
@@ -169,10 +165,15 @@ const userMenuItems = [
                         <!-- Sign Out Button -->
                         <Button
                             class="w-full justify-start"
-                            @click="isUserMenuOpen = false"
+                            @click="
+                                () => {
+                                    isUserMenuOpen = false;
+                                    authStore.logout();
+                                }
+                            "
                         >
                             <LogOut class="h-4 w-4 mr-2" />
-                            Sign Out
+                            Đăng xuất
                         </Button>
                     </div>
                 </SheetContent>

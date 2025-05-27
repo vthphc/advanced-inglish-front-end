@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "tw-animate-css";
 
 @theme {
     --color-primary: oklch(0.5963 0.2355 291.89);
