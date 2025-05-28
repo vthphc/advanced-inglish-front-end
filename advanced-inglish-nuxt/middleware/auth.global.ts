@@ -1,23 +1,34 @@
 import { useAuthStore } from "~/stores/auth"; // Import the Pinia store
 
 export default defineNuxtRouteMiddleware((to) => {
-    // Get the auth store instance inside the middleware
-    // Note: Pinia stores are singletons, so this gets the existing instance
-    const authStore = useAuthStore();
+	// Get the auth store instance inside the middleware
+	// Note: Pinia stores are singletons, so this gets the existing instance
+	const authStore = useAuthStore();
 
-    // Check if route requires authentication using the store's state
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        // Store original destination for redirect after login
-        return navigateTo({
-            path: "/login",
-            query: { redirect: to.fullPath },
-        });
-    }
+	// Define public routes that don't require authentication
+	const publicRoutes = ["/", "/login", "/register"];
 
-    // Optional: Add logic for authenticated users trying to access guest-only pages (like login/register)
-    // if (to.meta.guestOnly && authStore.isAuthenticated) {
-    //   return navigateTo('/'); // Redirect to home or dashboard
-    // }
+	// Check if the current route starts with any public route
+	const isPublicRoute = publicRoutes.some((route) =>
+		to.path.startsWith(route)
+	);
+
+	// If the route is not public and user is not authenticated, redirect to login
+	if (!isPublicRoute && !authStore.isAuthenticated) {
+		return navigateTo({
+			path: "/login",
+			query: { redirect: to.fullPath },
+		});
+	}
+
+	// If user is authenticated and tries to access login/register, redirect to home
+	if (
+		(to.path.startsWith("/login") ||
+			to.path.startsWith("/register")) &&
+		authStore.isAuthenticated
+	) {
+		return navigateTo("/");
+	}
 });
 
 //Note: This middleware checks if the route requires authentication and if the user is authenticated via the Pinia store. If not, it redirects to the login page and stores the original destination in the query parameters for redirection after successful login.

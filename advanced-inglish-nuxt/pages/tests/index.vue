@@ -24,8 +24,8 @@ const handleTestAction = (title: string, uid: string) => {
     console.log("Action clicked for test:", title, uid);
     // Navigate to the specific test page, e.g., using router.push(`/tests/${test.uid}`)
     // Example navigation (uncomment and adjust as needed):
-    // const router = useRouter();
-    // router.push(`/tests/${test.uid}`);
+    const router = useRouter();
+    router.push(`/tests/${uid}`);
 };
 </script>
 

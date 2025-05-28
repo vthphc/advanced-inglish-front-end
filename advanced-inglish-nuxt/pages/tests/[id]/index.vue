@@ -1,17 +1,41 @@
 <script setup lang="ts">
 	import { mainFakeData } from "~/utils/fakeData/tests/testBank/main_fake_data";
+	import { Button } from "~/components/ui/buttons";
+	import { reactive } from "vue";
+	import { z } from "zod";
+
 	const route = useRoute();
 	const { id } = route.params as { id: string };
 	const test = mainFakeData.find((item) => item.uid === id);
-	const subItems = [
-		"Part 1",
-		"Part 2",
-		"Part 3",
-		"Part 4",
-		"Part 5",
-		"Part 6",
-		"Part 7",
-	];
+	const subItems =
+		test?.lessonsList.map(
+			(lesson) => `Part ${lesson.partNumber}`
+		) || [];
+
+	const formSchema = z.object({
+		selectedParts: z
+			.array(z.string())
+			.min(1, "Vui lòng chọn ít nhất một phần"),
+	});
+
+	const formState = reactive({
+		selectedParts: [],
+	});
+
+	async function onSubmit() {
+		try {
+			const validatedData = formSchema.parse(formState);
+			const partsParam =
+				validatedData.selectedParts.join(",");
+			await navigateTo(
+				`/tests/${id}/parts/${encodeURIComponent(
+					partsParam
+				)}`
+			);
+		} catch (error) {
+			console.error("Validation error:", error);
+		}
+	}
 </script>
 
 <template>
@@ -44,7 +68,13 @@
 					>
 				</p>
 			</div>
-			<URadioGroup :items="subItems" />
+			<UForm :state="formState" @submit="onSubmit">
+				<UCheckboxGroup
+					v-model="formState.selectedParts"
+					:items="subItems"
+					color="primary" />
+				<Button type="submit">Bắt đầu </Button>
+			</UForm>
 		</div>
 	</div>
 </template>
