@@ -65,11 +65,6 @@
 									question.id
 								"
 								type="button"
-								@click="
-									scrollToQuestion(
-										question.id
-									)
-								"
 								class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition-colors"
 								:class="{
 									'bg-blue-500 text-white':
@@ -88,7 +83,12 @@
 											question
 												.id
 										],
-								}">
+								}"
+								@click="
+									scrollToQuestion(
+										question.id
+									)
+								">
 								{{ index + 1 }}
 							</button>
 						</div>
@@ -104,11 +104,6 @@
 							v-for="part in selectedParts"
 							:key="part"
 							type="button"
-							@click="
-								testStore.setActiveTab(
-									part
-								)
-							"
 							class="px-4 py-2"
 							:class="{
 								'border-b-2 border-blue-500':
@@ -117,7 +112,12 @@
 								'text-gray-500':
 									testStore.activeTab !==
 									part,
-							}">
+							}"
+							@click="
+								testStore.setActiveTab(
+									part
+								)
+							">
 							Part {{ part }}
 						</button>
 					</div>
@@ -126,11 +126,11 @@
 					<div class="space-y-6">
 						<div
 							v-for="lesson in selectedLessons"
-							:key="lesson.partNumber"
 							v-show="
 								testStore.activeTab ===
 								lesson.partNumber
 							"
+							:key="lesson.partNumber"
 							class="border rounded-lg p-4">
 							<h2
 								class="text-xl font-semibold mb-2">
