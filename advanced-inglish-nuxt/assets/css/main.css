@@ -10,6 +10,10 @@
     --color-highlight: oklch(0.7659 0.1373 297.45);
     --color-hover-bg: oklch(0.6712 0.1907 295.36);
     --color-popover: oklch(0.99 0.1373 297.45);
+    --color-card: oklch(0.98 0 0);
+
+    /*text size*/
+    --text-2xs: 0.625rem;
 }
 
 :root {
