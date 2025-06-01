@@ -3,19 +3,59 @@
 	import Input from "~/components/ui/inputs/Input.vue";
 	import Button from "~/components/ui/buttons/Button.vue";
 	import Label from "~/components/ui/labels/Label.vue";
+	import { formatDate, formatDateToISO } from "~/utils/helpers";
 
 	const authStore = useAuthStore();
 	const user = computed(() => authStore.getUser);
+	console.log(user.value);
 
-	const formData = ref({
+	type FormField = {
+		id: "name" | "email" | "dob";
+		label: string;
+		type: "text" | "email" | "date";
+		disabled: boolean;
+	};
+
+	type FormData = {
+		name: string;
+		email: string;
+		dob: string;
+	};
+
+	const formData = ref<FormData>({
 		name: user.value?.profile.name || "",
 		email: user.value?.email || "",
-		dob: user.value?.profile.dob || "",
+		dob: formatDate(user.value?.profile.dob || null) || "",
 	});
 
+	const formFields: FormField[] = [
+		{
+			id: "name",
+			label: "Tên người dùng",
+			type: "text",
+			disabled: false,
+		},
+		{
+			id: "email",
+			label: "Email",
+			type: "email",
+			disabled: true,
+		},
+		{
+			id: "dob",
+			label: "Ngày sinh",
+			type: "text",
+			disabled: false,
+		},
+	];
+
 	const handleSubmit = async () => {
-		// TODO: Implement profile update logic
-		console.log("Form submitted:", formData.value);
+		// Convert dob back to ISO format before submitting
+		const submitData = {
+			...formData.value,
+			dob: formatDateToISO(formData.value.dob),
+		};
+		console.log("Form submitted:", submitData);
 	};
 
 	const handleCancel = () => {
@@ -23,52 +63,29 @@
 		formData.value = {
 			name: user.value?.profile.name || "",
 			email: user.value?.email || "",
-			dob: user.value?.profile.dob || "",
+			dob: formatDate(user.value?.profile.dob || null) || "",
 		};
 	};
 </script>
 
 <template>
-	<div class="container mx-auto p-4">
-		<h1 class="text-2xl font-bold mb-6">Chỉnh sửa hồ sơ</h1>
+	<div class="mx-auto p-4 max-w-[900px]">
+		<h1 class="text-5xl font-bold mb-6">Chỉnh sửa hồ sơ</h1>
 
-		<form @submit.prevent="handleSubmit" class="max-w-md">
+		<form class="mx-auto" @submit.prevent="handleSubmit">
 			<div class="space-y-4">
-				<div>
-					<Label for="name">Tên người dùng</Label>
-
+				<div
+					v-for="field in formFields"
+					:key="field.id"
+					class="">
+					<Label :for="field.id">{{
+						field.label
+					}}</Label>
 					<Input
-						id="name"
-						v-model="formData.name"
-						type="text"
-						class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
-				</div>
-
-				<div>
-					<Label
-						for="email"
-						class="block text-sm font-medium text-gray-700"
-						>Email</Label
-					>
-					<Input
-						id="email"
-						v-model="formData.email"
-						type="email"
-						disabled
-						class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-50" />
-				</div>
-
-				<div>
-					<Label
-						for="dob"
-						class="block text-sm font-medium text-gray-700"
-						>Ngày sinh</Label
-					>
-					<Input
-						id="dob"
-						v-model="formData.dob"
-						type="date"
-						class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+						:id="field.id"
+						v-model="formData[field.id]"
+						:type="field.type"
+						:disabled="field.disabled" />
 				</div>
 
 				<div class="flex justify-end space-x-4 mt-6">
