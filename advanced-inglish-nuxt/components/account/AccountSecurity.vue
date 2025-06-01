@@ -28,7 +28,7 @@ const navigation = [
                     v-for="item in navigation"
                     :key="item.href"
                     variant="ghost"
-                    class="w-full font-normal justify-between"
+                    class="cursor-pointer w-full font-normal justify-between"
                     :to="item.href"
                 >
                     <div class="flex items-center gap-2">

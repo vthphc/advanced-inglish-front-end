@@ -5,6 +5,7 @@
 	import Label from "~/components/ui/labels/Label.vue";
 	import { formatDate, formatDateToISO } from "~/utils/helpers";
 
+
 	const authStore = useAuthStore();
 	const user = computed(() => authStore.getUser);
 	console.log(user.value);
@@ -78,12 +79,15 @@
 					v-for="field in formFields"
 					:key="field.id"
 					class="">
-					<Label :for="field.id">{{
-						field.label
-					}}</Label>
+					<Label
+						:for="field.id"
+						class="font-bold"
+						>{{ field.label }}</Label
+					>
 					<Input
 						:id="field.id"
 						v-model="formData[field.id]"
+						class="py-4"
 						:type="field.type"
 						:disabled="field.disabled" />
 				</div>
