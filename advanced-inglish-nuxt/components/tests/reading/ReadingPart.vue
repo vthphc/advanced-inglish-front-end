@@ -34,10 +34,10 @@
 			v-for="(question, index) in questions"
 			:key="question.id"
 			:id="question.id"
-			class="border-b pb-4">
+			class="border-b-2 border-primary pb-4">
 			<div class="flex items-start gap-4 mb-2">
 				<span
-					class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold">
+					class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-bold">
 					{{ index + 1 }}
 				</span>
 				<p class="font-medium">
@@ -50,10 +50,10 @@
 					:key="option"
 					class="flex items-center">
 					<input
+						v-model="formState[question.id]"
 						type="radio"
 						:name="question.id"
 						:value="option"
-						v-model="formState[question.id]"
 						required
 						class="mr-2" />
 					<label>{{ option }}</label>

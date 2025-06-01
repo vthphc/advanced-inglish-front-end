@@ -47,13 +47,13 @@
 			v-for="(question, index) in questions"
 			:key="question.id"
 			:id="question.id"
-			class="border-b pb-4">
+			class="border-b-2 border-primary pb-4">
 			<div class="flex items-center gap-4 mb-4">
 				<button
 					v-if="question.audioURL"
 					type="button"
 					@click="playAudio(question.audioURL!)"
-					class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+					class="bg-primary text-white px-3 py-1 rounded hover:bg-primary/70 transition-colors duration-200">
 					Play Audio
 				</button>
 				<img
@@ -64,7 +64,7 @@
 			</div>
 			<div class="flex items-start gap-4 mb-2">
 				<span
-					class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold">
+					class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-bold">
 					{{ index + 1 }}
 				</span>
 				<p class="font-medium">
@@ -82,7 +82,7 @@
 						:value="option"
 						v-model="formState[question.id]"
 						required
-						class="mr-2" />
+						class="mr-2 accent-primary" />
 					<label>{{ option }}</label>
 				</div>
 				<p

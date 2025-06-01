@@ -3,10 +3,27 @@
 	import { Button } from "~/components/ui/buttons";
 	import { reactive } from "vue";
 	import { z } from "zod";
+	import { countTestParts } from "~/utils/helper";
+	import type {
+		GeneratedTest,
+		PartType,
+	} from "~/utils/fakeData/tests/types";
 
 	const route = useRoute();
 	const { id } = route.params as { id: string };
 	const test = mainFakeData.find((item) => item.uid === id);
+	// Convert the test to match GeneratedTest type with proper type casting
+	const typedTest = test
+		? ({
+				...test,
+				createdAt: new Date(test.createdAt),
+				lessonsList: test.lessonsList.map((part) => ({
+					...part,
+					type: part.type as PartType, // Explicitly cast to PartType
+				})),
+		  } as GeneratedTest)
+		: undefined;
+
 	const subItems =
 		test?.lessonsList.map(
 			(lesson) => `Part ${lesson.partNumber}`
@@ -40,9 +57,8 @@
 
 <template>
 	<div class="container mx-auto">
-		<span>Test id: {{ id }}</span>
-		<div>
-			<h1 class="text-3xl font-bold">
+		<div class="flex flex-col gap-y-4">
+			<h1 class="text-3xl text-primary font-bold">
 				{{ test?.title || "No test found" }}
 			</h1>
 			<div class="flex flex-row gap-x-4">
@@ -58,19 +74,25 @@
 			<div class="flex flex-col">
 				<p class="flex flex-row gap-x-2">
 					<span>Thời gian làm bài: 120 phút</span>
-					| <span>7 phần thi</span> |
-					<span>2395 bình luận</span>
-				</p>
-				<p class="flex flex-row">
+					|
 					<span
-						>1823424 người đã luyện tập đề
-						thi này</span
+						>{{
+							typedTest
+								? countTestParts(
+										typedTest
+								  )
+								: 0
+						}}
+						phần thi</span
 					>
+					|
+					<span>2395 bình luận</span>
 				</p>
 			</div>
 			<UForm :state="formState" @submit="onSubmit">
 				<UCheckboxGroup
 					v-model="formState.selectedParts"
+					class="my-4"
 					:items="subItems"
 					color="primary" />
 				<Button type="submit">Bắt đầu </Button>

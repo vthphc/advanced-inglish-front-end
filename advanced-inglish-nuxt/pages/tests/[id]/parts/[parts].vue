@@ -3,24 +3,61 @@
 	import ReadingPart from "~/components/tests/reading/ReadingPart.vue";
 	import ListeningPart from "~/components/tests/listening/ListeningPart.vue";
 	import { useTest } from "~/composables/useTest";
+	import { onBeforeRouteLeave } from "vue-router";
+	import { onMounted, onBeforeUnmount } from "vue";
+	import { useTestStore } from "~/stores/testStore";
+	import TestResults from "~/components/tests/TestResults.vue";
+
+	definePageMeta({
+		layout: "test",
+	});
 
 	const route = useRoute();
 	const { id, parts } = route.params as { id: string; parts: string };
 
-	const {
-		testStore,
-		parseSelectedParts,
-		scrollToQuestion,
-		handleSubmit,
-	} = useTest();
+	const testStore = useTestStore();
+
+	const { parseSelectedParts, scrollToQuestion, handleSubmit } =
+		useTest();
 
 	const selectedParts = parseSelectedParts(parts);
 	const selectedLessons = testStore.getSelectedLessons(id, selectedParts);
 
 	// Handle form submission
 	async function onSubmit() {
-		await handleSubmit(selectedLessons);
+		const success = await handleSubmit(selectedLessons);
+		if (success) {
+			navigateTo(`/tests/${id}/results`);
+		}
 	}
+
+	// Handle route navigation
+	onBeforeRouteLeave((to, from, next) => {
+		if (
+			window.confirm(
+				"Bạn có chắc chắn muốn rời khỏi trang? Tiến trình làm bài của bạn có thể bị mất."
+			)
+		) {
+			next();
+		} else {
+			next(false);
+		}
+	});
+
+	// Handle page refresh
+	const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+		e.preventDefault();
+		e.returnValue =
+			"Bạn có chắc chắn muốn tải lại trang? Tiến trình làm bài của bạn có thể bị mất.";
+	};
+
+	onMounted(() => {
+		window.addEventListener("beforeunload", handleBeforeUnload);
+	});
+
+	onBeforeUnmount(() => {
+		window.removeEventListener("beforeunload", handleBeforeUnload);
+	});
 </script>
 
 <template>
@@ -43,19 +80,21 @@
 				</p>
 			</div>
 
-			<div class="flex gap-6">
+			<div class="flex flex-col lg:flex-row gap-6">
 				<!-- Question Navigation -->
-				<div class="w-64 flex-shrink-0">
+				<div
+					class="w-full lg:w-64 flex-shrink-0 order-2 lg:order-2 bg-white rounded-lg shadow-md p-4 h-fit lg:sticky lg:top-4 md:sticky md:bottom-4">
 					<div
 						v-for="lesson in selectedLessons"
 						:key="lesson.partNumber"
 						class="mb-6">
-						<h3 class="font-semibold mb-2">
+						<h3
+							class="font-bold text-primary mb-2">
 							Part
 							{{ lesson.partNumber }}
 						</h3>
 						<div
-							class="grid grid-cols-4 gap-2">
+							class="grid grid-cols-6 md:grid-cols-5 gap-2">
 							<button
 								v-for="(
 									question,
@@ -65,9 +104,9 @@
 									question.id
 								"
 								type="button"
-								class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition-colors"
+								class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-sm transition-colors"
 								:class="{
-									'bg-blue-500 text-white':
+									'bg-primary text-white':
 										testStore.isQuestionAnswered(
 											question.id,
 											selectedLessons
@@ -93,10 +132,17 @@
 							</button>
 						</div>
 					</div>
+					<!-- Submit Button -->
+					<div class="mt-6">
+						<Button type="submit"
+							>NỘP BÀI</Button
+						>
+					</div>
 				</div>
 
 				<!-- Main Content -->
-				<div class="flex-grow">
+				<div
+					class="flex-grow order-1 lg:order-1 rounded-lg shadow-md p-4">
 					<!-- Tabs -->
 					<div
 						class="flex space-x-2 mb-4 border-b">
@@ -106,7 +152,7 @@
 							type="button"
 							class="px-4 py-2"
 							:class="{
-								'border-b-2 border-blue-500':
+								'border-b-2 border-primary text-primary font-bold':
 									testStore.activeTab ===
 									part,
 								'text-gray-500':
@@ -131,9 +177,9 @@
 								lesson.partNumber
 							"
 							:key="lesson.partNumber"
-							class="border rounded-lg p-4">
+							class="rounded-lg p-4">
 							<h2
-								class="text-xl font-semibold mb-2">
+								class="text-2xl font-bold text-primary mb-2">
 								Part
 								{{
 									lesson.partNumber
@@ -179,17 +225,12 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- Submit Button -->
-			<div class="mt-6">
-				<Button type="submit">Submit Test</Button>
-			</div>
 		</form>
+
+		<TestResults
+			:correct-answers="testStore.testResults.correctAnswers"
+			:total-questions="testStore.testResults.totalQuestions"
+			:is-visible="testStore.showResults"
+			@close="testStore.hideResults" />
 	</div>
 </template>
-
-<style scoped>
-	.container {
-		max-width: 1200px;
-	}
-</style>

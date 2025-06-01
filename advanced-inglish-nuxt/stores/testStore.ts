@@ -11,6 +11,14 @@ export const useTestStore = defineStore("test", () => {
 	const validationErrors = ref<Record<string, string>>({});
 	const hasErrors = ref(false);
 	const partRefs = ref<Record<number, any>>({});
+	const showResults = ref(false);
+	const testResults = ref<{
+		correctAnswers: number;
+		totalQuestions: number;
+	}>({
+		correctAnswers: 0,
+		totalQuestions: 0,
+	});
 
 	// Getters
 	const getTestById = (id: string) => {
@@ -61,9 +69,27 @@ export const useTestStore = defineStore("test", () => {
 			validationErrors.value = {};
 			hasErrors.value = false;
 
-			// Create form schema dynamically based on questions
-			const formSchema = z.object(
-				selectedLessons.reduce((acc, lesson) => {
+			// Validate all questions are answered
+			const allFormState = selectedLessons.reduce(
+				(acc, lesson) => {
+					const partRef =
+						partRefs.value[
+							lesson.partNumber
+						];
+					if (partRef) {
+						return {
+							...acc,
+							...partRef.formState,
+						};
+					}
+					return acc;
+				},
+				{}
+			);
+
+			// Create validation schema
+			const validationSchema = selectedLessons.reduce(
+				(acc, lesson) => {
 					lesson.questions.forEach(
 						(question: any) => {
 							acc[question.id] = z
@@ -75,43 +101,68 @@ export const useTestStore = defineStore("test", () => {
 						}
 					);
 					return acc;
-				}, {} as Record<string, z.ZodString>)
-			);
-
-			// Collect all form states from child components
-			const allFormState = selectedLessons.reduce(
-				(acc, lesson) => {
-					const partRef =
-						partRefs.value[
-							lesson.partNumber
-						];
-					if (partRef) {
-						Object.assign(
-							acc,
-							partRef.formState
-						);
-					}
-					return acc;
 				},
-				{} as Record<string, string>
+				{}
 			);
 
-			// Validate all form states
-			formSchema.parse(allFormState);
-			return { success: true, data: allFormState };
-		} catch (error) {
-			if (error instanceof z.ZodError) {
+			// Validate form state
+			const result = z
+				.object(validationSchema)
+				.safeParse(allFormState);
+
+			if (!result.success) {
 				hasErrors.value = true;
-				validationErrors.value = error.errors.reduce(
-					(acc, err) => {
-						acc[err.path[0]] = err.message;
-						return acc;
-					},
-					{} as Record<string, string>
-				);
+				result.error.errors.forEach((error) => {
+					const path = error.path[0] as string;
+					validationErrors.value[path] =
+						error.message;
+				});
+				return { success: false };
 			}
-			return { success: false, error };
+
+			// Count correct answers
+			let correctCount = 0;
+			let totalQuestions = 0;
+			selectedLessons.forEach((lesson) => {
+				lesson.questions.forEach((question: any) => {
+					totalQuestions++;
+					if (
+						allFormState[question.id] ===
+						question.answer
+					) {
+						correctCount++;
+					}
+				});
+			});
+
+			// Set test results
+			testResults.value = {
+				correctAnswers: correctCount,
+				totalQuestions,
+			};
+
+			return { success: true };
+		} catch (error) {
+			console.error("Validation error:", error);
+			hasErrors.value = true;
+			return { success: false };
 		}
+	};
+
+	const resetTest = () => {
+		validationErrors.value = {};
+		hasErrors.value = false;
+		partRefs.value = {};
+		showResults.value = false;
+		testResults.value = {
+			correctAnswers: 0,
+			totalQuestions: 0,
+		};
+		navigateTo("/tests");
+	};
+
+	const hideResults = () => {
+		showResults.value = false;
 	};
 
 	return {
@@ -121,6 +172,8 @@ export const useTestStore = defineStore("test", () => {
 		validationErrors,
 		hasErrors,
 		partRefs,
+		showResults,
+		testResults,
 
 		// Getters
 		getTestById,
@@ -132,5 +185,7 @@ export const useTestStore = defineStore("test", () => {
 		setPartRef,
 		isQuestionAnswered,
 		validateForm,
+		resetTest,
+		hideResults,
 	};
 });
