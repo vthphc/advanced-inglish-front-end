@@ -1,20 +1,22 @@
 import { useAuthStore } from "~/stores/auth"; // Import the Pinia store
+import { storeToRefs } from "pinia";
 
 export default defineNuxtRouteMiddleware((to) => {
+	// Only run middleware on client-side
+	if (import.meta.server) return;
+
 	// Get the auth store instance inside the middleware
-	// Note: Pinia stores are singletons, so this gets the existing instance
 	const authStore = useAuthStore();
+	const { isAuthenticated } = storeToRefs(authStore);
 
 	// Define public routes that don't require authentication
 	const publicRoutes = ["/", "/login", "/register"];
 
-	// Check if the current route starts with any public route
-	const isPublicRoute = publicRoutes.some((route) =>
-		to.path.startsWith(route)
-	);
+	// Check if the current route is exactly matching any public route
+	const isPublicRoute = publicRoutes.some((route) => to.path === route);
 
 	// If the route is not public and user is not authenticated, redirect to login
-	if (!isPublicRoute && !authStore.isAuthenticated) {
+	if (!isPublicRoute && !isAuthenticated.value) {
 		return navigateTo({
 			path: "/login",
 			query: { redirect: to.fullPath },
@@ -23,9 +25,8 @@ export default defineNuxtRouteMiddleware((to) => {
 
 	// If user is authenticated and tries to access login/register, redirect to home
 	if (
-		(to.path.startsWith("/login") ||
-			to.path.startsWith("/register")) &&
-		authStore.isAuthenticated
+		(to.path === "/login" || to.path === "/register") &&
+		isAuthenticated.value
 	) {
 		return navigateTo("/");
 	}

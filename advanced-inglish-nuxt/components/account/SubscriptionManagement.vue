@@ -32,11 +32,11 @@ const navigation = [
                     class="cursor-pointer w-full font-normal justify-between"
                     :to="item.href"
                 >
-                    <div class="flex items-center gap-2">
-                        <div class="p-1 rounded-md bg-gray-200">
+                    <div class="flex items-center gap-2 font-semibold">
+                        <div class="p-2 rounded-md bg-gray-200">
                             <component
                                 :is="item.icon"
-                                class="text-primary h-4 w-4"
+                                class="text-primary h-5 w-5"
                             />
                         </div>
                         <span>{{ item.name }}</span>

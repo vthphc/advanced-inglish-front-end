@@ -7,9 +7,9 @@
 import { useAuthStore } from "~/stores/auth";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-    if (import.meta.client) {
-        const authStore = useAuthStore();
-        // Initialize auth state when the app loads on the client
-        await authStore.initializeAuth();
-    }
+	if (import.meta.client) {
+		const authStore = useAuthStore();
+		// Initialize auth state when the app loads on the client
+		await authStore.initializeAuth();
+	}
 });

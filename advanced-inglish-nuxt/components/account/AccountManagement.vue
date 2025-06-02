@@ -33,14 +33,14 @@
 					variant="ghost"
 					class="w-full font-normal justify-between cursor-pointer"
 					:to="item.href">
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 font-semibold">
 						<div
-							class="p-1 rounded-md bg-gray-200">
+							class="p-2 rounded-md bg-gray-200">
 							<component
 								:is="item.icon"
-								class="h-4 w-4 text-primary" />
+								class="h-5 w-5 text-primary" />
 						</div>
-						<span>{{ item.name }}</span>
+						<span >{{ item.name }}</span>
 					</div>
 					<ChevronRight class="h-4 w-4" />
 				</Button>

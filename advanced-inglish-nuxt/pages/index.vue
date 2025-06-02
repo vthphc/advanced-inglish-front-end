@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia"; // Import storeToRefs for reactive access
 
 definePageMeta({
     title: "Inglish",
-    layout: "default",
+    layout: "homepage",
 });
 
 // Get the auth store instance
