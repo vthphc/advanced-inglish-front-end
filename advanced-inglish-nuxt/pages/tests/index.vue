@@ -2,10 +2,38 @@
 // Import the fake data array
 import { mainFakeData } from "~/utils/fakeData/tests/testBank/main_fake_data";
 import ListItem from "~/components/tests/listing/ListItem.vue";
+import { ref, onMounted } from "vue";
+import { useApi } from "~/composables/api/useApi";
+import type { Test } from "~/utils/types/test";
+
+// State for tests with proper typing
+const tests = ref<Test[]>([]);
+const isLoading = ref(true);
+const error = ref<string | null>(null);
 
 // Optional: Define page meta if needed
 definePageMeta({
     // middleware: ['auth'] // Add if this page requires authentication
+});
+
+// Fetch tests from API
+const fetchTests = async () => {
+    try {
+        const api = useApi();
+        const response = await api.get<Test[]>("/tests");
+        tests.value = response;
+    } catch (err: unknown) {
+        error.value =
+            err instanceof Error ? err.message : "Failed to fetch tests";
+        console.error("Error fetching tests:", err);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+// Fetch tests when component mounts
+onMounted(() => {
+    fetchTests();
 });
 
 // Helper function to format the date for description
@@ -20,12 +48,10 @@ const formatDate = (date: Date | string): string => {
 };
 
 // Handle action click (example)
-const handleTestAction = (title: string, uid: string) => {
-    console.log("Action clicked for test:", title, uid);
-    // Navigate to the specific test page, e.g., using router.push(`/tests/${test.uid}`)
-    // Example navigation (uncomment and adjust as needed):
+const handleTestAction = (title: string, id: string) => {
+    console.log("Action clicked for test:", title, id);
     const router = useRouter();
-    router.push(`/tests/${uid}`);
+    router.push(`/tests/${id}`);
 };
 </script>
 
@@ -38,30 +64,38 @@ const handleTestAction = (title: string, uid: string) => {
             Danh sách bài kiểm tra
         </h1>
 
+        <!-- Loading state -->
+        <div v-if="isLoading" class="text-center py-10">
+            <p class="text-gray-500">Đang tải...</p>
+        </div>
+
+        <!-- Error state -->
         <div
-            v-if="mainFakeData && mainFakeData.length > 0"
+            v-else-if="error"
+            class="text-center text-red-500 mt-10 py-10 bg-red-50 rounded-lg"
+        >
+            <p class="text-lg">{{ error }}</p>
+        </div>
+
+        <!-- Tests list -->
+        <div
+            v-else-if="tests && tests.length > 0"
             class="bg-white shadow-md overflow-hidden sm:rounded-lg p-4"
         >
-            <!-- Added shadow, rounded corners -->
             <ul
                 role="list"
                 class="divide-y space-y-4 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
             >
-                <!-- Standard list styling -->
-                <!-- Loop through the fake data -->
                 <ListItem
-                    v-for="test in mainFakeData"
-                    :key="test.uid"
+                    v-for="test in tests"
+                    :key="test._id"
                     :title="test.title"
+                    :topic="test.topic"
                     :description="`Được tạo vào: ${formatDate(test.createdAt)}`"
                     :show-default-action="true"
                     action-text="Chi tiết"
-                    @action-click="handleTestAction(test.title, test.uid)"
+                    @action-click="handleTestAction(test.title, test._id)"
                 >
-                    <!-- You can add custom actions via the slot if needed -->
-                    <!-- <template #actions>
-                        <UButton size="sm" variant="outline">Chi Tiết</UButton>
-                    </template> -->
                 </ListItem>
             </ul>
         </div>
@@ -69,7 +103,6 @@ const handleTestAction = (title: string, uid: string) => {
             v-else
             class="text-center text-gray-500 mt-10 py-10 bg-gray-50 rounded-lg"
         >
-            <!-- Styled the 'no data' message -->
             <p class="text-lg">Hiện không có bài kiểm tra nào.</p>
             <p class="text-sm mt-2">
                 Vui lòng quay lại sau hoặc liên hệ hỗ trợ.

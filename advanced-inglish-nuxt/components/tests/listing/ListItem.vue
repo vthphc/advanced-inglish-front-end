@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/buttons/";
 const props = defineProps({
+    topic: { type: String, required: true },
     title: {
         type: String,
         required: true,
@@ -32,6 +33,9 @@ defineEmits(["action-click"]);
     >
         <div class="flex items-center gap-4">
             <div class="flex flex-col">
+                <h3 class="text-2xl shrink-0 font-bold text-primary m-0">
+                    {{ topic }}
+                </h3>
                 <h3 class="shrink-0 text-base font-medium text-primary m-0">
                     {{ title }}
                 </h3>
