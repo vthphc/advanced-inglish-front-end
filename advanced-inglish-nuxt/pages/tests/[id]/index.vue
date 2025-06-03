@@ -1,28 +1,33 @@
 <script setup lang="ts">
 import { mainFakeData } from "~/utils/fakeData/tests/testBank/main_fake_data";
 import { Button } from "~/components/ui/buttons";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import { z } from "zod";
-import { countTestParts } from "~/utils/helper";
+import { countTestParts } from "~/utils/helpers";
+import { useApi } from "~/composables/api/useApi";
 import type { GeneratedTest, PartType } from "~/utils/fakeData/tests/types";
+import type { PopulatedTest } from "~/utils/types/test";
+import { useTestStore } from "~/stores/test";
 
 const route = useRoute();
 const { id } = route.params as { id: string };
-const test = mainFakeData.find((item) => item.uid === id);
-// Convert the test to match GeneratedTest type with proper type casting
-const typedTest = test
-    ? ({
-          ...test,
-          createdAt: new Date(test.createdAt),
-          lessonsList: test.lessonsList.map((part) => ({
-              ...part,
-              type: part.type as PartType, // Explicitly cast to PartType
-          })),
-      } as GeneratedTest)
-    : undefined;
+const testStore = useTestStore();
+const subItems = ref<string[]>([]);
+const api = useApi();
 
-const subItems =
-    test?.lessonsList.map((lesson) => `Part ${lesson.partNumber}`) || [];
+onMounted(async () => {
+    try {
+        const response = await api.get<PopulatedTest>(`/tests/${id}`);
+        testStore.setCurrentTest(response);
+        console.log("Test data:", response);
+        subItems.value =
+            testStore.currentTest?.lessonList.map(
+                (lesson) => `${lesson.title}`
+            ) || [];
+    } catch (error) {
+        console.error("Error fetching test:", error);
+    }
+});
 
 const formSchema = z.object({
     selectedParts: z.array(z.string()).min(1, "Vui lòng chọn ít nhất một phần"),
@@ -49,7 +54,7 @@ async function onSubmit() {
     <div class="container mx-auto">
         <div class="flex flex-col gap-y-4">
             <h1 class="text-3xl text-primary font-bold">
-                {{ test?.title || "No test found" }}
+                {{ testStore.currentTest?.title || "No test found" }}
             </h1>
             <div class="flex flex-row gap-x-4">
                 <button class="bg-gray-200 rounded-md cursor-pointer">
@@ -64,8 +69,14 @@ async function onSubmit() {
                     <span>Thời gian làm bài: 120 phút</span>
                     |
                     <span
-                        >{{ typedTest ? countTestParts(typedTest) : 0 }} phần
-                        thi</span
+                        >{{
+                            testStore.currentTest
+                                ? countTestParts(
+                                      testStore.currentTest.lessonList
+                                  )
+                                : 0
+                        }}
+                        phần thi</span
                     >
                     |
                     <span>2395 bình luận</span>
