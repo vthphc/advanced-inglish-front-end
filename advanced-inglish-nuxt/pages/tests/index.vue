@@ -95,8 +95,7 @@ const handleTestAction = (title: string, id: string) => {
                     :show-default-action="true"
                     action-text="Chi tiết"
                     @action-click="handleTestAction(test.title, test._id)"
-                >
-                </ListItem>
+                />
             </ul>
         </div>
         <div
