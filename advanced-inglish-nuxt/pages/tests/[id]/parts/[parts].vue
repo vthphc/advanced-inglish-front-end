@@ -1,60 +1,298 @@
 <script setup lang="ts">
-	import Button from "~/components/ui/buttons/Button.vue";
-	import ReadingPart from "~/components/tests/reading/ReadingPart.vue";
-	import ListeningPart from "~/components/tests/listening/ListeningPart.vue";
-	import { useTest } from "~/composables/useTest";
-	import { onBeforeRouteLeave } from "vue-router";
-	import { onMounted, onBeforeUnmount } from "vue";
-	import { useTestStore } from "~/stores/test";
-	import TestResults from "~/components/tests/TestResults.vue";
+import Button from "~/components/ui/buttons/Button.vue";
+import ReadingPart from "~/components/tests/reading/ReadingPart.vue";
+import ListeningPart from "~/components/tests/listening/ListeningPart.vue";
+import { useTest } from "~/composables/useTest";
+import { onBeforeRouteLeave } from "vue-router";
+import { onMounted, onBeforeUnmount } from "vue";
+import { useTestStore } from "~/stores/test";
+import TestResults from "~/components/tests/TestResults.vue";
+import { ref } from "vue";
+import { Card } from "~/components/ui/card";
+import { z } from "zod";
 
-	definePageMeta({
-		layout: "test",
-	});
+definePageMeta({
+    layout: "test",
+});
 
-	const route = useRoute();
-	const { id, parts } = route.params as { id: string; parts: string };
+const route = useRoute();
+const { id, parts } = route.params as { id: string; parts: string };
 
-	const testStore = useTestStore();
+const testStore = useTestStore();
+const selectedLessons = testStore.selectedLessons;
+const currentLessonIndex = ref(0);
 
-	// Handle form submission
-	async function onSubmit() {}
+// Track selected answers
+const selectedAnswers = ref<Record<string, string>>({});
 
-	// Handle route navigation
-	onBeforeRouteLeave((to, from, next) => {
-		if (
-			window.confirm(
-				"Bạn có chắc chắn muốn rời khỏi trang? Tiến trình làm bài của bạn có thể bị mất."
-			)
-		) {
-			next();
-		} else {
-			next(false);
-		}
-	});
+// Define validation schema
+const formSchema = z.object({
+    answers: z.record(z.string(), z.string().optional()),
+});
 
-	// Handle page refresh
-	const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-		e.preventDefault();
-		e.returnValue =
-			"Bạn có chắc chắn muốn tải lại trang? Tiến trình làm bài của bạn có thể bị mất.";
-	};
+type FormData = z.infer<typeof formSchema>;
 
-	onMounted(() => {
-		window.addEventListener("beforeunload", handleBeforeUnload);
-		console.log(
-			"Selected Lesson IDs:",
-			testStore.getSelectedLessonIds()
-		);
-	});
+// Track validation errors
+const validationErrors = ref<Record<string, string>>({});
 
-	onBeforeUnmount(() => {
-		window.removeEventListener("beforeunload", handleBeforeUnload);
-	});
+// Handle form submission
+async function onSubmit() {
+    try {
+        // Reset validation errors
+        validationErrors.value = {};
+
+        // Validate form data (optional, depending on backend needs)
+        // const validatedData = formSchema.parse({
+        //     answers: selectedAnswers.value,
+        // });
+
+        // Format data for submission
+        const submissionData = {
+            lessons: selectedLessons.map((lesson: any) => ({
+                lessonId: lesson._id, // Assuming lesson objects have an _id property
+                questions: lesson.questionsList
+                    .map((question: any) => {
+                        const selectedAnswer =
+                            selectedAnswers.value[question._id];
+                        if (selectedAnswer !== undefined) {
+                            return {
+                                questionId: question._id,
+                                selectedAnswer: selectedAnswer,
+                            };
+                        } else {
+                            return null; // Or handle unanswered questions as needed
+                        }
+                    })
+                    .filter((question: any) => question !== null), // Remove unanswered questions
+            })),
+        };
+
+        // Check if any answers were selected
+        const totalAnsweredQuestions = submissionData.lessons.reduce(
+            (count, lesson) => count + lesson.questions.length,
+            0
+        );
+
+        if (totalAnsweredQuestions === 0) {
+            // Prompt a warning if no answer is selected
+            // Assuming a toast notification system is available, e.g., useToast()
+            // You might need to adjust this based on your specific toast library
+            console.warn(
+                "Please select at least one answer before submitting."
+            );
+            // Example toast call (adjust based on your library):
+            // useToast().warning("Please select at least one answer before submitting.");
+            return; // Prevent submission
+        }
+
+        console.log("Submission Data:", submissionData);
+
+        // TODO: Add your API call to submit the data here
+        // Example: await $fetch(`/api/tests/${id}/submit`, { method: 'POST', body: submissionData });
+    } catch (err) {
+        console.error("Validation error:", err);
+        if (err instanceof z.ZodError) {
+            // Handle validation errors
+            validationErrors.value = err.errors.reduce((acc, error) => {
+                const path = error.path[1] as string; // Get the question ID
+                acc[path] = error.message;
+                return acc;
+            }, {} as Record<string, string>);
+        }
+    }
+}
+
+// Handle lesson selection
+function selectLesson(index: number) {
+    currentLessonIndex.value = index;
+}
+
+// Check if a question has been answered
+function isQuestionAnswered(questionId: string): boolean {
+    return selectedAnswers.value[questionId] !== undefined;
+}
+
+// Handle answer selection
+function handleAnswerSelect(questionId: string, answer: string) {
+    selectedAnswers.value[questionId] = answer;
+}
+
+// Handle route navigation
+onBeforeRouteLeave((to, from, next) => {
+    if (
+        window.confirm(
+            "Bạn có chắc chắn muốn rời khỏi trang? Tiến trình làm bài của bạn có thể bị mất."
+        )
+    ) {
+        next();
+    } else {
+        next(false);
+    }
+});
+
+// Handle page refresh
+const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue =
+        "Bạn có chắc chắn muốn tải lại trang? Tiến trình làm bài của bạn có thể bị mất.";
+};
+
+onMounted(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    console.log("[parts].vue selected lessons: ", selectedLessons);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+});
 </script>
 
 <template>
-	<div>
-		<h1></h1>
-	</div>
+    <div class="flex flex-col lg:flex-row gap-4">
+        <form
+            @submit.prevent="onSubmit"
+            class="flex-1 rounded-md shadow-md p-4"
+        >
+            <div class="flex space-x-2 mb-4 border-b">
+                <button
+                    v-for="(lesson, index) in selectedLessons"
+                    :key="index"
+                    type="button"
+                    class="px-4 py-2"
+                    :class="{
+                        'border-b-2 border-primary text-primary font-bold':
+                            currentLessonIndex === index,
+                        'text-gray-500': currentLessonIndex !== index,
+                    }"
+                    @click="selectLesson(index)"
+                >
+                    {{ lesson.title }}
+                </button>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-4">
+                <div class="flex-1">
+                    <div
+                        v-for="(lesson, index) in selectedLessons"
+                        :key="index"
+                        v-show="currentLessonIndex === index"
+                    >
+                        <div
+                            class="mb-8"
+                            v-for="(question, index) in lesson.questionsList"
+                            :key="index"
+                        >
+                            <div class="mb-4">
+                                <h2
+                                    class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-bold"
+                                >
+                                    {{ index + 1 }}
+                                </h2>
+                                <h2 class="mt-2 text-lg font-medium">
+                                    {{ question.question }}
+                                </h2>
+                                <audio controls>
+                                    <source
+                                        :src="question.audioURL"
+                                        type="audio/mp3"
+                                    />
+                                </audio>
+                                <NuxtImg :src="question.imageURL"></NuxtImg>
+                                <p>{{ question.content }}</p>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    v-for="(
+                                        option, optionIndex
+                                    ) in question.options"
+                                    :key="optionIndex"
+                                    class="flex items-center p-3 rounded-lg border border-gray-200 hover:border-primary cursor-pointer transition-colors"
+                                    :class="{
+                                        'border-primary bg-primary/5':
+                                            selectedAnswers[question._id] ===
+                                            option,
+                                    }"
+                                >
+                                    <input
+                                        type="radio"
+                                        :name="`question-${question._id}`"
+                                        :value="option"
+                                        class="mr-3 accent-primary"
+                                        :checked="
+                                            selectedAnswers[question._id] ===
+                                            option
+                                        "
+                                        @change="
+                                            handleAnswerSelect(
+                                                question._id,
+                                                option
+                                            )
+                                        "
+                                    />
+                                    <span>{{ option }}</span>
+                                </label>
+                                <p
+                                    v-if="validationErrors[question._id]"
+                                    class="text-red-500 text-sm mt-1"
+                                >
+                                    {{ validationErrors[question._id] }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Panel -->
+                <div
+                    class="lg:w-64 bg-gray-50 p-4 rounded-lg lg:sticky lg:top-4 lg:h-fit flex flex-col"
+                >
+                    <h3 class="font-bold mb-4">Question Navigation</h3>
+                    <div class="space-y-4 flex-1">
+                        <Card
+                            v-for="(lesson, lessonIndex) in selectedLessons"
+                            :key="lessonIndex"
+                        >
+                            <Card
+                                type="button"
+                                @click="selectLesson(lessonIndex)"
+                                class="p-4 hover:cursor-pointer"
+                                :class="{
+                                    'bg-primary hover:bg-primary':
+                                        currentLessonIndex === lessonIndex,
+                                }"
+                            >
+                                <div class="font-medium mb-2">
+                                    {{ lesson.title }}
+                                </div>
+                                <div class="grid grid-cols-5 gap-1">
+                                    <button
+                                        v-for="(
+                                            question, questionIndex
+                                        ) in lesson.questionsList"
+                                        :key="questionIndex"
+                                        type="button"
+                                        class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition-colors"
+                                        :class="{
+                                            'bg-highlight text-white':
+                                                isQuestionAnswered(
+                                                    question._id
+                                                ),
+                                            'bg-gray-100 text-black':
+                                                !isQuestionAnswered(
+                                                    question._id
+                                                ),
+                                        }"
+                                    >
+                                        {{ questionIndex + 1 }}
+                                    </button>
+                                </div>
+                            </Card>
+                        </Card>
+                    </div>
+                    <div class="mt-4 pt-4 border-t">
+                        <Button type="submit" class="w-full">Nộp bài</Button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </template>

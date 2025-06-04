@@ -1,57 +1,70 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import type { PopulatedTest } from "~/utils/types/test";
 
-export const useTestStore = defineStore("test", () => {
-	// State
-	const currentTest = ref<PopulatedTest | null>(null);
-	const selectedParts = ref<string[]>([]);
+export const useTestStore = defineStore(
+    "test",
+    () => {
+        // State
+        const currentTest = ref<PopulatedTest | null>(null);
+        const selectedParts = ref<string[]>([]);
+        const selectedLessons = ref<any[]>([]);
 
-	// Getters
-	const getCurrentTest = computed(() => currentTest.value);
-	const getSelectedParts = computed(() => selectedParts.value);
+        // Getters
+        const getCurrentTest = computed(() => currentTest.value);
+        const getSelectedParts = computed(() => selectedParts.value);
+        const getSelectedLessons = computed(() => selectedLessons.value);
 
-	// Actions
-	const setCurrentTest = (test: PopulatedTest) => {
-		currentTest.value = test;
-	};
+        // Actions
+        const setCurrentTest = (test: PopulatedTest) => {
+            currentTest.value = test;
+            updateSelectedLessons();
+        };
 
-	const setSelectedParts = (parts: string[]) => {
-		selectedParts.value = parts;
-	};
+        const setSelectedParts = (parts: string[]) => {
+            selectedParts.value = parts;
+            updateSelectedLessons();
+        };
 
-	const clearCurrentTest = () => {
-		currentTest.value = null;
-		selectedParts.value = [];
-	};
+        const clearCurrentTest = () => {
+            currentTest.value = null;
+            selectedParts.value = [];
+            selectedLessons.value = [];
+        };
 
-	function getSelectedLessonIds() {
-		if (!currentTest.value) return [];
+        function updateSelectedLessons() {
+            if (!currentTest.value) {
+                selectedLessons.value = [];
+                return;
+            }
 
-		return selectedParts.value
-			.map((selectedTitle) => {
-				const lesson =
-					currentTest.value?.lessonList.find(
-						(lesson) =>
-							lesson.title ===
-							selectedTitle
-					);
-				return lesson?._id;
-			})
-			.filter((id): id is string => id !== undefined);
-	}
+            selectedLessons.value = selectedParts.value
+                .map((selectedTitle) =>
+                    currentTest.value?.lessonList.find(
+                        (lesson) => lesson.title === selectedTitle
+                    )
+                )
+                .filter(Boolean);
+        }
 
-	return {
-		// State
-		currentTest,
-		selectedParts,
-		// Getters
-		getCurrentTest,
-		getSelectedParts,
-		// Actions
-		setCurrentTest,
-		setSelectedParts,
-		clearCurrentTest,
-		getSelectedLessonIds,
-	};
-});
+        return {
+            // State
+            currentTest,
+            selectedParts,
+            selectedLessons,
+            // Getters
+            getCurrentTest,
+            getSelectedParts,
+            getSelectedLessons,
+            // Actions
+            setCurrentTest,
+            setSelectedParts,
+            clearCurrentTest,
+        };
+    },
+    {
+        persist: {
+            storage: piniaPluginPersistedstate.localStorage(),
+        },
+    }
+);
