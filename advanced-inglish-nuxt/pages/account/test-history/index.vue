@@ -38,7 +38,6 @@ onMounted(() => {
 
 // Handle action click (view test details)
 const handleTestAction = (title: string, id: string) => {
-    console.log("Viewing test details:", title, id);
     const router = useRouter();
     router.push(`/account/test-history/${id}`);
 };
@@ -77,8 +76,9 @@ const handleTestAction = (title: string, id: string) => {
             >
                 <HistoryItem
                     v-for="test in takenTests"
-                    :key="test._id"
+                    :key="test.test._id"
                     :test="test"
+                    :testTitle="test.test.topic"
                     @action-click="handleTestAction"
                 />
             </ul>

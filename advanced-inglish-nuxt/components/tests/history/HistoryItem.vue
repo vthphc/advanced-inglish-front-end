@@ -32,7 +32,11 @@ const totalQuestions = computed(() => {
 
 // Handle action click
 const handleActionClick = () => {
-    emit("action-click", props.testTitle || "Test", props.test._id);
+    emit(
+        "action-click",
+        props.testTitle || "Bài kiểm tra",
+        props.test.test._id
+    );
 };
 </script>
 
@@ -43,12 +47,12 @@ const handleActionClick = () => {
         <div class="flex flex-col space-y-2">
             <!-- Test Title -->
             <h3 class="text-lg font-semibold text-gray-900">
-                {{ testTitle || "Test" }}
+                {{ testTitle || "Bài kiểm tra" }}
             </h3>
 
             <!-- Score -->
             <div class="flex items-center space-x-2">
-                <span class="text-sm font-medium text-gray-500">Score:</span>
+                <span class="text-sm font-medium text-gray-500">Điểm số:</span>
                 <span
                     :class="[
                         'text-lg font-bold',
@@ -59,22 +63,22 @@ const handleActionClick = () => {
                             : 'text-red-600',
                     ]"
                 >
-                    {{ test.score }}%
+                    {{ test.score }}
                 </span>
             </div>
 
             <!-- Date and Questions -->
             <div class="flex flex-col space-y-1">
                 <p class="text-sm text-gray-500">
-                    Taken on: {{ formatDate(test.takenAt) }}
+                    {{ formatDate(test.takenAt) }}
                 </p>
                 <p class="text-sm text-gray-500">
-                    Total Questions: {{ totalQuestions }}
+                    Tổng số câu hỏi: {{ totalQuestions }}
                 </p>
             </div>
 
             <!-- Action Button -->
-            <Button @click="handleActionClick"> View Details </Button>
+            <Button @click="handleActionClick">Xem chi tiết</Button>
         </div>
     </li>
 </template>

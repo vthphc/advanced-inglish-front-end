@@ -34,7 +34,7 @@ export interface TakenTestLesson {
 }
 
 export interface TakenTest {
-    test: string;
+    test: Test;
     score: number;
     takenAt: string;
     lessons: TakenTestLesson[];
