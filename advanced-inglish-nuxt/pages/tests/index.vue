@@ -84,7 +84,7 @@ const handleTestAction = (title: string, id: string) => {
         >
             <ul
                 role="list"
-                class="divide-y space-y-4 divide-gray-200 md:grid md:grid-cols-4 md:gap-x-4"
+                class="divide-y gap-4 divide-gray-200 grid md:grid md:grid-cols-4 md:gap-x-4"
             >
                 <ListItem
                     v-for="test in tests"

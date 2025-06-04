@@ -20,3 +20,27 @@ export interface PopulatedTest {
     comments: PopulatedComment[];
     createdAt: string;
 }
+
+export interface TakenTestQuestion {
+    question: string;
+    selectedAnswer: string;
+    _id: string;
+}
+
+export interface TakenTestLesson {
+    lesson: string;
+    questions: TakenTestQuestion[];
+    _id: string;
+}
+
+export interface TakenTest {
+    test: string;
+    score: number;
+    takenAt: string;
+    lessons: TakenTestLesson[];
+    _id: string;
+}
+
+export interface TakenTestsResponse {
+    takenTests: TakenTest[];
+}

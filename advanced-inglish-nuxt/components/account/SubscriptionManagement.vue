@@ -29,7 +29,7 @@ const navigation = [
                     v-for="item in navigation"
                     :key="item.href"
                     variant="ghost"
-                    class="cursor-pointer w-full font-normal justify-between"
+                    class="w-full font-normal justify-between cursor-pointer hover:scale-101 transition-all duration-200"
                     :to="item.href"
                 >
                     <div class="flex items-center gap-2 font-semibold">

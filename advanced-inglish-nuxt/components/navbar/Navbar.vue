@@ -36,7 +36,7 @@ const navigation = [
 
 const userMenuItems = [
     { name: "Tài khoản", href: "/account", icon: User },
-    { name: "Cài đặt", href: "/settings", icon: Settings },
+    // { name: "Cài đặt", href: "/settings", icon: Settings },
     { name: "Thông báo", href: "/notifications", icon: Bell },
     { name: "Thanh toán", href: "/billing", icon: CreditCard },
 ];
