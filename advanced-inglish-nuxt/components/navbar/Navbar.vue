@@ -102,7 +102,7 @@ const userMenuItems = [
                     <Button variant="ghost" size="icon" class="relative">
                         <Avatar class="h-8 w-8">
                             <AvatarImage
-                                :src="user.avatar || '/placeholder.svg'"
+                                :src="user.avatar || ''"
                                 :alt="user.name"
                             />
                             <AvatarFallback>
@@ -123,7 +123,7 @@ const userMenuItems = [
                         <div class="flex items-center space-x-3 pb-4">
                             <Avatar class="h-12 w-12">
                                 <AvatarImage
-                                    :src="user.avatar || '/placeholder.svg'"
+                                    :src="user.avatar || ''"
                                     :alt="user.name"
                                 />
                                 <AvatarFallback>

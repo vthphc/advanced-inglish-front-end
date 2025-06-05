@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ChevronRight, Pen } from "lucide-vue-next";
+import { ChevronRight, Pen, History } from "lucide-vue-next";
 
 const navigation = [
     // { name: "Trang chủ", href: "/" },
@@ -16,6 +16,11 @@ const navigation = [
         name: "Chỉnh sửa hồ sơ",
         href: "/account/profile",
         icon: Pen,
+    },
+    {
+        name: "Lịch sử làm bài",
+        href: "/account/test-history",
+        icon: History,
     },
 ];
 </script>

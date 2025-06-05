@@ -7,6 +7,7 @@ import { useApi } from "~/composables/api/useApi";
 import { z } from "zod";
 import { useToast } from "#imports";
 import { useRouter } from "vue-router";
+import { ChevronLeft } from "lucide-vue-next";
 
 const authStore = useAuthStore();
 const api = useApi();
@@ -124,10 +125,18 @@ const handleCancel = () => {
     // Navigate to account page
     router.push("/account");
 };
+
+const handleBackClick = () => {
+    router.push("/account/");
+};
 </script>
 
 <template>
     <div class="mx-auto p-4 max-w-[900px]">
+        <Button @click="handleBackClick" class="mb-4" size="icon"
+            ><ChevronLeft
+        /></Button>
+
         <h1 class="text-3xl text-primary font-bold mb-6">Thay đổi mật khẩu</h1>
 
         <form class="mx-auto" @submit.prevent="handleSubmit">

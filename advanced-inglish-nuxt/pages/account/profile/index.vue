@@ -8,6 +8,7 @@ import { z } from "zod";
 import type { AuthResponse } from "~/utils/types/user";
 import { useToast } from "#imports";
 import { useRouter } from "vue-router";
+import { ChevronLeft } from "lucide-vue-next";
 
 const authStore = useAuthStore();
 const api = useApi();
@@ -129,6 +130,9 @@ const handleCancel = () => {
 
 <template>
     <div class="mx-auto p-4 max-w-[900px]">
+        <Button @click="handleCancel" class="mb-4" size="icon"
+            ><ChevronLeft
+        /></Button>
         <h1 class="text-3xl text-primary font-bold mb-6">Chỉnh sửa hồ sơ</h1>
 
         <form class="mx-auto" @submit.prevent="handleSubmit">

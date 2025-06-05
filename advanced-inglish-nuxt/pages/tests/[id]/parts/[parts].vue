@@ -44,10 +44,22 @@ async function onSubmit() {
         // Reset validation errors
         validationErrors.value = {};
 
-        // Validate form data (optional, depending on backend needs)
-        // const validatedData = formSchema.parse({
-        //     answers: selectedAnswers.value,
-        // });
+        // Check if all questions are answered
+        const totalQuestions = selectedLessons.reduce(
+            (count, lesson) => count + lesson.questionsList.length,
+            0
+        );
+        const answeredQuestions = Object.keys(selectedAnswers.value).length;
+
+        if (answeredQuestions < totalQuestions) {
+            toast.add({
+                title: "Chưa hoàn thành",
+                description:
+                    "Vui lòng trả lời tất cả các câu hỏi trước khi nộp bài!",
+                color: "warning",
+            });
+            return;
+        }
 
         // Format data for submission
         const submissionData = {
