@@ -9,6 +9,14 @@ import { ref } from "vue";
 import { Card } from "~/components/ui/card";
 import { z } from "zod";
 import { useApi } from "~/composables/api/useApi";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "~/components/ui/dialog";
 
 definePageMeta({
     layout: "test",
@@ -38,6 +46,9 @@ const toast = useToast();
 const validationErrors = ref<Record<string, string>>({});
 const api = useApi();
 
+// Add after other refs
+const showSuccessDialog = ref(false);
+
 // Handle form submission
 async function onSubmit() {
     try {
@@ -63,9 +74,9 @@ async function onSubmit() {
 
         // Format data for submission
         const submissionData = {
-            userId: authStore.user?._id, // Add the user's ID from the auth store
+            userId: authStore.user?._id,
             lessons: selectedLessons.map((lesson: any) => ({
-                lessonId: lesson._id, // Assuming lesson objects have an _id property
+                lessonId: lesson._id,
                 questions: lesson.questionsList
                     .map((question: any) => {
                         const selectedAnswer =
@@ -76,10 +87,10 @@ async function onSubmit() {
                                 selectedAnswer: selectedAnswer,
                             };
                         } else {
-                            return null; // Or handle unanswered questions as needed
+                            return null;
                         }
                     })
-                    .filter((question: any) => question !== null), // Remove unanswered questions
+                    .filter((question: any) => question !== null),
             })),
         };
 
@@ -90,17 +101,12 @@ async function onSubmit() {
         );
 
         if (totalAnsweredQuestions === 0) {
-            // Prompt a warning if no answer is selected
-            // Assuming a toast notification system is available, e.g., useToast()
-            // You might need to adjust this based on your specific toast library
             toast.add({
                 title: "Error",
                 description: "Hãy chọn ít nhất một câu trả lời!",
                 color: "error",
             });
-            // Example toast call (adjust based on your library):
-            // useToast().warning("Please select at least one answer before submitting.");
-            return; // Prevent submission
+            return;
         }
 
         try {
@@ -109,17 +115,20 @@ async function onSubmit() {
                 submissionData
             );
             console.log("Submission successful:", response);
-            // TODO: Handle successful submission (e.g., navigate to results page)
+            showSuccessDialog.value = true;
         } catch (apiError) {
             console.error("API submission error:", apiError);
-            // TODO: Handle API error (e.g., display error message to user)
+            toast.add({
+                title: "Lỗi",
+                description: "Có lỗi xảy ra khi nộp bài. Vui lòng thử lại!",
+                color: "error",
+            });
         }
     } catch (err) {
         console.error("Validation error:", err);
         if (err instanceof z.ZodError) {
-            // Handle validation errors
             validationErrors.value = err.errors.reduce((acc, error) => {
-                const path = error.path[1] as string; // Get the question ID
+                const path = error.path[1] as string;
                 acc[path] = error.message;
                 return acc;
             }, {} as Record<string, string>);
@@ -174,6 +183,34 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="flex flex-col lg:flex-row gap-4">
+        <Dialog v-model:open="showSuccessDialog">
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle class="text-primary font-semibold"
+                        >Nộp bài thành công!</DialogTitle
+                    >
+                    <DialogDescription>
+                        Bài kiểm tra của bạn đã được nộp thành công. Bạn có muốn
+                        xem kết quả ngay bây giờ không?
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter class="sm:justify-start">
+                    <Button
+                        type="button"
+                        @click="navigateTo(`/account/test-history`)"
+                    >
+                        Xem kết quả
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        @click="navigateTo('/tests')"
+                    >
+                        Quay lại danh sách bài kiểm tra
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
         <form
             @submit.prevent="onSubmit"
             class="flex-1 rounded-md shadow-md p-4"

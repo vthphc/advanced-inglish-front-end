@@ -36,7 +36,11 @@ const fetchTakenTests = async () => {
         const response = await api.get<TakenTestsResponse>(
             "/auth/taken-tests/"
         );
-        takenTests.value = response.takenTests;
+        // Sort tests by date in descending order (newest first)
+        takenTests.value = response.takenTests.sort(
+            (a, b) =>
+                new Date(b.takenAt).getTime() - new Date(a.takenAt).getTime()
+        );
         console.log(response.takenTests);
     } catch (err: unknown) {
         error.value =
