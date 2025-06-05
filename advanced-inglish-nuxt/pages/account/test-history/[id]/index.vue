@@ -4,8 +4,10 @@ import { onMounted, nextTick } from "vue";
 import { useHistoryStore } from "~/stores/history-details";
 import { Button } from "~/components/ui/buttons";
 import { Card } from "~/components/ui/card";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const history = useHistoryStore();
 const testId = route.params.id;
 const api = useApi();
@@ -131,7 +133,10 @@ function scrollToTop(lessonIndex: number) {
                                 <h2 class="mt-2 text-lg font-medium">
                                     {{ question.question.question }}
                                 </h2>
-                                <audio controls>
+                                <audio
+                                    v-if="question.question.audioURL"
+                                    controls
+                                >
                                     <source
                                         :src="question.question.audioURL"
                                         type="audio/mp3"
@@ -239,6 +244,13 @@ function scrollToTop(lessonIndex: number) {
                                 </div>
                             </Card>
                         </Card>
+                    </div>
+                    <div class="mt-4 pt-4 border-t">
+                        <Button
+                            @click="router.push('/account/test-history')"
+                            class="w-full"
+                            >Quay lại</Button
+                        >
                     </div>
                 </div>
             </div>

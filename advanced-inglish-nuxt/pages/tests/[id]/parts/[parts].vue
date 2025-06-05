@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
                                 <h2 class="mt-2 text-lg font-medium">
                                     {{ question.question }}
                                 </h2>
-                                <audio controls>
+                                <audio v-if="question.audioURL" controls>
                                     <source
                                         :src="question.audioURL"
                                         type="audio/mp3"
