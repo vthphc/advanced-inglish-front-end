@@ -183,7 +183,7 @@ const handleBackClick = () => {
                                     class="text-xs sm:text-sm"
                                     variant="ghost"
                                 >
-                                    View Details
+                                    Xem chi tiết
                                 </Button>
                             </td>
                         </tr>

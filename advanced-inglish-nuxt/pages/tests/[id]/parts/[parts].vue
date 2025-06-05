@@ -5,6 +5,7 @@ import { onMounted, onBeforeUnmount } from "vue";
 import { useTestStore } from "~/stores/test";
 import { useAuthStore } from "~/stores/auth";
 import TestResults from "~/components/tests/TestResults.vue";
+import ReadingListeningQuestion from "~/components/tests/ReadingListeningQuestion.vue";
 import { ref } from "vue";
 import { Card } from "~/components/ui/card";
 import { z } from "zod";
@@ -85,6 +86,7 @@ async function onSubmit() {
                             return {
                                 questionId: question._id,
                                 selectedAnswer: selectedAnswer,
+                                questionType: question.type,
                             };
                         } else {
                             return null;
@@ -238,68 +240,15 @@ onBeforeUnmount(() => {
                         :key="index"
                         v-show="currentLessonIndex === index"
                     >
-                        <div
-                            class="mb-8"
-                            v-for="(question, index) in lesson.questionsList"
-                            :key="index"
-                        >
-                            <div class="mb-4">
-                                <h2
-                                    class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white font-bold"
-                                >
-                                    {{ index + 1 }}
-                                </h2>
-                                <h2 class="mt-2 text-lg font-medium">
-                                    {{ question.question }}
-                                </h2>
-                                <audio v-if="question.audioURL" controls>
-                                    <source
-                                        :src="question.audioURL"
-                                        type="audio/mp3"
-                                    />
-                                </audio>
-                                <NuxtImg :src="question.imageURL"></NuxtImg>
-                                <p>{{ question.content }}</p>
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    v-for="(
-                                        option, optionIndex
-                                    ) in question.options"
-                                    :key="optionIndex"
-                                    class="flex items-center p-3 rounded-lg border border-gray-200 hover:border-primary cursor-pointer transition-colors"
-                                    :class="{
-                                        'border-primary bg-primary/5':
-                                            selectedAnswers[question._id] ===
-                                            option,
-                                    }"
-                                >
-                                    <input
-                                        type="radio"
-                                        :name="`question-${question._id}`"
-                                        :value="option"
-                                        class="mr-3 accent-primary"
-                                        :checked="
-                                            selectedAnswers[question._id] ===
-                                            option
-                                        "
-                                        @change="
-                                            handleAnswerSelect(
-                                                question._id,
-                                                option
-                                            )
-                                        "
-                                    />
-                                    <span>{{ option }}</span>
-                                </label>
-                                <p
-                                    v-if="validationErrors[question._id]"
-                                    class="text-red-500 text-sm mt-1"
-                                >
-                                    {{ validationErrors[question._id] }}
-                                </p>
-                            </div>
-                        </div>
+                        <ReadingListeningQuestion
+                            v-for="(question, qIndex) in lesson.questionsList"
+                            :key="qIndex"
+                            :question="question"
+                            :index="qIndex"
+                            :selected-answer="selectedAnswers[question._id]"
+                            :validation-error="validationErrors[question._id]"
+                            @answer="handleAnswerSelect"
+                        />
                     </div>
                 </div>
 
