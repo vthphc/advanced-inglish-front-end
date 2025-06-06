@@ -8,6 +8,7 @@
 	import ReadingListeningQuestion from "~/components/tests/reading_listening/ReadingListeningQuestion.vue";
 	import WritingQuestion from "~/components/tests/writing/WritingQuestion.vue";
 	import WritingInstructions from "~/components/tests/writing/WritingInstructions.vue";
+	import SpeakingQuestion from "~/components/tests/speaking/SpeakingQuestion.vue";
 	import { Card } from "~/components/ui/card";
 	import { z } from "zod";
 	import { useApi } from "~/composables/api/useApi";
@@ -337,6 +338,45 @@
 								currentPartName
 							" />
 						<WritingQuestion
+							v-for="(
+								question, qIndex
+							) in lesson.questionsList"
+							:key="qIndex"
+							:question="question"
+							:index="qIndex"
+							:selected-answer="
+								selectedAnswers[
+									question
+										._id
+								]
+							"
+							:validation-error="
+								validationErrors[
+									question
+										._id
+								]
+							"
+							@answer="
+								handleAnswerSelect
+							" />
+					</div>
+				</div>
+				<div
+					v-if="
+						testStore.getSelectedTestType ===
+						'Speaking'
+					"
+					class="flex-1">
+					<div
+						v-for="(
+							lesson, index
+						) in selectedLessons"
+						v-show="
+							currentLessonIndex ===
+							index
+						"
+						:key="index">
+						<SpeakingQuestion
 							v-for="(
 								question, qIndex
 							) in lesson.questionsList"
