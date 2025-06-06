@@ -6,6 +6,8 @@
 	import { useAuthStore } from "~/stores/auth";
 	import TestResults from "~/components/tests/TestResults.vue";
 	import ReadingListeningQuestion from "~/components/tests/reading_listening/ReadingListeningQuestion.vue";
+	import WritingQuestion from "~/components/tests/writing/WritingQuestion.vue";
+	import WritingInstructions from "~/components/tests/writing/WritingInstructions.vue";
 	import { Card } from "~/components/ui/card";
 	import { z } from "zod";
 	import { useApi } from "~/composables/api/useApi";
@@ -29,6 +31,8 @@
 	const authStore = useAuthStore();
 	const selectedLessons = testStore.selectedLessons;
 	const currentLessonIndex = ref(0);
+	const currentPartName = ref(selectedLessons[0]?.title);
+	console.log("currentPartName:  ", currentPartName);
 
 	// Track selected answers
 	const selectedAnswers = ref<Record<string, string>>({});
@@ -165,8 +169,9 @@
 	}
 
 	// Handle lesson selection
-	function selectLesson(index: number) {
+	function selectLesson(index: number, partName: string) {
 		currentLessonIndex.value = index;
+		currentPartName.value = partName;
 	}
 
 	// Check if a question has been answered
@@ -263,12 +268,22 @@
 							currentLessonIndex !==
 							index,
 					}"
-					@click="selectLesson(index)">
+					@click="
+						selectLesson(
+							index,
+							lesson.title
+						)
+					">
 					{{ lesson.title }}
 				</button>
 			</div>
 			<div class="flex flex-col lg:flex-row gap-4">
-				<div class="flex-1">
+				<div
+					v-if="
+						testStore.getSelectedTestType ===
+						'ReadingListening'
+					"
+					class="flex-1">
 					<div
 						v-for="(
 							lesson, index
@@ -279,6 +294,49 @@
 						"
 						:key="index">
 						<ReadingListeningQuestion
+							v-for="(
+								question, qIndex
+							) in lesson.questionsList"
+							:key="qIndex"
+							:question="question"
+							:index="qIndex"
+							:selected-answer="
+								selectedAnswers[
+									question
+										._id
+								]
+							"
+							:validation-error="
+								validationErrors[
+									question
+										._id
+								]
+							"
+							@answer="
+								handleAnswerSelect
+							" />
+					</div>
+				</div>
+				<div
+					v-if="
+						testStore.getSelectedTestType ===
+						'Writing'
+					"
+					class="flex-1">
+					<div
+						v-for="(
+							lesson, index
+						) in selectedLessons"
+						v-show="
+							currentLessonIndex ===
+							index
+						"
+						:key="index">
+						<WritingInstructions
+							:part="
+								currentPartName
+							" />
+						<WritingQuestion
 							v-for="(
 								question, qIndex
 							) in lesson.questionsList"
@@ -323,7 +381,8 @@
 								}"
 								@click="
 									selectLesson(
-										lessonIndex
+										lessonIndex,
+										lesson.title
 									)
 								">
 								<div
