@@ -43,7 +43,7 @@ const handleAnswerSelect = (questionId: string, answer: string) => {
             <NuxtImg
                 v-if="question.imageURL"
                 :src="question.imageURL"
-            ></NuxtImg>
+            />
             <p>{{ question.content }}</p>
         </div>
         <div class="space-y-2">
