@@ -217,13 +217,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             <Button type="submit" :disabled="isSubmitting">
                 {{ isSubmitting ? "Đang đăng ký..." : "Đăng ký" }}
             </Button>
-            <USeparator size="md" label="Hoặc đăng ký qua" />
+            <!-- <USeparator size="md" label="Hoặc đăng ký qua" />
             <div class="mt-6">
                 <Button>
                     <GoogleIcon />
                     Google
                 </Button>
-            </div>
+            </div> -->
         </UForm>
 
         <!-- Registration Success Dialog -->

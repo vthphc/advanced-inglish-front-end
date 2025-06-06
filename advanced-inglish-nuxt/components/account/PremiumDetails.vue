@@ -44,9 +44,9 @@
 				>
 			</div>
 		</Card>
-		<div class="gap-y-4 flex flex-col shrink basis-0 grow">
+		<!-- <div class="gap-y-4 flex flex-col shrink basis-0 grow">
 			<Card
-				class="cursor-pointer hover:text-primary"
+				class="cursor-pointer hover:text-primary h-full"
 				@click="router.push('/account/profile')"
 				><CardHeader class="place-self-center"
 					><CardTitle
@@ -57,8 +57,8 @@
 						sơ</CardDescription
 					></CardHeader
 				></Card
-			>
-			<Card class="cursor-pointer hover:text-primary"
+			> -->
+			<!-- <Card class="cursor-pointer hover:text-primary"
 				><CardHeader class="place-self-center"
 					><CardTitle
 						class="text-sm place-self-center"
@@ -67,7 +67,7 @@
 						>Cập nhật thẻ</CardDescription
 					></CardHeader
 				></Card
-			>
-		</div>
+			> -->
+		<!-- </div> -->
 	</div>
 </template>
