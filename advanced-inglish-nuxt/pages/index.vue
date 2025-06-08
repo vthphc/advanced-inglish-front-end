@@ -20,16 +20,6 @@ const authStore = useAuthStore();
 // Use storeToRefs to get reactive refs for state properties
 // This keeps reactivity when destructuring from the store
 const { isAuthenticated, user } = storeToRefs(authStore); // You can still log values, but access them via the refs from storeToRefs
-console.log("isAuthenticated", isAuthenticated.value);
-console.log("user from pages/index.vue: ", user);
-
-// Access the actual user data value and print as JSON
-console.log("User ID:", user.value?._id);
-console.log("User object as JSON:", JSON.stringify(user.value, null, 2));
-
-// Access the actual user data value and print as JSON
-console.log("User ID:", user.value?._id);
-console.log("User object as JSON:", JSON.stringify(user.value, null, 2));
 
 // --- Rest of your script setup remains the same ---
 const introArray = [
