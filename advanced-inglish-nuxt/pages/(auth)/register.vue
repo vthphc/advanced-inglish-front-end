@@ -232,7 +232,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             :countdown="countdown"
             :message="
                 authStore.message ||
-                'Registration successful! Please verify your email.'
+                'Đăng ký thành công! Xin hãy kiểm tra email của bạn.'
             "
             redirect-path="/login"
             @update:open="showDialog = $event"

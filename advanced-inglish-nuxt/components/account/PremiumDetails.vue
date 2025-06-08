@@ -3,14 +3,14 @@
 	import { Pen, CreditCard } from "lucide-vue-next";
 	import {
 		Card,
-		CardContent,
 		CardDescription,
-		CardFooter,
 		CardHeader,
 		CardTitle,
 	} from "@/components/ui/card";
+	import { capitalizeFirstLetter, formatDate } from "~/utils/helpers";
 
 	const router = useRouter();
+	const authStore = useAuthStore();
 </script>
 
 <template>
@@ -21,20 +21,36 @@
 					>Gói của bạn</CardTitle
 				><CardDescription
 					class="!text-3xl font-bold text-primary"
-					>Premium Individual</CardDescription
+					>{{
+						capitalizeFirstLetter(
+							authStore.user
+								?.subscription
+								?.status ??
+								"free"
+						)
+					}}</CardDescription
 				>
 				<CardDescription
-					>Hóa đơn của bạn có giá
-					<span class="font-bold text-highlight"
-						>59.000đ </span
-					>vào
-					<span class="font-bold text-highlight"
-						>31/5/2025</span
+					v-if="
+						authStore.user?.subscription
+							?.status !== 'free'
+					"
+					>Gói đăng ký của bạn sẽ hết hạn vào
+					<span
+						class="font-bold text-highlight"
+						>{{
+							formatDate(
+								authStore.user
+									?.subscription
+									?.expiresAt ??
+									null
+							)
+						}}</span
 					>
 				</CardDescription>
-				<CardDescription
-					>Ví MoMo</CardDescription
-				></CardHeader
+				<!-- <CardDescription
+					>Ví MoMo</CardDescription> -->
+				</CardHeader
 			>
 			<div
 				class="absolute top-2 right-2 h-8 w-8 rounded-lg bg-highlight flex items-center justify-center">
@@ -58,7 +74,7 @@
 					></CardHeader
 				></Card
 			> -->
-			<!-- <Card class="cursor-pointer hover:text-primary"
+		<!-- <Card class="cursor-pointer hover:text-primary"
 				><CardHeader class="place-self-center"
 					><CardTitle
 						class="text-sm place-self-center"

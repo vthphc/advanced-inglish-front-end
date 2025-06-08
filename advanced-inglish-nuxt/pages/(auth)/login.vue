@@ -141,7 +141,7 @@
 			}"
 			@close="error = null" />
 
-		<USeparator size="md" label="Hoặc đăng nhập qua" />
+		<!-- <USeparator size="md" label="Hoặc đăng nhập qua" /> -->
 
 		<!-- <div>
             <button

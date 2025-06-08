@@ -10,8 +10,6 @@
 		DialogTitle,
 		DialogTrigger,
 	} from "@/components/ui/dialog";
-	import Input from "~/components/ui/inputs/Input.vue";
-	import Label from "~/components/ui/labels/Label.vue";
 
 	const router = useRouter();
 
@@ -46,19 +44,20 @@
 		<DialogContent class="sm:max-w-md">
 			<DialogHeader>
 				<DialogTitle class="text-primary font-semibold"
-					>Registration Successful</DialogTitle
+					>Đăng ký thành công</DialogTitle
 				>
 				<DialogDescription>
 					{{ message }}
 					<div class="mt-2 font-medium">
-						You will be redirected to login
-						in {{ countdown }} seconds.
+						Bạn sẽ được điều hướng tới trang
+						đăng nhập trong vòng
+						{{ countdown }} giây.
 					</div>
 				</DialogDescription>
 			</DialogHeader>
 			<DialogFooter class="sm:justify-start">
 				<Button type="button" @click="redirect">
-					Login Now
+					Đi tới đăng nhập
 				</Button>
 			</DialogFooter>
 		</DialogContent>
