@@ -13,6 +13,8 @@
 	const isLoading = ref(true);
 	const message = ref("...Loading");
 
+	definePageMeta({ title: "Inglish", layout: "auth" });
+
 	onMounted(async () => {
 		try {
 			const id = route.params.id as string;
