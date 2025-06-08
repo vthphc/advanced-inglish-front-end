@@ -44,9 +44,6 @@
 			<NuxtImg
 				v-if="question.imageURL"
 				:src="question.imageURL" />
-			<p v-if="question.content" class="mt-2">
-				{{ question.content }}
-			</p>
 		</div>
 		<div class="space-y-4">
 			<h2
