@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import {
     Menu,
     User,
@@ -19,12 +19,15 @@ const authStore = useAuthStore();
 const isMainMenuOpen = ref(false);
 const isUserMenuOpen = ref(false);
 
-// Mock user data - replace with actual user data from your auth system
-const user = ref({
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: null,
-});
+// Remove mock user data and use computed properties for user data
+const user = computed(() => ({
+    name: authStore.user?.profile.name || "Jonh Doe",
+    email: authStore.user?.email || "example@gmail.com",
+    avatar: authStore.user?.profile.avatar || null,
+    subscriptionStatus: capitalizeFirstLetter(
+        authStore.user?.subscription.status ?? "free"
+    ),
+}));
 
 const navigation = [
     // { name: "Trang chủ", href: "/" },
@@ -141,6 +144,9 @@ const userMenuItems = [
                                 }}</span>
                                 <span class="text-sm text-muted-foreground">{{
                                     user.email
+                                }}</span>
+                                <span class="text-xs text-gold">{{
+                                    user.subscriptionStatus
                                 }}</span>
                             </div>
                         </div>

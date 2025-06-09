@@ -55,6 +55,17 @@ const featureArray = [
     },
 ];
 
+const buttons = [
+    {
+        text: "Tài khoản",
+        href: "/account",
+    },
+    {
+        text: "Lịch sử bài làm",
+        href: "/account/test-history",
+    },
+];
+
 const underlineVariants = {
     rest: {
         width: "0%", // The underline is hidden in the "rest" state
@@ -108,10 +119,13 @@ const underlineVariants = {
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
-                    <Button>Continue Learning</Button>
-                    <Button>Practice</Button>
-                    <Button>Vocabulary</Button>
-                    <Button>Settings</Button>
+                    <NuxtLink
+                        v-for="(button, index) in buttons"
+                        :key="index"
+                        to="button.href"
+                    >
+                        <Button>{{ button.text }}</Button>
+                    </NuxtLink>
                 </div>
             </div>
         </div>
