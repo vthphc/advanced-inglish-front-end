@@ -177,7 +177,7 @@
 				<div class="flex flex-col">
 					<NuxtLink to="/register">
 						<motion.button
-							class="w-fit m-auto py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
+							class="w-fit m-auto text-4xl font-medium cursor-pointer py-4 px-12 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
 							v-bind="fadeInPropsFn()"
 							>BẮT ĐẦU
 						</motion.button>
