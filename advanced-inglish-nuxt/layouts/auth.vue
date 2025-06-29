@@ -14,10 +14,10 @@ const isRegisterPage = computed(() => route.path === "/register");
             </Button>
         </NuxtLink>
         <NuxtLink v-if="isRegisterPage" to="/login">
-            <Button class="absolute top-0 right-0 m-8"> Login </Button>
+            <Button class="absolute top-0 right-0 m-8"> Đăng nhập </Button>
         </NuxtLink>
         <NuxtLink v-else to="/register">
-            <Button class="absolute top-0 right-0 m-8"> Register </Button>
+            <Button class="absolute top-0 right-0 m-8"> Đăng ký </Button>
         </NuxtLink>
         <slot />
     </div>
