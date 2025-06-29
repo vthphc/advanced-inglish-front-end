@@ -41,7 +41,7 @@
 
 		<div v-if="audioUrl" class="audio-playback">
 			<h3>Bản Ghi Âm Của Bạn:</h3>
-			<audio :src="audioUrl" controls />
+			<audio ref="audioElement" :src="audioUrl" controls />
 			<a
 				:href="audioUrl"
 				:download="`recording-${new Date().toISOString()}.mp3`"
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-	import { ref } from "vue";
+	import { ref, onUnmounted } from "vue";
 	import { Button } from "../ui/buttons";
 	import { useRuntimeConfig } from "#app";
 
@@ -68,6 +68,7 @@
 	const audioUrl = ref(null);
 	const finalUrl = ref(null);
 	const error = ref(null);
+	const audioElement = ref(null);
 	const config = useRuntimeConfig();
 	const CLOUDINARY_CLOUD_NAME = config.public.cloudinaryCloudName;
 	const CLOUDINARY_UPLOAD_PRESET = config.public.cloudinaryUploadPreset;
@@ -78,6 +79,18 @@
 
 	const startRecording = async () => {
 		error.value = null;
+
+		// Stop any existing audio playback
+		if (audioElement.value) {
+			audioElement.value.pause();
+			audioElement.value.currentTime = 0;
+		}
+
+		// Revoke the old audio URL to free up memory
+		if (audioUrl.value) {
+			URL.revokeObjectURL(audioUrl.value);
+		}
+
 		audioUrl.value = null;
 		finalUrl.value = null;
 		isPaused.value = false;
@@ -170,6 +183,17 @@
 			mediaRecorder.value.stop();
 		}
 
+		// Stop audio playback if it's playing
+		if (audioElement.value) {
+			audioElement.value.pause();
+			audioElement.value.currentTime = 0;
+		}
+
+		// Revoke the old audio URL to free up memory before clearing it
+		if (audioUrl.value) {
+			URL.revokeObjectURL(audioUrl.value);
+		}
+
 		// Reset all state variables
 		isRecording.value = false;
 		isPaused.value = false;
@@ -177,11 +201,6 @@
 		audioUrl.value = null;
 		finalUrl.value = null;
 		error.value = null;
-
-		// Revoke the old audio URL to free up memory
-		if (audioUrl.value) {
-			URL.revokeObjectURL(audioUrl.value);
-		}
 	};
 
 	const uploadToCloudinary = async (audioBlob) => {
@@ -228,6 +247,14 @@
 			isUploading.value = false;
 		}
 	};
+
+	// Cleanup on unmount
+	onUnmounted(() => {
+		// Revoke any remaining audio URLs to free up memory
+		if (audioUrl.value) {
+			URL.revokeObjectURL(audioUrl.value);
+		}
+	});
 </script>
 
 <style scoped>

@@ -26,7 +26,7 @@
 		index: number;
 	}
 
-	const props = defineProps<Props>();
+	defineProps<Props>();
 	const showAnswer = ref(false);
 	const showAIReview = ref(false);
 </script>
