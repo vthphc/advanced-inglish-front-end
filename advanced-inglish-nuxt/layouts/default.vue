@@ -2,7 +2,7 @@
 import { useAuthStore } from "~/stores/auth";
 import { storeToRefs } from "pinia";
 import Navbar from "~/components/navbar/Navbar.vue";
-
+import Footer from "~/components/footer/Footer.vue";
 const authStore = useAuthStore();
 const { isAuthenticated } = storeToRefs(authStore);
 </script>
@@ -13,9 +13,10 @@ const { isAuthenticated } = storeToRefs(authStore);
     </div>
     <div v-else>
         <Navbar />
-        <div class="container p-4 md:p-6 lg:p-8 mx-auto">
+        <div class="container min-h-screen p-4 md:p-6 lg:p-8 mx-auto mb-8">
             <slot />
         </div>
+        <Footer />
     </div>
 </template>
 

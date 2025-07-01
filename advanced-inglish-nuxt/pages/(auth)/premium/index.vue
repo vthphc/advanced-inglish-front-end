@@ -52,9 +52,7 @@ const isPremium = computed(() => {
 </script>
 
 <template>
-    <div
-        class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4"
-    >
+    <div class="min-h-screen py-12 px-4">
         <div class="max-w-6xl mx-auto">
             <!-- Header -->
             <div class="text-center mb-12">

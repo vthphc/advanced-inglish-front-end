@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import {
-    Menu,
-    User,
-    Settings,
-    LogOut,
-    Bell,
-    CreditCard,
-} from "lucide-vue-next";
+import { Menu, User, LogOut, Bell, Layers } from "lucide-vue-next";
 import { Button } from "../ui/buttons";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import ExpandingText from "./ExpandingText.vue";
@@ -75,15 +68,8 @@ const userMenuItems = [
                 </Sheet>
                 <!-- Logo -->
                 <NuxtLink to="/" class="flex items-center space-x-2">
-                    <div
-                        class="h-8 w-8 rounded-lg bg-highlight flex items-center justify-center"
-                    >
-                        <span class="text-primary-foreground font-bold text-lg"
-                            >I</span
-                        >
-                    </div>
-                    <span class="font-bold text-xl">nglish</span>
-                    <!-- <ExpandingText /> -->
+                    <Layers class="h-8 w-8 text-primary" />
+                    <span class="font-bold text-xl text-primary">Inglish</span>
                 </NuxtLink>
             </div>
 
