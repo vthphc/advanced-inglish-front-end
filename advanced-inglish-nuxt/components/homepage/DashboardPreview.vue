@@ -41,24 +41,23 @@ const ProgressBar = defineComponent({
                     Bạn đang làm tốt. Hãy tiếp tục giữ động lực.
                 </p>
             </div>
-            <button
-                class="bg-highlight text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-white hover:text-primary transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap"
-            >
-                Continue Your Lesson
-            </button>
+            <NuxtLink to="tests">
+                <button
+                    class="cursor-pointer bg-highlight text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-white hover:text-primary transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap"
+                >
+                    Tới mục kiểm tra
+                </button>
+            </NuxtLink>
         </div>
-        <div class="mt-8 grid md:grid-cols-2 gap-8">
+        <div class="mt-8 grid md:grid-cols-1 gap-8">
             <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
-                <h3 class="font-bold text-xl mb-3">Today's Goal</h3>
-                <p class="text-indigo-200">
-                    Complete the 'Ordering Food at a Restaurant' module and
-                    learn 10 new vocabulary words.
-                </p>
+                <h3 class="font-bold text-xl mb-3">Mục tiêu hôm nay</h3>
+                <p class="text-indigo-200">Hoàn thành một bài kiểm tra</p>
             </div>
-            <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
+            <!-- <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm">
                 <h3 class="font-bold text-xl mb-3">Achievements</h3>
                 <ProgressBar :progress="65" />
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
