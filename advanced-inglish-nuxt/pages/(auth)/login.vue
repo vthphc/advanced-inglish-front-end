@@ -1,149 +1,145 @@
 <script setup lang="ts">
-	import * as z from "zod";
-	import type { FormSubmitEvent } from "@nuxt/ui";
-	// Import the store directly
-	import { useAuthStore } from "~/stores/auth";
+import * as z from "zod";
+import type { FormSubmitEvent } from "@nuxt/ui";
+// Import the store directly
+import { useAuthStore } from "~/stores/auth";
 
-	// Get authentication store and actions
-	const authStore = useAuthStore();
-	// You can get actions directly: const { login: storeLogin } = authStore;
-	// Or call them via authStore.login
+// Get authentication store and actions
+const authStore = useAuthStore();
+// You can get actions directly: const { login: storeLogin } = authStore;
+// Or call them via authStore.login
 
-	const loading = ref(false);
-	const error = ref<string | null>(null);
-	const router = useRouter();
-	const route = useRoute(); // Import useRoute to get query params
+const loading = ref(false);
+const error = ref<string | null>(null);
+const router = useRouter();
+const route = useRoute(); // Import useRoute to get query params
 
-	definePageMeta({
-		title: "Inglish - Login",
-		layout: "auth",
-	});
+definePageMeta({
+    title: "Inglish - Login",
+    layout: "auth",
+});
 
-	useHead({
-		title: "Login", // Updates reactively
-	});
+useHead({
+    title: "Login", // Updates reactively
+});
 
-	const schema = z.object({
-		email: z.string(), //.email("Invalid email"),
-		password: z.string().min(8, "Must be at least 8 characters"),
-	});
+const schema = z.object({
+    email: z.string(), //.email("Invalid email"),
+    password: z.string().min(8, "Must be at least 8 characters"),
+});
 
-	type Schema = z.output<typeof schema>;
+type Schema = z.output<typeof schema>;
 
-	const formState = reactive<Partial<Schema>>({
-		email: undefined,
-		password: undefined,
-	});
+const formState = reactive<Partial<Schema>>({
+    email: undefined,
+    password: undefined,
+});
 
-	const toast = useToast();
-	async function onSubmit(_event: FormSubmitEvent<Schema>) {
-		loading.value = true;
-		error.value = null;
+const toast = useToast();
+async function onSubmit(_event: FormSubmitEvent<Schema>) {
+    loading.value = true;
+    error.value = null;
 
-		try {
-			// Basic validation (Zod handles more complex cases via UForm)
-			if (!formState.email || !formState.password) {
-				error.value =
-					"Email and password are required.";
-				loading.value = false; // Stop loading on basic validation failure
-				return;
-			}
+    try {
+        // Basic validation (Zod handles more complex cases via UForm)
+        if (!formState.email || !formState.password) {
+            error.value = "Email and password are required.";
+            loading.value = false; // Stop loading on basic validation failure
+            return;
+        }
 
-			// Call the login action from the Pinia store
-			await authStore.login({
-				email: formState.email,
-				password: formState.password,
-			});
+        // Call the login action from the Pinia store
+        await authStore.login({
+            email: formState.email,
+            password: formState.password,
+        });
 
-			// If await authStore.login completes without throwing, assume success
-			toast.add({
-				title: "Success",
-				description: "You have successfully logged in.",
-				color: "success",
-			});
+        // If await authStore.login completes without throwing, assume success
+        toast.add({
+            title: "Thành công",
+            description: "Bạn đã đăng nhập thành công.",
+            color: "success",
+        });
 
-			// Redirect logic: Check for redirect query param or default to '/'
-			const redirectPath =
-				(route.query.redirect as string) || "/";
-			// Use replace: true if you don't want the login page in the history
-			await router.push(redirectPath);
-		} catch (err: unknown) {
-			// Check if the error is about unverified account
-			const errorMsg =
-				err instanceof Error
-					? err.message
-					: String(err);
+        // Redirect logic: Check for redirect query param or default to '/'
+        const redirectPath = (route.query.redirect as string) || "/";
+        // Use replace: true if you don't want the login page in the history
+        await router.push(redirectPath);
+    } catch (err: unknown) {
+        // Check if the error is about unverified account
+        const errorMsg = err instanceof Error ? err.message : String(err);
 
-			if (errorMsg.includes("not verified")) {
-				toast.add({
-					title: "Verification Required",
-					description: errorMsg,
-					color: "warning",
-				});
-			} else {
-				error.value = errorMsg;
-				console.error("Login Submit Error:", err);
+        if (errorMsg.includes("not verified")) {
+            toast.add({
+                title: "Yêu cầu xác minh",
+                description: errorMsg,
+                color: "warning",
+            });
+        } else {
+            error.value = errorMsg;
+            console.error("Login Submit Error:", err);
 
-				toast.add({
-					title: "Login Error",
-					description: error.value || undefined,
-					color: "error",
-				});
-			}
-		} finally {
-			loading.value = false;
-		}
-	}
+            toast.add({
+                title: "Lỗi đăng nhập",
+                description: error.value || undefined,
+                color: "error",
+            });
+        }
+    } finally {
+        loading.value = false;
+    }
+}
 </script>
 
 <template>
-	<UForm
-		:schema="schema"
-		:state="formState"
-		class="space-y-4 *:my-2 flex flex-col"
-		@submit="onSubmit">
-		<UFormField label="Email" name="email" required>
-			<UInput
-				v-model="formState.email"
-				size="xl"
-				color="highlight" />
-		</UFormField>
+    <UForm
+        :schema="schema"
+        :state="formState"
+        class="space-y-4 *:my-2 flex flex-col"
+        @submit="onSubmit"
+    >
+        <UFormField label="Email" name="email" required>
+            <UInput v-model="formState.email" size="xl" color="highlight" />
+        </UFormField>
 
-		<UFormField label="Password" name="password" required>
-			<UInput
-				v-model="formState.password"
-				size="xl"
-				color="highlight"
-				type="password" />
-		</UFormField>
+        <UFormField label="Password" name="password" required>
+            <UInput
+                v-model="formState.password"
+                size="xl"
+                color="highlight"
+                type="password"
+            />
+        </UFormField>
 
-		<UButton
-			class="cursor-pointer w-full justify-center text-center py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
-			type="submit"
-			:loading="loading"
-			block
-			size="xl">
-			Đăng nhập
-		</UButton>
+        <UButton
+            class="cursor-pointer w-full justify-center text-center py-2 px-4 bg-primary text-white hover:bg-white hover:text-primary border-2 hover:border-primary rounded-2xl mt-8"
+            type="submit"
+            :loading="loading"
+            block
+            size="xl"
+        >
+            Đăng nhập
+        </UButton>
 
-		<UAlert
-			v-if="error"
-			class="mt-4"
-			icon="i-heroicons-exclamation-triangle"
-			color="error"
-			variant="soft"
-			:title="error"
-			:close-button="{
-				icon: 'i-heroicons-x-mark-20-solid',
-				color: 'red',
-				variant: 'link',
-				padded: false,
-			}"
-			@close="error = null" />
+        <UAlert
+            v-if="error"
+            class="mt-4"
+            icon="i-heroicons-exclamation-triangle"
+            color="error"
+            variant="soft"
+            :title="error"
+            :close-button="{
+                icon: 'i-heroicons-x-mark-20-solid',
+                color: 'red',
+                variant: 'link',
+                padded: false,
+            }"
+            @close="error = null"
+        />
 
-		<!-- <USeparator size="md" label="Hoặc đăng nhập qua" /> -->
+        <!-- <USeparator size="md" label="Hoặc đăng nhập qua" /> -->
 
-		<!-- <div>
+        <!-- <div>
             <button
                 class="cursor-pointer flex w-full items-center justify-center gap-3 rounded-2xl bg-white hover:bg-gray-100 border-gray-300 hover:border-gray-300 border-2 py-2 px-4 text-sm font-semibold leading-6 text-gray-900 transition-all duration-300"
                 type="button"
@@ -170,5 +166,5 @@
                 Google
             </button>
         </div> -->
-	</UForm>
+    </UForm>
 </template>

@@ -57,8 +57,8 @@ const handleDelete = async () => {
         isDeleting.value = true;
         await api.delete(`/flashcards/${props.flashcard._id}`);
         toast.add({
-            title: "Success",
-            description: "Flashcard deleted successfully!",
+            title: "Xóa thành công",
+            description: "Thẻ học đã dược xóa thành công!",
             color: "success",
         });
         emit("deleted", props.flashcard._id);
@@ -66,8 +66,8 @@ const handleDelete = async () => {
     } catch (error) {
         console.error("Error deleting flashcard:", error);
         toast.add({
-            title: "Error",
-            description: "Failed to delete flashcard. Please try again.",
+            title: "Lỗi",
+            description: "Xóa thất bại. Xin hãy thử lại.",
             color: "error",
         });
     } finally {
