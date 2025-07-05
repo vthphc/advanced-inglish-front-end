@@ -1,10 +1,19 @@
 <script setup lang="ts">
 	import { ref, onMounted } from "vue";
 	import { useApi } from "~/composables/api/useApi";
+	import { useAuthStore } from "~/stores/auth";
+	import {
+		Popover,
+		PopoverContent,
+		PopoverTrigger,
+	} from "~/components/ui/popover";
+	import { Input } from "~/components/ui/inputs";
+	import { Label } from "~/components/ui/labels";
 	import type { TakenTest, TakenTestsResponse } from "~/utils/types/test";
-	import HistoryItem from "~/components/tests/history/HistoryItem.vue";
-	import { ChevronLeft } from "lucide-vue-next";
+	import { ChevronLeft, Flag } from "lucide-vue-next";
 	import { Button } from "~/components/ui/buttons";
+	import { z } from "zod";
+	import { useToast } from "#imports";
 
 	definePageMeta({
 		title: "Test History",
@@ -14,6 +23,92 @@
 	const takenTests = ref<TakenTest[]>([]);
 	const isLoading = ref(true);
 	const error = ref<string | null>(null);
+
+	// Report form state
+	const isReportOpen = ref<string | null>(null);
+	const reportDescription = ref("");
+	const isSubmitting = ref(false);
+
+	// Zod validation schema for report form
+	const reportSchema = z.object({
+		description: z
+			.string()
+			.min(10, "Mô tả phải có ít nhất 10 ký tự")
+			.max(500, "Mô tả không được quá 500 ký tự"),
+	});
+
+	// Report form validation
+	const reportErrors = ref<{ description?: string }>({});
+
+	const authStore = useAuthStore();
+	const api = useApi();
+	const toast = useToast();
+
+	const validateReportForm = () => {
+		try {
+			reportSchema.parse({
+				description: reportDescription.value,
+			});
+			reportErrors.value = {};
+			return true;
+		} catch (error) {
+			if (error instanceof z.ZodError) {
+				reportErrors.value = {
+					description: error.errors.find((e) =>
+						e.path.includes("description")
+					)?.message,
+				};
+			}
+			return false;
+		}
+	};
+
+	const handleSubmitReport = async (testId: string) => {
+		if (!validateReportForm()) {
+			return;
+		}
+
+		if (!authStore.user?._id) {
+			toast.add({
+				title: "Lỗi",
+				description:
+					"Bạn cần đăng nhập để báo cáo bài kiểm tra",
+				color: "error",
+			});
+			return;
+		}
+
+		isSubmitting.value = true;
+
+		try {
+			await api.post("/reports/", {
+				contentId: testId,
+				description: reportDescription.value,
+				userId: authStore.user._id,
+			});
+
+			toast.add({
+				title: "Thành công",
+				description: "Báo cáo đã được gửi thành công",
+				color: "success",
+			});
+
+			// Reset form and close popover
+			reportDescription.value = "";
+			isReportOpen.value = null;
+			reportErrors.value = {};
+		} catch (error) {
+			console.error("Error submitting report:", error);
+			toast.add({
+				title: "Lỗi",
+				description:
+					"Không thể gửi báo cáo. Vui lòng thử lại sau.",
+				color: "error",
+			});
+		} finally {
+			isSubmitting.value = false;
+		}
+	};
 
 	// Table headers configuration
 	const tableHeaders = [
@@ -84,7 +179,7 @@
 
 		<!-- Loading state -->
 		<div v-if="isLoading" class="text-center py-10">
-			<p class="text-gray-500">Loading test history...</p>
+			<p class="text-gray-500">Đang tải...</p>
 		</div>
 
 		<!-- Error state -->
@@ -186,20 +281,146 @@
 							</td>
 							<td
 								class="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-center">
-								<Button
-									class="text-xs sm:text-sm"
-									variant="ghost"
-									@click="
-										handleTestAction(
-											test
-												.test
-												.topic,
+								<div
+									class="flex items-center justify-center gap-2">
+									<!-- Report Button with Popover -->
+									<Popover
+										:open="
+											isReportOpen ===
 											test._id
-										)
-									">
-									Xem chi
-									tiết
-								</Button>
+										"
+										@update:open="
+											(
+												open
+											) =>
+												(isReportOpen =
+													open
+														? test._id
+														: null)
+										">
+										<PopoverTrigger
+											as-child>
+											<Button
+												size="icon"
+												variant="ghost"
+												class="p-1 rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+												@click.stop="
+													isReportOpen =
+														test._id
+												"
+												title="Báo cáo bài kiểm tra">
+												<Flag
+													class="w-4 h-4" />
+											</Button>
+										</PopoverTrigger>
+										<PopoverContent
+											class="w-80 bg-white border-0 shadow-md">
+											<div
+												class="space-y-4">
+												<div
+													class="space-y-2">
+													<h4
+														class="font-medium leading-none">
+														Báo
+														cáo
+														bài
+														kiểm
+														tra
+														không
+														phù
+														hợp
+													</h4>
+													<p
+														class="text-sm text-muted-foreground">
+														Vui
+														lòng
+														mô
+														tả
+														lý
+														do
+														báo
+														cáo
+														bài
+														kiểm
+														tra
+														này
+													</p>
+												</div>
+												<div
+													class="space-y-2">
+													<Label
+														for="description"
+														>Mô
+														tả</Label
+													>
+													<Input
+														id="description"
+														v-model="
+															reportDescription
+														"
+														placeholder="Nhập lý do báo cáo..."
+														:class="{
+															'border-red-500':
+																reportErrors.description,
+														}" />
+													<p
+														v-if="
+															reportErrors.description
+														"
+														class="text-sm text-red-500">
+														{{
+															reportErrors.description
+														}}
+													</p>
+												</div>
+												<div
+													class="flex justify-end gap-x-2">
+													<Button
+														variant="outline"
+														:disabled="
+															isSubmitting
+														"
+														@click="
+															isReportOpen =
+																null
+														">
+														Hủy
+													</Button>
+													<Button
+														:disabled="
+															isSubmitting
+														"
+														@click="
+															handleSubmitReport(
+																test._id
+															)
+														">
+														{{
+															isSubmitting
+																? "Đang gửi..."
+																: "Gửi báo cáo"
+														}}
+													</Button>
+												</div>
+											</div>
+										</PopoverContent>
+									</Popover>
+									<Button
+										class="text-xs sm:text-sm"
+										variant="ghost"
+										@click="
+											handleTestAction(
+												test
+													.test
+													.topic,
+												test._id
+											)
+										">
+										Xem
+										chi
+										tiết
+									</Button>
+								</div>
 							</td>
 						</tr>
 					</tbody>
