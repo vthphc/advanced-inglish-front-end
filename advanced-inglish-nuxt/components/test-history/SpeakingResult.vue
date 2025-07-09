@@ -111,6 +111,7 @@
 			<AiTranscription
 				:audio-url="question.selectedAnswer"
 				:is-open="showAnswer"
+				:topic="question.question.question"
 				@update:is-open="showAnswer = $event" />
 		</div>
 	</div>

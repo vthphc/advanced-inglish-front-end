@@ -11,6 +11,7 @@
 	interface Props {
 		audioUrl: string;
 		isOpen: boolean;
+		topic: string;
 	}
 
 	interface AiResponse {
@@ -46,6 +47,7 @@
 				"/transcriptions/transcribe",
 				{
 					source: props.audioUrl,
+					topic: props.topic,
 				}
 			);
 			transcription.value = response.data.transcript;
@@ -125,16 +127,33 @@
 							class="space-y-4">
 							<div
 								class="border-t pt-4">
-								<h3
-									class="font-bold text-lg text-primary mb-3">
-									AI
-									Review
-								</h3>
+								<div
+									class="flex items-center justify-between mb-3">
+									<h3
+										class="font-bold text-lg text-primary">
+										AI
+										Review
+									</h3>
+									<div
+										class="flex items-center space-x-2">
+										<span
+											class="text-2xl font-bold text-primary">
+											{{
+												aiResponse.overallScore
+											}}
+										</span>
+										<span
+											class="text-sm text-gray-500"
+											>/
+											100</span
+										>
+									</div>
+								</div>
 
 								<div
-									class="grid grid-cols-1 md:grid-cols-2 gap-4">
+									class="grid grid-cols-1 gap-4 w-full">
 									<div
-										class="space-y-3">
+										class="space-y-3 w-full">
 										<div>
 											<h4
 												class="font-semibold text-sm text-gray-700">
@@ -182,31 +201,6 @@
 													aiResponse.vocabulary
 												}}
 											</p>
-										</div>
-									</div>
-
-									<div
-										class="space-y-3">
-										<div>
-											<h4
-												class="font-semibold text-sm text-gray-700">
-												Overall
-												Score
-											</h4>
-											<div
-												class="flex items-center space-x-2">
-												<span
-													class="text-2xl font-bold text-primary"
-													>{{
-														aiResponse.overallScore
-													}}</span
-												>
-												<span
-													class="text-sm text-gray-500"
-													>/
-													100</span
-												>
-											</div>
 										</div>
 									</div>
 								</div>
