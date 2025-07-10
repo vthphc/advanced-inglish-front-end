@@ -2,6 +2,7 @@
 import { useAuthStore } from "~/stores/auth";
 import { Button } from "~/components/ui/buttons";
 import AiExplanation from "./AiExplanation.vue";
+import AiAudioTranscription from "./AiAudioTranscription.vue";
 
 interface Question {
     question: {
@@ -25,6 +26,7 @@ const props = defineProps<Props>();
 const showAnswer = ref(false);
 const showTooltip = ref(false);
 const showExplanation = ref(false);
+const showTranscription = ref(false);
 const authStore = useAuthStore();
 const isPremium = computed(
     () => authStore.user?.subscription.status === "premium"
@@ -84,6 +86,15 @@ const isPremium = computed(
                 Đáp án đúng:
                 {{ question.question.correctAnswer }}
             </p>
+
+            <Button
+                v-if="isPremium && question.question.audioURL"
+                variant="ghost"
+                class="shadow-sm hover:text-gold shadow-gold"
+                title="Để AI Transcribe cho bạn"
+                @click="showTranscription = true"
+                >AI Transcription</Button
+            >
             <Button
                 v-if="isPremium"
                 variant="ghost"
@@ -107,6 +118,13 @@ const isPremium = computed(
             :question-id="question.question._id"
             :is-open="showExplanation"
             @update:is-open="showExplanation = $event"
+        />
+        <AiAudioTranscription
+            v-if="question.question.audioURL"
+            :audio-url="question.question.audioURL"
+            :is-open="showTranscription"
+            :topic="question.question.question"
+            @update:is-open="showTranscription = $event"
         />
     </div>
 </template>
